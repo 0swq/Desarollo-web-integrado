@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Base de Datos PostgreSQL 16
+  postgres:
+    image: postgres:16-alpine
+    container_name: autopartes_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: autopartes_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./autopartes-backend/src/main/resources/db/migration/V1__init_schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d autopartes_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend Spring Boot con Java 21
+  backend:
+    build:
+      context: ./autopartes-backend
+      dockerfile: Dockerfile
+    container_name: autopartes_backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/autopartes_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgrespassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    volumes:
+      - backend_uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Frontend Angular (para el siguiente avance)
+  # frontend:
+  #   build:
+  #     context: ./autopartes-frontend
+  #     dockerfile: Dockerfile
+  #   container_name: autopartes_frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4200:80"
+  #   depends_on:
+  #     - backend
+
+volumes:
+  postgres_data:
+  backend_uploads:
