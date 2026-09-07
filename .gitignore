@@ -1,0 +1,13 @@
+# Maven build output
+target/
+*.class
+
+# Env / secrets
+.env
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store

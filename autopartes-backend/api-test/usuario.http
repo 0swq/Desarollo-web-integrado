@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:8080/api
+@usuarioId = 1abe5f26-cdcd-4c6c-aa24-ba1e75dedb6f
+
+###
+GET {{baseUrl}}/api/usuarios
+
+###
+GET {{baseUrl}}/api/usuarios/{{usuarioId}}
+
+###
+POST {{baseUrl}}/api/usuarios
+Content-Type: application/json
+
+{
+  "correo": "empleado@test.com",
+  "contrasena": "123456",
+  "nombre": "Ana",
+  "apellido": "Gomez",
+  "telefono": "999111222",
+  "direccion": "Av. Brasil 456",
+  "rol": "EMPLEADO"
+}
+
+###
+PATCH {{baseUrl}}/api/usuarios/{{usuarioId}}/password
+Content-Type: application/json
+
+{
+  "contrasenaActual": "123456",
+  "contrasenaNueva": "654321"
+}
+
+###
+PATCH {{baseUrl}}/api/usuarios/{{usuarioId}}/toggle-activo
+
+###
+DELETE {{baseUrl}}/api/usuarios/{{usuarioId}}

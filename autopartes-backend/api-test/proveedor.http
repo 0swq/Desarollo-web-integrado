@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:8080/api
+@proveedorId = PEGAR_UUID_DEL_PROVEEDOR
+
+###
+GET {{baseUrl}}/api/proveedores
+
+###
+GET {{baseUrl}}/api/proveedores/{{proveedorId}}
+
+###
+POST {{baseUrl}}/api/proveedores
+Content-Type: application/json
+
+{
+  "ruc": "20123456789",
+  "razonSocial": "Repuestos del Sur S.A.C.",
+  "contactoNombre": "Luis Torres",
+  "telefono": "014445566",
+  "correo": "ventas@repsur.com",
+  "direccion": "Av. Industrial 789",
+  "activo": true
+}
+
+###
+PUT {{baseUrl}}/api/proveedores/{{proveedorId}}
+Content-Type: application/json
+
+{
+  "ruc": "20123456789",
+  "razonSocial": "Repuestos del Sur S.A.C.",
+  "contactoNombre": "Luis Torres",
+  "telefono": "014445566",
+  "correo": "ventas@repsur.com",
+  "direccion": "Av. Industrial 789",
+  "activo": true
+}
+
+###
+PATCH {{baseUrl}}/api/proveedores/{{proveedorId}}/toggle-activo
+
+###
+DELETE {{baseUrl}}/api/proveedores/{{proveedorId}}

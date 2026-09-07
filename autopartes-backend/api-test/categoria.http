@@ -1,0 +1,36 @@
+@baseUrl = http://localhost:8080/api
+@categoriaId = PEGAR_UUID_DE_LA_CATEGORIA
+
+###
+GET {{baseUrl}}/api/categorias
+
+###
+GET {{baseUrl}}/api/categorias/{{categoriaId}}
+
+###
+POST {{baseUrl}}/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Frenos",
+  "descripcion": "Pastillas, discos y tambores de freno",
+  "imagenUrl": null,
+  "activo": true
+}
+
+###
+PUT {{baseUrl}}/api/categorias/{{categoriaId}}
+Content-Type: application/json
+
+{
+  "nombre": "Frenos",
+  "descripcion": "Sistema de frenos completo",
+  "imagenUrl": null,
+  "activo": true
+}
+
+###
+PATCH {{baseUrl}}/api/categorias/{{categoriaId}}/toggle-activo
+
+###
+DELETE {{baseUrl}}/api/categorias/{{categoriaId}}

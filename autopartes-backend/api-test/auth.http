@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:8080/api
+
+###
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "correo": "cliente@test.com",
+  "contrasena": "123456",
+  "nombre": "Juan",
+  "apellido": "Perez",
+  "telefono": "999888777",
+  "direccion": "Av. Lima 123",
+  "rol": "CLIENTE"
+}
+
+###
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "cliente@test.com",
+  "contrasena": "123456"
+}

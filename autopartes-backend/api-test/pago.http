@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:8080/api
+@pagoId = PEGAR_UUID_DEL_PAGO
+@ordenId = PEGAR_UUID_DE_LA_ORDEN
+
+###
+GET {{baseUrl}}/api/pagos
+
+###
+GET {{baseUrl}}/api/pagos/{{pagoId}}
+
+###
+GET {{baseUrl}}/api/pagos/orden/{{ordenId}}
+
+###
+GET {{baseUrl}}/api/pagos/estado/PENDIENTE
+
+###
+POST {{baseUrl}}/api/pagos
+Content-Type: application/json
+
+{
+  "ordenId": "{{ordenId}}",
+  "monto": 150.75,
+  "moneda": "PEN",
+  "metodoPago": "MERCADO_PAGO"
+}
+
+###
+PATCH {{baseUrl}}/api/pagos/{{pagoId}}/estado
+Content-Type: application/json
+
+{
+  "estado": "APROBADO"
+}
+
+###
+PATCH {{baseUrl}}/api/pagos/{{pagoId}}/mercado-pago
+Content-Type: application/json
+
+{
+  "mercadoPagoPagoId": "123456789",
+  "mercadoPagoPreferenciaId": "pref-abc-123"
+}

@@ -7,8 +7,9 @@
           <value>
             <TabSessionState>
               <option name="provider" value="claude" />
+              <option name="sessionId" value="5874d0d9-c14a-47f0-9987-9f0955029fd7" />
               <option name="cwd" value="C:\Users\LA CURACAO CHIMBOTE\Desktop\DesarrolloWebIntegrado" />
-              <option name="model" value="claude-sonnet-4-7" />
+              <option name="model" value="claude-sonnet-4-7[1m]" />
               <option name="permissionMode" value="default" />
             </TabSessionState>
           </value>

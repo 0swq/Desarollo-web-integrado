@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:8080/api
+@marcaId = PEGAR_UUID_DE_LA_MARCA
+
+###
+GET {{baseUrl}}/api/marcas-vehiculos
+
+###
+GET {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
+
+###
+POST {{baseUrl}}/api/marcas-vehiculos
+Content-Type: application/json
+
+{
+  "nombre": "Toyota",
+  "paisOrigen": "Japón",
+  "activo": true
+}
+
+###
+PUT {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
+Content-Type: application/json
+
+{
+  "nombre": "Toyota",
+  "paisOrigen": "Japón",
+  "activo": true
+}
+
+###
+PATCH {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}/toggle-activo
+
+###
+DELETE {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}

@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:8080/api
+@token = PEGAR_TOKEN_DEL_LOGIN
+@ordenId = PEGAR_UUID_DE_LA_ORDEN
+@usuarioId = PEGAR_UUID_DEL_USUARIO
+
+###
+GET {{baseUrl}}/api/ordenes
+
+###
+GET {{baseUrl}}/api/ordenes/{{ordenId}}
+
+###
+GET {{baseUrl}}/api/ordenes/numero/PEGAR_NUMERO_DE_ORDEN
+
+###
+GET {{baseUrl}}/api/ordenes/usuario/{{usuarioId}}
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/api/ordenes/estado/PENDIENTE
+
+###
+POST {{baseUrl}}/api/ordenes/usuario/{{usuarioId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "direccionEntrega": "Av. Lima 123",
+  "telefonoContacto": "999888777",
+  "notas": "Entregar en horario de oficina",
+  "metodoPago": "MERCADO_PAGO"
+}
+
+###
+PATCH {{baseUrl}}/api/ordenes/{{ordenId}}/estado
+Content-Type: application/json
+
+{
+  "estado": "PAGADO"
+}

@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:8080/api
+@stockId = PEGAR_UUID_DEL_STOCK
+@productoId = PEGAR_UUID_DEL_PRODUCTO
+
+###
+GET {{baseUrl}}/api/stocks
+
+###
+GET {{baseUrl}}/api/stocks/{{stockId}}
+
+###
+GET {{baseUrl}}/api/stocks/producto/{{productoId}}
+
+###
+GET {{baseUrl}}/api/stocks/bajo-stock
+
+###
+PUT {{baseUrl}}/api/stocks/producto/{{productoId}}
+Content-Type: application/json
+
+{
+  "stockMinimo": 10,
+  "ubicacionAlmacen": "B-02"
+}

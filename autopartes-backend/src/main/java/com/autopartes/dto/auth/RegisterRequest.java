@@ -1,21 +1,27 @@
 package com.autopartes.dto.auth;
 
-import com.autopartes.model.Role;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import com.autopartes.model.Rol;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RegisterRequest {
 
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "Formato de email inválido")
-    private String email;
+    @NotBlank(message = "El correo es obligatorio")
+    @Email(message = "Formato de correo inválido")
+    private String correo;
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    private String password;
+    private String contrasena;
 
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
@@ -25,5 +31,5 @@ public class RegisterRequest {
 
     private String telefono;
     private String direccion;
-    private Role rol; // Opcional, por defecto ROLE_CLIENTE
+    private Rol rol;
 }

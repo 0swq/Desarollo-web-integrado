@@ -1,78 +1,71 @@
 package com.autopartes.controller;
 
 import com.autopartes.dto.ApiResponse;
-import com.autopartes.dto.stock.StockMovementRequest;
-import com.autopartes.dto.stock.StockMovementResponse;
+import com.autopartes.dto.stock.StockRequest;
 import com.autopartes.dto.stock.StockResponse;
-import com.autopartes.dto.stock.StockUpdateRequest;
+import com.autopartes.model.Stock;
 import com.autopartes.service.StockService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/stock")
-@RequiredArgsConstructor
-@Tag(name = "Inventario y Kardex", description = "Control de stock, movimientos de almacén y alertas de inventario")
-@SecurityRequirement(name = "bearerAuth")
+@RequestMapping("/api/stocks")
 public class StockController {
 
-    private final StockService stockService;
+    private final StockService service;
 
-    @GetMapping("/product/{productId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
-    @Operation(summary = "Obtener stock y ubicación de una autoparte (Admin/Empleado)")
-    public ResponseEntity<ApiResponse<StockResponse>> getStockByProduct(@PathVariable Long productId) {
-        return ResponseEntity.ok(ApiResponse.ok(stockService.getStockByProductId(productId)));
+    public StockController(StockService service) {
+        this.service = service;
     }
 
-    @PutMapping("/product/{productId}/settings")
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Actualizar stock mínimo y ubicación física en almacén (solo ADMIN)")
-    public ResponseEntity<ApiResponse<StockResponse>> updateStockSettings(
-            @PathVariable Long productId,
-            @Valid @RequestBody StockUpdateRequest request) {
-        return ResponseEntity.ok(ApiResponse.ok("Configuración de stock actualizada",
-                stockService.updateStockSettings(productId, request)));
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<StockResponse>>> listar() {
+        List<StockResponse> response = service.buscarTodos().stream()
+                .map(this::mapToResponse)
+                .toList();
+        return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
-    @PostMapping("/movement")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
-    @Operation(summary = "Registrar movimiento manual de stock: ENTRADA, SALIDA o AJUSTE (Kardex)")
-    public ResponseEntity<ApiResponse<StockMovementResponse>> recordMovement(
-            @Valid @RequestBody StockMovementRequest request,
-            Principal principal) {
-        String userEmail = principal != null ? principal.getName() : "Sistema";
-        return ResponseEntity.ok(ApiResponse.ok("Movimiento de inventario registrado",
-                stockService.recordMovement(request, userEmail)));
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<StockResponse>> obtener(@PathVariable UUID id) {
+        return service.buscarPorId(id)
+                .map(s -> ResponseEntity.ok(ApiResponse.ok(mapToResponse(s))))
+                .orElse(ResponseEntity.status(404).body(ApiResponse.error("Stock no encontrado")));
     }
 
-    @GetMapping("/low-alerts")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
-    @Operation(summary = "Listar alertas de autopartes con stock bajo o agotado (Admin/Empleado)")
-    public ResponseEntity<ApiResponse<List<StockResponse>>> getLowStockAlerts() {
-        return ResponseEntity.ok(ApiResponse.ok(stockService.getLowStockAlerts()));
+    @GetMapping("/producto/{productoId}")
+    public ResponseEntity<ApiResponse<StockResponse>> porProducto(@PathVariable UUID productoId) {
+        return service.buscarPorProducto(productoId)
+                .map(s -> ResponseEntity.ok(ApiResponse.ok(mapToResponse(s))))
+                .orElse(ResponseEntity.status(404).body(ApiResponse.error("Stock no encontrado")));
     }
 
-    @GetMapping("/movements/product/{productId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
-    @Operation(summary = "Historial Kardex de movimientos de una autoparte específica")
-    public ResponseEntity<ApiResponse<List<StockMovementResponse>>> getMovementsByProduct(@PathVariable Long productId) {
-        return ResponseEntity.ok(ApiResponse.ok(stockService.getMovementsByProductId(productId)));
+    @GetMapping("/bajo-stock")
+    public ResponseEntity<ApiResponse<List<StockResponse>>> bajoStock() {
+        List<StockResponse> response = service.buscarBajoStock().stream()
+                .map(this::mapToResponse)
+                .toList();
+        return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
-    @GetMapping("/movements/recent")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
-    @Operation(summary = "Últimos movimientos de almacén de toda la tienda (Kardex global)")
-    public ResponseEntity<ApiResponse<List<StockMovementResponse>>> getRecentMovements() {
-        return ResponseEntity.ok(ApiResponse.ok(stockService.getRecentMovements()));
+    @PutMapping("/producto/{productoId}")
+    public ResponseEntity<ApiResponse<StockResponse>> actualizarConfig(@PathVariable UUID productoId, @Valid @RequestBody StockRequest request) {
+        Stock s = service.actualizarConfiguracion(productoId, request);
+        return ResponseEntity.ok(ApiResponse.ok("Stock actualizado", mapToResponse(s)));
+    }
+
+    private StockResponse mapToResponse(Stock s) {
+        StockResponse r = new StockResponse();
+        r.setId(s.getId());
+        r.setProductoId(s.getProductoId());
+        r.setCantidad(s.getCantidad());
+        r.setStockMinimo(s.getStockMinimo());
+        r.setUbicacionAlmacen(s.getUbicacionAlmacen());
+        r.setFechaActualizacion(s.getFechaActualizacion());
+        return r;
     }
 }

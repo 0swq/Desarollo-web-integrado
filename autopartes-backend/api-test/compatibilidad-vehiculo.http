@@ -1,0 +1,38 @@
+@baseUrl = http://localhost:8080/api
+@compatibilidadId = PEGAR_UUID_DE_LA_COMPATIBILIDAD
+@productoId = PEGAR_UUID_DEL_PRODUCTO
+@modeloId = PEGAR_UUID_DEL_MODELO
+
+###
+GET {{baseUrl}}/api/compatibilidades-vehiculos
+
+###
+GET {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}
+
+###
+GET {{baseUrl}}/api/compatibilidades-vehiculos/producto/{{productoId}}
+
+###
+GET {{baseUrl}}/api/compatibilidades-vehiculos/modelo/{{modeloId}}
+
+###
+GET {{baseUrl}}/api/compatibilidades-vehiculos/compatibles?modeloId={{modeloId}}&anio=2020
+
+###
+POST {{baseUrl}}/api/compatibilidades-vehiculos
+Content-Type: application/json
+
+{
+  "productoId": "{{productoId}}",
+  "modeloVehiculoId": "{{modeloId}}",
+  "anioInicio": 2015,
+  "anioFin": 2022,
+  "motor": "1.8L",
+  "notas": "Solo versión full"
+}
+
+###
+DELETE {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}
+
+###
+DELETE {{baseUrl}}/api/compatibilidades-vehiculos/producto/{{productoId}}

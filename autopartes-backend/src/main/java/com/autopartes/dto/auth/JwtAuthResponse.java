@@ -1,17 +1,24 @@
 package com.autopartes.dto.auth;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import com.autopartes.model.Rol;
+import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class JwtAuthResponse {
+
     private String token;
     @Builder.Default
     private String tokenType = "Bearer";
-    private UserResponse user;
+    private UUID id;
+    private String correo;
+    private String nombre;
+    private String apellido;
+    private Rol rol;
 }

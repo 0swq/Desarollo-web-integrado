@@ -3,36 +3,59 @@ package com.autopartes.controller;
 import com.autopartes.dto.ApiResponse;
 import com.autopartes.dto.auth.JwtAuthResponse;
 import com.autopartes.dto.auth.LoginRequest;
-import com.autopartes.dto.auth.RegisterRequest;
-import com.autopartes.service.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.autopartes.dto.auth.UsuarioRequest;
+import com.autopartes.dto.auth.UsuarioResponse;
+import com.autopartes.model.Rol;
+import com.autopartes.model.Usuario;
+import com.autopartes.service.UsuarioService;
+import com.autopartes.util.Auth;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
-@RequiredArgsConstructor
-@Tag(name = "Autenticación", description = "Endpoints de registro e inicio de sesión con JWT")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final UsuarioService usuarioService;
+
+    public AuthController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping("/login")
-    @Operation(summary = "Iniciar sesión y obtener token JWT")
-    public ResponseEntity<ApiResponse<JwtAuthResponse>> login(@Valid @RequestBody LoginRequest loginRequest) {
-        JwtAuthResponse response = authService.login(loginRequest);
-        return ResponseEntity.ok(ApiResponse.ok("Inicio de sesión exitoso", response));
+    public ResponseEntity<ApiResponse<JwtAuthResponse>> login(@Valid @RequestBody LoginRequest request) {
+        var usuarioOpt = usuarioService.validarCredenciales(request.getCorreo(), request.getContrasena());
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(401).body(ApiResponse.error("Credenciales inválidas"));
+        }
+        Usuario usuario = usuarioOpt.get();
+        String token = Auth.crearToken(usuario.getId(), usuario.getRol());
+        JwtAuthResponse response = JwtAuthResponse.builder()
+                .token(token)
+                .id(usuario.getId())
+                .correo(usuario.getCorreo())
+                .nombre(usuario.getNombre())
+                .apellido(usuario.getApellido())
+                .rol(usuario.getRol())
+                .build();
+        return ResponseEntity.ok(ApiResponse.ok("Login exitoso", response));
     }
 
     @PostMapping("/register")
-    @Operation(summary = "Registrar un nuevo usuario cliente")
-    public ResponseEntity<ApiResponse<JwtAuthResponse>> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        JwtAuthResponse response = authService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok("Usuario registrado exitosamente", response));
+    public ResponseEntity<ApiResponse<UsuarioResponse>> register(@Valid @RequestBody UsuarioRequest request) {
+        Usuario usuario = usuarioService.registrar(request);
+        UsuarioResponse response = new UsuarioResponse();
+        response.setId(usuario.getId());
+        response.setCorreo(usuario.getCorreo());
+        response.setNombre(usuario.getNombre());
+        response.setApellido(usuario.getApellido());
+        response.setTelefono(usuario.getTelefono());
+        response.setDireccion(usuario.getDireccion());
+        response.setRol(usuario.getRol());
+        response.setActivo(usuario.getActivo());
+        response.setFechaCreacion(usuario.getFechaCreacion());
+        response.setFechaActualizacion(usuario.getFechaActualizacion());
+        return ResponseEntity.status(201).body(ApiResponse.ok("Usuario registrado exitosamente", response));
     }
 }

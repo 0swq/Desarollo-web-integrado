@@ -1,0 +1,60 @@
+@baseUrl = http://localhost:8080/api
+@productoId = PEGAR_UUID_DEL_PRODUCTO
+@categoriaId = PEGAR_UUID_DE_LA_CATEGORIA
+@proveedorId = PEGAR_UUID_DEL_PROVEEDOR
+
+###
+GET {{baseUrl}}/api/productos
+
+###
+GET {{baseUrl}}/api/productos/{{productoId}}
+
+###
+GET {{baseUrl}}/api/productos/sku/PAST-TOY-001
+
+###
+GET {{baseUrl}}/api/productos/buscar?q=pastilla
+
+###
+GET {{baseUrl}}/api/productos/proveedor/{{proveedorId}}
+
+###
+POST {{baseUrl}}/api/productos
+Content-Type: application/json
+
+{
+  "sku": "PAST-TOY-001",
+  "nombre": "Pastilla de freno Toyota",
+  "descripcion": "Pastilla delantera cerámica",
+  "precio": 120.50,
+  "precioPromocional": 99.90,
+  "imagenUrl": null,
+  "categoriaId": "{{categoriaId}}",
+  "proveedorId": "{{proveedorId}}",
+  "stockInicial": 50,
+  "stockMinimo": 5,
+  "ubicacionAlmacen": "A-01",
+  "activo": true
+}
+
+###
+PUT {{baseUrl}}/api/productos/{{productoId}}
+Content-Type: application/json
+
+{
+  "sku": "PAST-TOY-001",
+  "nombre": "Pastilla de freno Toyota",
+  "descripcion": "Pastilla delantera cerámica premium",
+  "precio": 130.00,
+  "precioPromocional": null,
+  "imagenUrl": null,
+  "categoriaId": "{{categoriaId}}",
+  "proveedorId": "{{proveedorId}}",
+  "activo": true
+}
+
+###
+PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
+
+###
+DELETE {{baseUrl}}/api/productos/{{productoId}}

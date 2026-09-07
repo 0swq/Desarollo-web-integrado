@@ -1,0 +1,27 @@
+@baseUrl = http://localhost:8080/api
+@carritoId = PEGAR_UUID_DEL_CARRITO
+@itemId = PEGAR_UUID_DEL_ITEM
+@productoId = PEGAR_UUID_DEL_PRODUCTO
+
+###
+GET {{baseUrl}}/api/carritos/{{carritoId}}/items
+
+###
+POST {{baseUrl}}/api/carritos/{{carritoId}}/items
+Content-Type: application/json
+
+{
+  "productoId": "{{productoId}}",
+  "cantidad": 2
+}
+
+###
+PUT {{baseUrl}}/api/carritos/{{carritoId}}/items/{{itemId}}
+Content-Type: application/json
+
+{
+  "cantidad": 5
+}
+
+###
+DELETE {{baseUrl}}/api/carritos/{{carritoId}}/items/{{itemId}}

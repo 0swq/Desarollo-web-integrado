@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:8080/api
+@modeloId = PEGAR_UUID_DEL_MODELO
+@marcaId = PEGAR_UUID_DE_LA_MARCA
+
+###
+GET {{baseUrl}}/api/modelos-vehiculos
+
+###
+GET {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}
+
+###
+GET {{baseUrl}}/api/modelos-vehiculos/marca/{{marcaId}}
+
+###
+POST {{baseUrl}}/api/modelos-vehiculos
+Content-Type: application/json
+
+{
+  "nombre": "Corolla",
+  "marcaId": "{{marcaId}}",
+  "tipoVehiculo": "Sedan",
+  "activo": true
+}
+
+###
+PUT {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}
+Content-Type: application/json
+
+{
+  "nombre": "Corolla",
+  "marcaId": "{{marcaId}}",
+  "tipoVehiculo": "Sedan",
+  "activo": true
+}
+
+###
+PATCH {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}/toggle-activo
+
+###
+DELETE {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}

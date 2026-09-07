@@ -6,19 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class StockResponse {
-    private Long id;
-    private Long productId;
-    private String productSku;
-    private String productNombre;
+
+    private UUID id;
+    private UUID productoId;
     private Integer cantidad;
     private Integer stockMinimo;
-    private Boolean bajoStock;
     private String ubicacionAlmacen;
-    private LocalDateTime updatedAt;
+    private LocalDateTime fechaActualizacion;
 }

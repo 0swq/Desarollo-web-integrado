@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:8080/api
+@productoId = PEGAR_UUID_DEL_PRODUCTO
+@categoriaId = PEGAR_UUID_DE_LA_CATEGORIA
+
+###
+POST {{baseUrl}}/api/producto-categorias
+Content-Type: application/json
+
+{
+  "productoId": "{{productoId}}",
+  "categoriaId": "{{categoriaId}}"
+}
+
+###
+GET {{baseUrl}}/api/producto-categorias/producto/{{productoId}}
+
+###
+GET {{baseUrl}}/api/producto-categorias/categoria/{{categoriaId}}
+
+###
+DELETE {{baseUrl}}/api/producto-categorias/producto/{{productoId}}/categoria/{{categoriaId}}
