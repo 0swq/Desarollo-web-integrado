@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:8080/api
-@compatibilidadId = PEGAR_UUID_DE_LA_COMPATIBILIDAD
-@productoId = PEGAR_UUID_DEL_PRODUCTO
-@modeloId = PEGAR_UUID_DEL_MODELO
+@compatibilidadId =
+@productoId =
+@modeloId =
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos

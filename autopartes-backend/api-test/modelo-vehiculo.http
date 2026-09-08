@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8080/api
-@modeloId = PEGAR_UUID_DEL_MODELO
-@marcaId = PEGAR_UUID_DE_LA_MARCA
+@modeloId =
+@marcaId =
 
 ###
 GET {{baseUrl}}/api/modelos-vehiculos

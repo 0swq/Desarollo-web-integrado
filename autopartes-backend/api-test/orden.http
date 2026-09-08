@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:8080/api
-@token = PEGAR_TOKEN_DEL_LOGIN
-@ordenId = PEGAR_UUID_DE_LA_ORDEN
-@usuarioId = PEGAR_UUID_DEL_USUARIO
+@token =
+@ordenId =
+@usuarioId =
 
 ###
 GET {{baseUrl}}/api/ordenes

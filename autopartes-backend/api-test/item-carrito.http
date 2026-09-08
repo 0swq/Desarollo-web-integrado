@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:8080/api
-@carritoId = PEGAR_UUID_DEL_CARRITO
-@itemId = PEGAR_UUID_DEL_ITEM
-@productoId = PEGAR_UUID_DEL_PRODUCTO
+@carritoId =
+@itemId =
+@productoId =
 
 ###
 GET {{baseUrl}}/api/carritos/{{carritoId}}/items

@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:8080/api
-@proveedorId = PEGAR_UUID_DEL_PROVEEDOR
+@proveedorId =
 
 ###
 GET {{baseUrl}}/api/proveedores

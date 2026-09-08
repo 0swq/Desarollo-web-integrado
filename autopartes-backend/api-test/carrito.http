@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8080/api
-@token = PEGAR_TOKEN_DEL_LOGIN
-@usuarioId = PEGAR_UUID_DEL_USUARIO
+@token =
+@usuarioId =
 
 ###
 GET {{baseUrl}}/api/carritos/usuario/{{usuarioId}}

@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8080/api
-@productoId = PEGAR_UUID_DEL_PRODUCTO
-@categoriaId = PEGAR_UUID_DE_LA_CATEGORIA
+@productoId =
+@categoriaId =
 
 ###
 POST {{baseUrl}}/api/producto-categorias

@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8080/api
-@pagoId = PEGAR_UUID_DEL_PAGO
-@ordenId = PEGAR_UUID_DE_LA_ORDEN
+@pagoId =
+@ordenId =
 
 ###
 GET {{baseUrl}}/api/pagos

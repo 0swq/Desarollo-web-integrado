@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:8080/api
-@categoriaId = PEGAR_UUID_DE_LA_CATEGORIA
+@categoriaId =
 
 ###
 GET {{baseUrl}}/api/categorias

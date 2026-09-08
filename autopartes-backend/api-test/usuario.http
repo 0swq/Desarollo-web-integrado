@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:8080/api
-@usuarioId = 1abe5f26-cdcd-4c6c-aa24-ba1e75dedb6f
+@usuarioId = eb571f4a-2727-40e7-a95c-6c3bbd1b2043
 
 ###
 GET {{baseUrl}}/api/usuarios
