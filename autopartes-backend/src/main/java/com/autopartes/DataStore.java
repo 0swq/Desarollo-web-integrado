@@ -1,9 +1,11 @@
 package com.autopartes;
 
 import com.autopartes.model.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
+@Getter
 public class DataStore {
 
     private static final DataStore INSTANCIA = new DataStore();
@@ -95,67 +97,4 @@ public class DataStore {
         this.pagos = pagos;
     }
 
-    public ArrayList<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public ArrayList<Categoria> getCategorias() {
-        return categorias;
-    }
-
-    public ArrayList<ProductoCategoria> getProductoCategorias() {
-        return productoCategorias;
-    }
-
-    public ArrayList<Proveedor> getProveedores() {
-        return proveedores;
-    }
-
-    public ArrayList<Producto> getProductos() {
-        return productos;
-    }
-
-    public ArrayList<MarcaVehiculo> getMarcasVehiculos() {
-        return marcasVehiculos;
-    }
-
-    public ArrayList<ModeloVehiculo> getModelosVehiculos() {
-        return modelosVehiculos;
-    }
-
-    public ArrayList<CompatibilidadVehiculo> getCompatibilidadesVehiculos() {
-        return compatibilidadesVehiculos;
-    }
-
-    public ArrayList<Stock> getStocks() {
-        return stocks;
-    }
-
-    public ArrayList<MovimientoStock> getMovimientosStock() {
-        return movimientosStock;
-    }
-
-    public ArrayList<Carrito> getCarritos() {
-        return carritos;
-    }
-
-    public ArrayList<ItemCarrito> getItemsCarrito() {
-        return itemsCarrito;
-    }
-
-    public ArrayList<Orden> getOrdenes() {
-        return ordenes;
-    }
-
-    public ArrayList<ItemOrden> getItemsOrden() {
-        return itemsOrden;
-    }
-
-    public ArrayList<Parametro> getParametros() {
-        return parametros;
-    }
-
-    public ArrayList<Pago> getPagos() {
-        return pagos;
-    }
 }
