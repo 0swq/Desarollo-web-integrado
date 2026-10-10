@@ -1,66 +1,58 @@
 package com.autopartes.repository;
 
 import com.autopartes.model.EstadoPago;
-import com.autopartes.DataStore;
 import com.autopartes.model.Pago;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class PagoRepository {
+public interface PagoRepository extends JpaRepository<Pago, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<Pago> findFirstByOrden_Id(UUID ordenId);
 
-    public Optional<Pago> buscarPorId(UUID id) {
-        return data.getPagos().stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+    Optional<Pago> findByMercadoPagoPagoId(String mercadoPagoPagoId);
+
+    Optional<Pago> findByMercadoPagoPreferenciaId(String mercadoPagoPreferenciaId);
+
+    List<Pago> findByEstado(EstadoPago estado);
+
+    default Optional<Pago> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<Pago> buscarPorOrden(UUID ordenId) {
-        return data.getPagos().stream()
-                .filter(p -> p.getOrdenId().equals(ordenId))
-                .findFirst();
+    default Optional<Pago> buscarPorOrden(UUID ordenId) {
+        return findFirstByOrden_Id(ordenId);
     }
 
-    public Optional<Pago> buscarPorMercadoPagoPagoId(String mercadoPagoPagoId) {
-        return data.getPagos().stream()
-                .filter(p -> mercadoPagoPagoId.equals(p.getMercadoPagoPagoId()))
-                .findFirst();
+    default Optional<Pago> buscarPorMercadoPagoPagoId(String mercadoPagoPagoId) {
+        return findByMercadoPagoPagoId(mercadoPagoPagoId);
     }
 
-    public Optional<Pago> buscarPorMercadoPagoPreferenciaId(String mercadoPagoPreferenciaId) {
-        return data.getPagos().stream()
-                .filter(p -> mercadoPagoPreferenciaId.equals(p.getMercadoPagoPreferenciaId()))
-                .findFirst();
+    default Optional<Pago> buscarPorMercadoPagoPreferenciaId(String mercadoPagoPreferenciaId) {
+        return findByMercadoPagoPreferenciaId(mercadoPagoPreferenciaId);
     }
 
-    public List<Pago> buscarPorEstado(EstadoPago estado) {
-        return data.getPagos().stream()
-                .filter(p -> p.getEstado() == estado)
-                .toList();
+    default List<Pago> buscarPorEstado(EstadoPago estado) {
+        return findByEstado(estado);
     }
 
-    public List<Pago> buscarTodos() {
-        return new ArrayList<>(data.getPagos());
+    default List<Pago> buscarTodos() {
+        return findAll();
     }
 
-    public Pago guardar(Pago pago) {
-        data.getPagos().removeIf(p -> p.getId().equals(pago.getId()));
-        data.getPagos().add(pago);
-        return pago;
+    default Pago guardar(Pago pago) {
+        return save(pago);
     }
 
-    public void eliminar(UUID id) {
-        data.getPagos().removeIf(p -> p.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public long contar() {
-        return data.getPagos().size();
+    default long contar() {
+        return count();
     }
 }

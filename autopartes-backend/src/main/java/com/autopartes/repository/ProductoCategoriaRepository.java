@@ -1,66 +1,84 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.ProductoCategoria;
+import com.autopartes.model.ProductoCategoriaId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class ProductoCategoriaRepository {
+public interface ProductoCategoriaRepository extends JpaRepository<ProductoCategoria, ProductoCategoriaId> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    @Query("SELECT pc FROM ProductoCategoria pc WHERE pc.id.productoId = :productoId AND pc.id.categoriaId = :categoriaId")
+    Optional<ProductoCategoria> findByProductoIdAndCategoriaId(@Param("productoId") UUID productoId,
+                                                               @Param("categoriaId") UUID categoriaId);
 
-    public Optional<ProductoCategoria> buscarPorIds(UUID productoId, UUID categoriaId) {
-        return data.getProductoCategorias().stream()
-                .filter(pc -> pc.getProductoId().equals(productoId) && pc.getCategoriaId().equals(categoriaId))
-                .findFirst();
+    @Query("SELECT pc FROM ProductoCategoria pc WHERE pc.id.productoId = :productoId")
+    List<ProductoCategoria> findByProductoId(@Param("productoId") UUID productoId);
+
+    @Query("SELECT pc FROM ProductoCategoria pc WHERE pc.id.categoriaId = :categoriaId")
+    List<ProductoCategoria> findByCategoriaId(@Param("categoriaId") UUID categoriaId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ProductoCategoria pc WHERE pc.id.productoId = :productoId AND pc.id.categoriaId = :categoriaId")
+    void deleteByProductoIdAndCategoriaId(@Param("productoId") UUID productoId,
+                                         @Param("categoriaId") UUID categoriaId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ProductoCategoria pc WHERE pc.id.productoId = :productoId")
+    void deleteByProductoId(@Param("productoId") UUID productoId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ProductoCategoria pc WHERE pc.id.categoriaId = :categoriaId")
+    void deleteByCategoriaId(@Param("categoriaId") UUID categoriaId);
+
+    default Optional<ProductoCategoria> buscarPorIds(UUID productoId, UUID categoriaId) {
+        return findByProductoIdAndCategoriaId(productoId, categoriaId);
     }
 
-    public List<UUID> buscarCategoriasPorProducto(UUID productoId) {
-        return data.getProductoCategorias().stream()
-                .filter(pc -> pc.getProductoId().equals(productoId))
+    default List<UUID> buscarCategoriasPorProducto(UUID productoId) {
+        return findByProductoId(productoId).stream()
                 .map(ProductoCategoria::getCategoriaId)
                 .toList();
     }
 
-    public List<UUID> buscarProductosPorCategoria(UUID categoriaId) {
-        return data.getProductoCategorias().stream()
-                .filter(pc -> pc.getCategoriaId().equals(categoriaId))
+    default List<UUID> buscarProductosPorCategoria(UUID categoriaId) {
+        return findByCategoriaId(categoriaId).stream()
                 .map(ProductoCategoria::getProductoId)
                 .toList();
     }
 
-    public List<ProductoCategoria> buscarTodos() {
-        return new ArrayList<>(data.getProductoCategorias());
+    default List<ProductoCategoria> buscarTodos() {
+        return findAll();
     }
 
-    public ProductoCategoria guardar(ProductoCategoria productoCategoria) {
-        data.getProductoCategorias().removeIf(pc ->
-                pc.getProductoId().equals(productoCategoria.getProductoId()) &&
-                pc.getCategoriaId().equals(productoCategoria.getCategoriaId()));
-        data.getProductoCategorias().add(productoCategoria);
-        return productoCategoria;
+    default ProductoCategoria guardar(ProductoCategoria productoCategoria) {
+        return save(productoCategoria);
     }
 
-    public void eliminar(UUID productoId, UUID categoriaId) {
-        data.getProductoCategorias().removeIf(pc ->
-                pc.getProductoId().equals(productoId) && pc.getCategoriaId().equals(categoriaId));
+    default void eliminar(UUID productoId, UUID categoriaId) {
+        deleteByProductoIdAndCategoriaId(productoId, categoriaId);
     }
 
-    public void eliminarPorProducto(UUID productoId) {
-        data.getProductoCategorias().removeIf(pc -> pc.getProductoId().equals(productoId));
+    default void eliminarPorProducto(UUID productoId) {
+        deleteByProductoId(productoId);
     }
 
-    public void eliminarPorCategoria(UUID categoriaId) {
-        data.getProductoCategorias().removeIf(pc -> pc.getCategoriaId().equals(categoriaId));
+    default void eliminarPorCategoria(UUID categoriaId) {
+        deleteByCategoriaId(categoriaId);
     }
 
-    public long contar() {
-        return data.getProductoCategorias().size();
+    default long contar() {
+        return count();
     }
 }

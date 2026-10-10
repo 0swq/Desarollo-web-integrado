@@ -1,57 +1,53 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.ItemCarrito;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class ItemCarritoRepository {
+public interface ItemCarritoRepository extends JpaRepository<ItemCarrito, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    List<ItemCarrito> findByCarrito_Id(UUID carritoId);
 
-    public Optional<ItemCarrito> buscarPorId(UUID id) {
-        return data.getItemsCarrito().stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst();
+    Optional<ItemCarrito> findByCarrito_IdAndProducto_Id(UUID carritoId, UUID productoId);
+
+    @Transactional
+    void deleteByCarrito_Id(UUID carritoId);
+
+    default Optional<ItemCarrito> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public List<ItemCarrito> buscarPorCarrito(UUID carritoId) {
-        return data.getItemsCarrito().stream()
-                .filter(i -> i.getCarritoId().equals(carritoId))
-                .toList();
+    default List<ItemCarrito> buscarPorCarrito(UUID carritoId) {
+        return findByCarrito_Id(carritoId);
     }
 
-    public Optional<ItemCarrito> buscarPorCarritoYProducto(UUID carritoId, UUID productoId) {
-        return data.getItemsCarrito().stream()
-                .filter(i -> i.getCarritoId().equals(carritoId) && i.getProductoId().equals(productoId))
-                .findFirst();
+    default Optional<ItemCarrito> buscarPorCarritoYProducto(UUID carritoId, UUID productoId) {
+        return findByCarrito_IdAndProducto_Id(carritoId, productoId);
     }
 
-    public List<ItemCarrito> buscarTodos() {
-        return new ArrayList<>(data.getItemsCarrito());
+    default List<ItemCarrito> buscarTodos() {
+        return findAll();
     }
 
-    public ItemCarrito guardar(ItemCarrito item) {
-        data.getItemsCarrito().removeIf(i -> i.getId().equals(item.getId()));
-        data.getItemsCarrito().add(item);
-        return item;
+    default ItemCarrito guardar(ItemCarrito item) {
+        return save(item);
     }
 
-    public void eliminar(UUID id) {
-        data.getItemsCarrito().removeIf(i -> i.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public void eliminarPorCarrito(UUID carritoId) {
-        data.getItemsCarrito().removeIf(i -> i.getCarritoId().equals(carritoId));
+    default void eliminarPorCarrito(UUID carritoId) {
+        deleteByCarrito_Id(carritoId);
     }
 
-    public long contar() {
-        return data.getItemsCarrito().size();
+    default long contar() {
+        return count();
     }
 }

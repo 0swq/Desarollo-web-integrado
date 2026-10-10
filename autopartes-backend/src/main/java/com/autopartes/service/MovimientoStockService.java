@@ -2,7 +2,9 @@ package com.autopartes.service;
 
 import com.autopartes.dto.movimientostock.MovimientoStockRequest;
 import com.autopartes.model.MovimientoStock;
+import com.autopartes.model.Producto;
 import com.autopartes.model.TipoMovimiento;
+import com.autopartes.model.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +16,15 @@ import org.springframework.stereotype.Service;
 public class MovimientoStockService {
 
     private final com.autopartes.repository.MovimientoStockRepository repository;
+    private final com.autopartes.repository.ProductoRepository productoRepository;
+    private final com.autopartes.repository.UsuarioRepository usuarioRepository;
 
-    public MovimientoStockService(com.autopartes.repository.MovimientoStockRepository repository) {
+    public MovimientoStockService(com.autopartes.repository.MovimientoStockRepository repository,
+                                  com.autopartes.repository.ProductoRepository productoRepository,
+                                  com.autopartes.repository.UsuarioRepository usuarioRepository) {
         this.repository = repository;
+        this.productoRepository = productoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public Optional<MovimientoStock> buscarPorId(UUID id) {
@@ -44,16 +52,25 @@ public class MovimientoStockService {
     }
 
     public MovimientoStock crear(MovimientoStockRequest request) {
+        Producto producto = productoRepository.buscarPorId(request.getProductoId())
+                .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Producto no encontrado"));
+
+        Usuario usuario = null;
+        if (request.getUsuarioId() != null) {
+            usuario = usuarioRepository.buscarPorId(request.getUsuarioId())
+                    .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Usuario no encontrado"));
+        }
+
         MovimientoStock movimiento = new MovimientoStock();
         movimiento.setId(UUID.randomUUID());
-        movimiento.setProductoId(request.getProductoId());
+        movimiento.setProducto(producto);
         movimiento.setTipo(request.getTipo());
         movimiento.setCantidad(request.getCantidad());
         movimiento.setStockAnterior(request.getStockAnterior());
         movimiento.setStockNuevo(request.getStockNuevo());
         movimiento.setMotivo(request.getMotivo());
         movimiento.setReferencia(request.getReferencia());
-        movimiento.setUsuarioId(request.getUsuarioId());
+        movimiento.setUsuario(usuario);
         movimiento.setFecha(java.time.LocalDateTime.now());
 
         return repository.guardar(movimiento);

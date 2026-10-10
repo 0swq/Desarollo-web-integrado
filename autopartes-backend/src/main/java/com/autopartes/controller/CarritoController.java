@@ -30,8 +30,11 @@ public class CarritoController {
 
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<ApiResponse<CarritoResponse>> obtener(@PathVariable UUID usuarioId,
-                                                                 @RequestHeader("Authorization") String authHeader) {
-        UUID tokenUsuarioId = com.autopartes.util.Auth.extraerId(authHeader.replace("Bearer ", ""));
+                                                                 @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        UUID tokenUsuarioId = com.autopartes.util.Auth.usuarioDeCabecera(authHeader);
+        if (tokenUsuarioId == null) {
+            return ResponseEntity.status(401).body(ApiResponse.error("Token ausente o invalido"));
+        }
         if (!tokenUsuarioId.equals(usuarioId)) {
             return ResponseEntity.status(403).body(ApiResponse.error("No autorizado"));
         }
@@ -41,8 +44,11 @@ public class CarritoController {
 
     @DeleteMapping("/usuario/{usuarioId}")
     public ResponseEntity<ApiResponse<Void>> vaciar(@PathVariable UUID usuarioId,
-                                                     @RequestHeader("Authorization") String authHeader) {
-        UUID tokenUsuarioId = com.autopartes.util.Auth.extraerId(authHeader.replace("Bearer ", ""));
+                                                     @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        UUID tokenUsuarioId = com.autopartes.util.Auth.usuarioDeCabecera(authHeader);
+        if (tokenUsuarioId == null) {
+            return ResponseEntity.status(401).build();
+        }
         if (!tokenUsuarioId.equals(usuarioId)) {
             return ResponseEntity.status(403).body(ApiResponse.error("No autorizado"));
         }

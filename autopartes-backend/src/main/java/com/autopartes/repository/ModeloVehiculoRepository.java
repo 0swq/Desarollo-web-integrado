@@ -1,68 +1,65 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.ModeloVehiculo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class ModeloVehiculoRepository {
+public interface ModeloVehiculoRepository extends JpaRepository<ModeloVehiculo, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    List<ModeloVehiculo> findByMarca_Id(UUID marcaId);
 
-    public Optional<ModeloVehiculo> buscarPorId(UUID id) {
-        return data.getModelosVehiculos().stream()
-                .filter(m -> m.getId().equals(id))
-                .findFirst();
+    Optional<ModeloVehiculo> findByMarca_IdAndNombreIgnoreCase(UUID marcaId, String nombre);
+
+    boolean existsByMarca_IdAndNombreIgnoreCase(UUID marcaId, String nombre);
+
+    List<ModeloVehiculo> findByActivoTrue();
+
+    @Transactional
+    void deleteByMarca_Id(UUID marcaId);
+
+    default Optional<ModeloVehiculo> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public List<ModeloVehiculo> buscarPorMarca(UUID marcaId) {
-        return data.getModelosVehiculos().stream()
-                .filter(m -> m.getMarcaId().equals(marcaId))
-                .toList();
+    default List<ModeloVehiculo> buscarPorMarca(UUID marcaId) {
+        return findByMarca_Id(marcaId);
     }
 
-    public Optional<ModeloVehiculo> buscarPorMarcaYNombre(UUID marcaId, String nombre) {
-        return data.getModelosVehiculos().stream()
-                .filter(m -> m.getMarcaId().equals(marcaId) && m.getNombre().equalsIgnoreCase(nombre))
-                .findFirst();
+    default Optional<ModeloVehiculo> buscarPorMarcaYNombre(UUID marcaId, String nombre) {
+        return findByMarca_IdAndNombreIgnoreCase(marcaId, nombre);
     }
 
-    public boolean existePorMarcaYNombre(UUID marcaId, String nombre) {
-        return data.getModelosVehiculos().stream()
-                .anyMatch(m -> m.getMarcaId().equals(marcaId) && m.getNombre().equalsIgnoreCase(nombre));
+    default boolean existePorMarcaYNombre(UUID marcaId, String nombre) {
+        return existsByMarca_IdAndNombreIgnoreCase(marcaId, nombre);
     }
 
-    public List<ModeloVehiculo> buscarActivos() {
-        return data.getModelosVehiculos().stream()
-                .filter(m -> Boolean.TRUE.equals(m.getActivo()))
-                .toList();
+    default List<ModeloVehiculo> buscarActivos() {
+        return findByActivoTrue();
     }
 
-    public List<ModeloVehiculo> buscarTodos() {
-        return new ArrayList<>(data.getModelosVehiculos());
+    default List<ModeloVehiculo> buscarTodos() {
+        return findAll();
     }
 
-    public ModeloVehiculo guardar(ModeloVehiculo modelo) {
-        data.getModelosVehiculos().removeIf(m -> m.getId().equals(modelo.getId()));
-        data.getModelosVehiculos().add(modelo);
-        return modelo;
+    default ModeloVehiculo guardar(ModeloVehiculo modelo) {
+        return save(modelo);
     }
 
-    public void eliminar(UUID id) {
-        data.getModelosVehiculos().removeIf(m -> m.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public void eliminarPorMarca(UUID marcaId) {
-        data.getModelosVehiculos().removeIf(m -> m.getMarcaId().equals(marcaId));
+    default void eliminarPorMarca(UUID marcaId) {
+        deleteByMarca_Id(marcaId);
     }
 
-    public long contar() {
-        return data.getModelosVehiculos().size();
+    default long contar() {
+        return count();
     }
 }

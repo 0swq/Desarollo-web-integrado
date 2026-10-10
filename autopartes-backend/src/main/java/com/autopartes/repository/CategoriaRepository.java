@@ -1,58 +1,51 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class CategoriaRepository {
+public interface CategoriaRepository extends JpaRepository<Categoria, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<Categoria> findByNombreIgnoreCase(String nombre);
 
-    public Optional<Categoria> buscarPorId(UUID id) {
-        return data.getCategorias().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst();
+    boolean existsByNombreIgnoreCase(String nombre);
+
+    List<Categoria> findByActivoTrue();
+
+    default Optional<Categoria> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<Categoria> buscarPorNombre(String nombre) {
-        return data.getCategorias().stream()
-                .filter(c -> c.getNombre().equalsIgnoreCase(nombre))
-                .findFirst();
+    default Optional<Categoria> buscarPorNombre(String nombre) {
+        return findByNombreIgnoreCase(nombre);
     }
 
-    public boolean existePorNombre(String nombre) {
-        return data.getCategorias().stream()
-                .anyMatch(c -> c.getNombre().equalsIgnoreCase(nombre));
+    default boolean existePorNombre(String nombre) {
+        return existsByNombreIgnoreCase(nombre);
     }
 
-    public List<Categoria> buscarActivas() {
-        return data.getCategorias().stream()
-                .filter(c -> Boolean.TRUE.equals(c.getActivo()))
-                .toList();
+    default List<Categoria> buscarActivas() {
+        return findByActivoTrue();
     }
 
-    public List<Categoria> buscarTodos() {
-        return new ArrayList<>(data.getCategorias());
+    default List<Categoria> buscarTodos() {
+        return findAll();
     }
 
-    public Categoria guardar(Categoria categoria) {
-        data.getCategorias().removeIf(c -> c.getId().equals(categoria.getId()));
-        data.getCategorias().add(categoria);
-        return categoria;
+    default Categoria guardar(Categoria categoria) {
+        return save(categoria);
     }
 
-    public void eliminar(UUID id) {
-        data.getCategorias().removeIf(c -> c.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public long contar() {
-        return data.getCategorias().size();
+    default long contar() {
+        return count();
     }
 }

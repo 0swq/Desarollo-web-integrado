@@ -1,56 +1,53 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.Parametro;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class ParametroRepository {
+public interface ParametroRepository extends JpaRepository<Parametro, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<Parametro> findByClaveIgnoreCase(String clave);
 
-    public Optional<Parametro> buscarPorId(UUID id) {
-        return data.getParametros().stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+    boolean existsByClaveIgnoreCase(String clave);
+
+    @Transactional
+    void deleteByClaveIgnoreCase(String clave);
+
+    default Optional<Parametro> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<Parametro> buscarPorClave(String clave) {
-        return data.getParametros().stream()
-                .filter(p -> p.getClave().equalsIgnoreCase(clave))
-                .findFirst();
+    default Optional<Parametro> buscarPorClave(String clave) {
+        return findByClaveIgnoreCase(clave);
     }
 
-    public boolean existePorClave(String clave) {
-        return data.getParametros().stream()
-                .anyMatch(p -> p.getClave().equalsIgnoreCase(clave));
+    default boolean existePorClave(String clave) {
+        return existsByClaveIgnoreCase(clave);
     }
 
-    public List<Parametro> buscarTodos() {
-        return new ArrayList<>(data.getParametros());
+    default List<Parametro> buscarTodos() {
+        return findAll();
     }
 
-    public Parametro guardar(Parametro parametro) {
-        data.getParametros().removeIf(p -> p.getId().equals(parametro.getId()));
-        data.getParametros().add(parametro);
-        return parametro;
+    default Parametro guardar(Parametro parametro) {
+        return save(parametro);
     }
 
-    public void eliminar(UUID id) {
-        data.getParametros().removeIf(p -> p.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public void eliminarPorClave(String clave) {
-        data.getParametros().removeIf(p -> p.getClave().equalsIgnoreCase(clave));
+    default void eliminarPorClave(String clave) {
+        deleteByClaveIgnoreCase(clave);
     }
 
-    public long contar() {
-        return data.getParametros().size();
+    default long contar() {
+        return count();
     }
 }

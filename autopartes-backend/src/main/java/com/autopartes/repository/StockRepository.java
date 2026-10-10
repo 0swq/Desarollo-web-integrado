@@ -1,57 +1,53 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.Stock;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class StockRepository {
+public interface StockRepository extends JpaRepository<Stock, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<Stock> findByProducto_Id(UUID productoId);
 
-    public Optional<Stock> buscarPorId(UUID id) {
-        return data.getStocks().stream()
-                .filter(s -> s.getId().equals(id))
-                .findFirst();
+    @Transactional
+    void deleteByProducto_Id(UUID productoId);
+
+    default Optional<Stock> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<Stock> buscarPorProducto(UUID productoId) {
-        return data.getStocks().stream()
-                .filter(s -> s.getProductoId().equals(productoId))
-                .findFirst();
+    default Optional<Stock> buscarPorProducto(UUID productoId) {
+        return findByProducto_Id(productoId);
     }
 
-    public List<Stock> buscarBajoStock() {
-        return data.getStocks().stream()
+    default List<Stock> buscarBajoStock() {
+        return findAll().stream()
                 .filter(s -> s.getCantidad() <= s.getStockMinimo())
                 .toList();
     }
 
-    public List<Stock> buscarTodos() {
-        return new ArrayList<>(data.getStocks());
+    default List<Stock> buscarTodos() {
+        return findAll();
     }
 
-    public Stock guardar(Stock stock) {
-        data.getStocks().removeIf(s -> s.getId().equals(stock.getId()));
-        data.getStocks().add(stock);
-        return stock;
+    default Stock guardar(Stock stock) {
+        return save(stock);
     }
 
-    public void eliminar(UUID id) {
-        data.getStocks().removeIf(s -> s.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public void eliminarPorProducto(UUID productoId) {
-        data.getStocks().removeIf(s -> s.getProductoId().equals(productoId));
+    default void eliminarPorProducto(UUID productoId) {
+        deleteByProducto_Id(productoId);
     }
 
-    public long contar() {
-        return data.getStocks().size();
+    default long contar() {
+        return count();
     }
 }

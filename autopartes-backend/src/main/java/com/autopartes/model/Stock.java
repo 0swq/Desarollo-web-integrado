@@ -1,22 +1,40 @@
 package com.autopartes.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity
+@Table(name = "stock")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Stock {
-    private java.util.UUID id;
-    private java.util.UUID productoId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "producto_id", nullable = false, unique = true)
+    private Producto producto;
+
+    @Column(nullable = false)
     private Integer cantidad;
+
+    @Column(name = "stock_minimo")
     private Integer stockMinimo;
+
+    @Column(name = "ubicacion_almacen", length = 100)
     private String ubicacionAlmacen;
+
+    @UpdateTimestamp
+    @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
+    public UUID getProductoId() {
+        return producto != null ? producto.getId() : null;
+    }
 }

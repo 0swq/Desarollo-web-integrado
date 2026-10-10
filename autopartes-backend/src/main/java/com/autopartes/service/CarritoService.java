@@ -31,12 +31,12 @@ public class CarritoService {
             return existente.get();
         }
 
-        usuarioRepository.buscarPorId(usuarioId)
+        com.autopartes.model.Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Usuario no encontrado"));
 
         Carrito carrito = new Carrito();
         carrito.setId(UUID.randomUUID());
-        carrito.setUsuarioId(usuarioId);
+        carrito.setUsuario(usuario);
         carrito.setFechaActualizacion(java.time.LocalDateTime.now());
 
         return carritoRepository.guardar(carrito);

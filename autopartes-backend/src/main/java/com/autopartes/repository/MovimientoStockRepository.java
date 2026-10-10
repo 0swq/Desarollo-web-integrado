@@ -1,66 +1,58 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.MovimientoStock;
 import com.autopartes.model.TipoMovimiento;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class MovimientoStockRepository {
+public interface MovimientoStockRepository extends JpaRepository<MovimientoStock, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    List<MovimientoStock> findByProducto_Id(UUID productoId);
 
-    public Optional<MovimientoStock> buscarPorId(UUID id) {
-        return data.getMovimientosStock().stream()
-                .filter(m -> m.getId().equals(id))
-                .findFirst();
+    List<MovimientoStock> findByUsuario_Id(UUID usuarioId);
+
+    List<MovimientoStock> findByTipo(TipoMovimiento tipo);
+
+    List<MovimientoStock> findByProducto_IdAndTipo(UUID productoId, TipoMovimiento tipo);
+
+    default Optional<MovimientoStock> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public List<MovimientoStock> buscarPorProducto(UUID productoId) {
-        return data.getMovimientosStock().stream()
-                .filter(m -> m.getProductoId().equals(productoId))
-                .toList();
+    default List<MovimientoStock> buscarPorProducto(UUID productoId) {
+        return findByProducto_Id(productoId);
     }
 
-    public List<MovimientoStock> buscarPorUsuario(UUID usuarioId) {
-        return data.getMovimientosStock().stream()
-                .filter(m -> m.getUsuarioId() != null && m.getUsuarioId().equals(usuarioId))
-                .toList();
+    default List<MovimientoStock> buscarPorUsuario(UUID usuarioId) {
+        return findByUsuario_Id(usuarioId);
     }
 
-    public List<MovimientoStock> buscarPorTipo(TipoMovimiento tipo) {
-        return data.getMovimientosStock().stream()
-                .filter(m -> m.getTipo() == tipo)
-                .toList();
+    default List<MovimientoStock> buscarPorTipo(TipoMovimiento tipo) {
+        return findByTipo(tipo);
     }
 
-    public List<MovimientoStock> buscarPorProductoYTipo(UUID productoId, TipoMovimiento tipo) {
-        return data.getMovimientosStock().stream()
-                .filter(m -> m.getProductoId().equals(productoId) && m.getTipo() == tipo)
-                .toList();
+    default List<MovimientoStock> buscarPorProductoYTipo(UUID productoId, TipoMovimiento tipo) {
+        return findByProducto_IdAndTipo(productoId, tipo);
     }
 
-    public List<MovimientoStock> buscarTodos() {
-        return new ArrayList<>(data.getMovimientosStock());
+    default List<MovimientoStock> buscarTodos() {
+        return findAll();
     }
 
-    public MovimientoStock guardar(MovimientoStock movimiento) {
-        data.getMovimientosStock().removeIf(m -> m.getId().equals(movimiento.getId()));
-        data.getMovimientosStock().add(movimiento);
-        return movimiento;
+    default MovimientoStock guardar(MovimientoStock movimiento) {
+        return save(movimiento);
     }
 
-    public void eliminar(UUID id) {
-        data.getMovimientosStock().removeIf(m -> m.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public long contar() {
-        return data.getMovimientosStock().size();
+    default long contar() {
+        return count();
     }
 }

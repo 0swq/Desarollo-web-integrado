@@ -1,58 +1,51 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.MarcaVehiculo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class MarcaVehiculoRepository {
+public interface MarcaVehiculoRepository extends JpaRepository<MarcaVehiculo, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<MarcaVehiculo> findByNombreIgnoreCase(String nombre);
 
-    public Optional<MarcaVehiculo> buscarPorId(UUID id) {
-        return data.getMarcasVehiculos().stream()
-                .filter(m -> m.getId().equals(id))
-                .findFirst();
+    boolean existsByNombreIgnoreCase(String nombre);
+
+    List<MarcaVehiculo> findByActivoTrue();
+
+    default Optional<MarcaVehiculo> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<MarcaVehiculo> buscarPorNombre(String nombre) {
-        return data.getMarcasVehiculos().stream()
-                .filter(m -> m.getNombre().equalsIgnoreCase(nombre))
-                .findFirst();
+    default Optional<MarcaVehiculo> buscarPorNombre(String nombre) {
+        return findByNombreIgnoreCase(nombre);
     }
 
-    public boolean existePorNombre(String nombre) {
-        return data.getMarcasVehiculos().stream()
-                .anyMatch(m -> m.getNombre().equalsIgnoreCase(nombre));
+    default boolean existePorNombre(String nombre) {
+        return existsByNombreIgnoreCase(nombre);
     }
 
-    public List<MarcaVehiculo> buscarActivas() {
-        return data.getMarcasVehiculos().stream()
-                .filter(m -> Boolean.TRUE.equals(m.getActivo()))
-                .toList();
+    default List<MarcaVehiculo> buscarActivas() {
+        return findByActivoTrue();
     }
 
-    public List<MarcaVehiculo> buscarTodos() {
-        return new ArrayList<>(data.getMarcasVehiculos());
+    default List<MarcaVehiculo> buscarTodos() {
+        return findAll();
     }
 
-    public MarcaVehiculo guardar(MarcaVehiculo marca) {
-        data.getMarcasVehiculos().removeIf(m -> m.getId().equals(marca.getId()));
-        data.getMarcasVehiculos().add(marca);
-        return marca;
+    default MarcaVehiculo guardar(MarcaVehiculo marca) {
+        return save(marca);
     }
 
-    public void eliminar(UUID id) {
-        data.getMarcasVehiculos().removeIf(m -> m.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public long contar() {
-        return data.getMarcasVehiculos().size();
+    default long contar() {
+        return count();
     }
 }

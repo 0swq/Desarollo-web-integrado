@@ -1,69 +1,70 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.CompatibilidadVehiculo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class CompatibilidadVehiculoRepository {
+public interface CompatibilidadVehiculoRepository extends JpaRepository<CompatibilidadVehiculo, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    List<CompatibilidadVehiculo> findByProducto_Id(UUID productoId);
 
-    public Optional<CompatibilidadVehiculo> buscarPorId(UUID id) {
-        return data.getCompatibilidadesVehiculos().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst();
+    List<CompatibilidadVehiculo> findByModeloVehiculo_Id(UUID modeloVehiculoId);
+
+    List<CompatibilidadVehiculo> findByProducto_IdAndModeloVehiculo_Id(UUID productoId, UUID modeloVehiculoId);
+
+    @Query("SELECT c FROM CompatibilidadVehiculo c "
+            + "WHERE (c.anioInicio IS NULL OR c.anioInicio <= :anio) "
+            + "AND (c.anioFin IS NULL OR c.anioFin >= :anio)")
+    List<CompatibilidadVehiculo> buscarPorAnioRango(@Param("anio") Integer anio);
+
+    @Transactional
+    void deleteByProducto_Id(UUID productoId);
+
+    default Optional<CompatibilidadVehiculo> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public List<CompatibilidadVehiculo> buscarPorProducto(UUID productoId) {
-        return data.getCompatibilidadesVehiculos().stream()
-                .filter(c -> c.getProductoId().equals(productoId))
-                .toList();
+    default List<CompatibilidadVehiculo> buscarPorProducto(UUID productoId) {
+        return findByProducto_Id(productoId);
     }
 
-    public List<CompatibilidadVehiculo> buscarPorModeloVehiculo(UUID modeloVehiculoId) {
-        return data.getCompatibilidadesVehiculos().stream()
-                .filter(c -> c.getModeloVehiculoId().equals(modeloVehiculoId))
-                .toList();
+    default List<CompatibilidadVehiculo> buscarPorModeloVehiculo(UUID modeloVehiculoId) {
+        return findByModeloVehiculo_Id(modeloVehiculoId);
     }
 
-    public List<CompatibilidadVehiculo> buscarPorProductoYModelo(UUID productoId, UUID modeloVehiculoId) {
-        return data.getCompatibilidadesVehiculos().stream()
-                .filter(c -> c.getProductoId().equals(productoId) && c.getModeloVehiculoId().equals(modeloVehiculoId))
-                .toList();
+    default List<CompatibilidadVehiculo> buscarPorProductoYModelo(UUID productoId, UUID modeloVehiculoId) {
+        return findByProducto_IdAndModeloVehiculo_Id(productoId, modeloVehiculoId);
     }
 
-    public List<CompatibilidadVehiculo> buscarPorAnio(Integer anio) {
-        return data.getCompatibilidadesVehiculos().stream()
-                .filter(c -> c.getAnioInicio() <= anio && c.getAnioFin() >= anio)
-                .toList();
+    default List<CompatibilidadVehiculo> buscarPorAnio(Integer anio) {
+        return buscarPorAnioRango(anio);
     }
 
-    public List<CompatibilidadVehiculo> buscarTodos() {
-        return new ArrayList<>(data.getCompatibilidadesVehiculos());
+    default List<CompatibilidadVehiculo> buscarTodos() {
+        return findAll();
     }
 
-    public CompatibilidadVehiculo guardar(CompatibilidadVehiculo compatibilidad) {
-        data.getCompatibilidadesVehiculos().removeIf(c -> c.getId().equals(compatibilidad.getId()));
-        data.getCompatibilidadesVehiculos().add(compatibilidad);
-        return compatibilidad;
+    default CompatibilidadVehiculo guardar(CompatibilidadVehiculo compatibilidad) {
+        return save(compatibilidad);
     }
 
-    public void eliminar(UUID id) {
-        data.getCompatibilidadesVehiculos().removeIf(c -> c.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public void eliminarPorProducto(UUID productoId) {
-        data.getCompatibilidadesVehiculos().removeIf(c -> c.getProductoId().equals(productoId));
+    default void eliminarPorProducto(UUID productoId) {
+        deleteByProducto_Id(productoId);
     }
 
-    public long contar() {
-        return data.getCompatibilidadesVehiculos().size();
+    default long contar() {
+        return count();
     }
 }

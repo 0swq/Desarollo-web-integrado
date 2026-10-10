@@ -1,6 +1,7 @@
 package com.autopartes.service;
 
 import com.autopartes.dto.modelovehiculo.ModeloVehiculoRequest;
+import com.autopartes.model.MarcaVehiculo;
 import com.autopartes.model.ModeloVehiculo;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ModeloVehiculoService {
     }
 
     public ModeloVehiculo crear(ModeloVehiculoRequest request) {
-        marcaRepository.buscarPorId(request.getMarcaId())
+        MarcaVehiculo marca = marcaRepository.buscarPorId(request.getMarcaId())
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Marca no encontrada"));
 
         if (repository.existePorMarcaYNombre(request.getMarcaId(), request.getNombre())) {
@@ -32,7 +33,7 @@ public class ModeloVehiculoService {
         ModeloVehiculo modelo = new ModeloVehiculo();
         modelo.setId(UUID.randomUUID());
         modelo.setNombre(request.getNombre().trim());
-        modelo.setMarcaId(request.getMarcaId());
+        modelo.setMarca(marca);
         modelo.setTipoVehiculo(request.getTipoVehiculo());
         modelo.setActivo(request.getActivo() != null ? request.getActivo() : true);
 
@@ -63,7 +64,7 @@ public class ModeloVehiculoService {
         ModeloVehiculo modelo = repository.buscarPorId(id)
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Modelo no encontrado"));
 
-        marcaRepository.buscarPorId(request.getMarcaId())
+        MarcaVehiculo marca = marcaRepository.buscarPorId(request.getMarcaId())
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Marca no encontrada"));
 
         if (!modelo.getNombre().equalsIgnoreCase(request.getNombre()) && repository.existePorMarcaYNombre(request.getMarcaId(), request.getNombre())) {
@@ -71,7 +72,7 @@ public class ModeloVehiculoService {
         }
 
         modelo.setNombre(request.getNombre().trim());
-        modelo.setMarcaId(request.getMarcaId());
+        modelo.setMarca(marca);
         modelo.setTipoVehiculo(request.getTipoVehiculo());
         if (request.getActivo() != null) {
             modelo.setActivo(request.getActivo());

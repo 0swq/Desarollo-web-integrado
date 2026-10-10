@@ -77,7 +77,12 @@ public class ProveedorService {
     }
 
     public void eliminar(UUID id) {
-        repository.eliminar(id);
+        // Baja logica: los productos asociados mantienen la FK al proveedor
+        Proveedor proveedor = repository.buscarPorId(id)
+                .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Proveedor no encontrado"));
+        proveedor.setActivo(false);
+        proveedor.setFechaActualizacion(java.time.LocalDateTime.now());
+        repository.guardar(proveedor);
     }
 
     public void toggleActivo(UUID id) {

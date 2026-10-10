@@ -2,6 +2,8 @@ package com.autopartes.service;
 
 import com.autopartes.dto.compatibilidadvehiculo.CompatibilidadVehiculoRequest;
 import com.autopartes.model.CompatibilidadVehiculo;
+import com.autopartes.model.ModeloVehiculo;
+import com.autopartes.model.Producto;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +31,16 @@ public class CompatibilidadVehiculoService {
             throw new com.autopartes.exception.BusinessException("El año de inicio no puede ser mayor que el año final");
         }
 
-        productoRepository.buscarPorId(request.getProductoId())
+        Producto producto = productoRepository.buscarPorId(request.getProductoId())
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Producto no encontrado"));
 
-        modeloRepository.buscarPorId(request.getModeloVehiculoId())
+        ModeloVehiculo modeloVehiculo = modeloRepository.buscarPorId(request.getModeloVehiculoId())
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Modelo de vehículo no encontrado"));
 
         CompatibilidadVehiculo compatibilidad = new CompatibilidadVehiculo();
         compatibilidad.setId(UUID.randomUUID());
-        compatibilidad.setProductoId(request.getProductoId());
-        compatibilidad.setModeloVehiculoId(request.getModeloVehiculoId());
+        compatibilidad.setProducto(producto);
+        compatibilidad.setModeloVehiculo(modeloVehiculo);
         compatibilidad.setAnioInicio(request.getAnioInicio());
         compatibilidad.setAnioFin(request.getAnioFin());
         compatibilidad.setMotor(request.getMotor());

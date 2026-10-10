@@ -1,51 +1,47 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.ItemOrden;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class ItemOrdenRepository {
+public interface ItemOrdenRepository extends JpaRepository<ItemOrden, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    List<ItemOrden> findByOrden_Id(UUID ordenId);
 
-    public Optional<ItemOrden> buscarPorId(UUID id) {
-        return data.getItemsOrden().stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst();
+    @Transactional
+    void deleteByOrden_Id(UUID ordenId);
+
+    default Optional<ItemOrden> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public List<ItemOrden> buscarPorOrden(UUID ordenId) {
-        return data.getItemsOrden().stream()
-                .filter(i -> i.getOrdenId().equals(ordenId))
-                .toList();
+    default List<ItemOrden> buscarPorOrden(UUID ordenId) {
+        return findByOrden_Id(ordenId);
     }
 
-    public List<ItemOrden> buscarTodos() {
-        return new ArrayList<>(data.getItemsOrden());
+    default List<ItemOrden> buscarTodos() {
+        return findAll();
     }
 
-    public ItemOrden guardar(ItemOrden item) {
-        data.getItemsOrden().removeIf(i -> i.getId().equals(item.getId()));
-        data.getItemsOrden().add(item);
-        return item;
+    default ItemOrden guardar(ItemOrden item) {
+        return save(item);
     }
 
-    public void eliminar(UUID id) {
-        data.getItemsOrden().removeIf(i -> i.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public void eliminarPorOrden(UUID ordenId) {
-        data.getItemsOrden().removeIf(i -> i.getOrdenId().equals(ordenId));
+    default void eliminarPorOrden(UUID ordenId) {
+        deleteByOrden_Id(ordenId);
     }
 
-    public long contar() {
-        return data.getItemsOrden().size();
+    default long contar() {
+        return count();
     }
 }

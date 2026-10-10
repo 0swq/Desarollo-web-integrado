@@ -9,6 +9,7 @@ import com.autopartes.model.ItemOrden;
 import com.autopartes.model.Orden;
 import com.autopartes.model.Pago;
 import com.autopartes.model.Producto;
+import com.autopartes.model.Usuario;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -54,7 +55,7 @@ public class OrdenService {
     }
 
     public Orden crearOrdenDesdeCarrito(UUID usuarioId, OrdenRequest request) {
-        usuarioRepository.buscarPorId(usuarioId)
+        Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Usuario no encontrado"));
 
         Carrito carrito = carritoRepository.buscarPorUsuario(usuarioId)
@@ -82,7 +83,7 @@ public class OrdenService {
 
             ItemOrden itemOrden = new ItemOrden();
             itemOrden.setId(UUID.randomUUID());
-            itemOrden.setProductoId(itemCarrito.getProductoId());
+            itemOrden.setProducto(producto);
             itemOrden.setNombreProducto(producto.getNombre());
             itemOrden.setSku(producto.getSku());
             itemOrden.setCantidad(itemCarrito.getCantidad());
@@ -101,7 +102,7 @@ public class OrdenService {
         Orden orden = new Orden();
         orden.setId(UUID.randomUUID());
         orden.setNumeroOrden(numeroOrden);
-        orden.setUsuarioId(usuarioId);
+        orden.setUsuario(usuario);
         orden.setEstado(EstadoOrden.PENDIENTE);
         orden.setSubtotal(subtotal.setScale(2, RoundingMode.HALF_UP));
         orden.setIgv(igv);
@@ -117,14 +118,14 @@ public class OrdenService {
 
         // Guardar items de orden
         for (ItemOrden item : itemsOrden) {
-            item.setOrdenId(ordenGuardada.getId());
+            item.setOrden(ordenGuardada);
             itemOrdenRepository.guardar(item);
         }
 
         // Crear registro de pago inicial (PENDIENTE)
         Pago pago = new Pago();
         pago.setId(UUID.randomUUID());
-        pago.setOrdenId(ordenGuardada.getId());
+        pago.setOrden(ordenGuardada);
         pago.setMonto(total);
         pago.setMoneda("PEN");
         pago.setEstado(EstadoPago.PENDIENTE);

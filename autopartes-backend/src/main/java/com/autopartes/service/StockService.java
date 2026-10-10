@@ -2,8 +2,10 @@ package com.autopartes.service;
 
 import com.autopartes.dto.stock.StockRequest;
 import com.autopartes.model.MovimientoStock;
+import com.autopartes.model.Producto;
 import com.autopartes.model.Stock;
 import com.autopartes.model.TipoMovimiento;
+import com.autopartes.model.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,13 +19,16 @@ public class StockService {
     private final com.autopartes.repository.StockRepository stockRepository;
     private final com.autopartes.repository.MovimientoStockRepository movimientoRepository;
     private final com.autopartes.repository.ProductoRepository productoRepository;
+    private final com.autopartes.repository.UsuarioRepository usuarioRepository;
 
     public StockService(com.autopartes.repository.StockRepository stockRepository,
                         com.autopartes.repository.MovimientoStockRepository movimientoRepository,
-                        com.autopartes.repository.ProductoRepository productoRepository) {
+                        com.autopartes.repository.ProductoRepository productoRepository,
+                        com.autopartes.repository.UsuarioRepository usuarioRepository) {
         this.stockRepository = stockRepository;
         this.movimientoRepository = movimientoRepository;
         this.productoRepository = productoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public Optional<Stock> buscarPorId(UUID id) {
@@ -80,14 +85,14 @@ public class StockService {
     }
 
     private MovimientoStock registrarMovimiento(UUID productoId, TipoMovimiento tipo, Integer cantidad, String motivo, String referencia, UUID usuarioId) {
-        productoRepository.buscarPorId(productoId)
+        Producto producto = productoRepository.buscarPorId(productoId)
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Producto no encontrado"));
 
         Stock stock = stockRepository.buscarPorProducto(productoId)
                 .orElseGet(() -> {
                     Stock nuevo = new Stock();
                     nuevo.setId(UUID.randomUUID());
-                    nuevo.setProductoId(productoId);
+                    nuevo.setProducto(producto);
                     nuevo.setCantidad(0);
                     nuevo.setStockMinimo(5);
                     nuevo.setFechaActualizacion(java.time.LocalDateTime.now());
@@ -120,14 +125,17 @@ public class StockService {
 
         MovimientoStock movimiento = new MovimientoStock();
         movimiento.setId(UUID.randomUUID());
-        movimiento.setProductoId(productoId);
+        movimiento.setProducto(producto);
         movimiento.setTipo(tipo);
         movimiento.setCantidad(cantidad);
         movimiento.setStockAnterior(stockAnterior);
         movimiento.setStockNuevo(stockNuevo);
         movimiento.setMotivo(motivo);
         movimiento.setReferencia(referencia);
-        movimiento.setUsuarioId(usuarioId);
+        movimiento.setUsuario(usuarioId != null
+                ? usuarioRepository.buscarPorId(usuarioId)
+                        .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Usuario no encontrado"))
+                : null);
         movimiento.setFecha(java.time.LocalDateTime.now());
 
         return movimientoRepository.guardar(movimiento);

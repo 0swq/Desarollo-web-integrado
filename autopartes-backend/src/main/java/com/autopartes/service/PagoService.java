@@ -2,6 +2,7 @@ package com.autopartes.service;
 
 import com.autopartes.dto.pago.PagoRequest;
 import com.autopartes.model.EstadoPago;
+import com.autopartes.model.Orden;
 import com.autopartes.model.Pago;
 
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ public class PagoService {
     }
 
     public Pago crear(PagoRequest request) {
-        ordenRepository.buscarPorId(request.getOrdenId())
+        Orden orden = ordenRepository.buscarPorId(request.getOrdenId())
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Orden no encontrada"));
 
         if (repository.buscarPorOrden(request.getOrdenId()).isPresent()) {
@@ -33,7 +34,7 @@ public class PagoService {
 
         Pago pago = new Pago();
         pago.setId(UUID.randomUUID());
-        pago.setOrdenId(request.getOrdenId());
+        pago.setOrden(orden);
         pago.setMonto(request.getMonto());
         pago.setMoneda(request.getMoneda() != null ? request.getMoneda() : "PEN");
         pago.setEstado(EstadoPago.PENDIENTE);

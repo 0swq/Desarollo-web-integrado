@@ -1,66 +1,58 @@
 package com.autopartes.repository;
 
 import com.autopartes.model.EstadoOrden;
-import com.autopartes.DataStore;
 import com.autopartes.model.Orden;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class OrdenRepository {
+public interface OrdenRepository extends JpaRepository<Orden, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<Orden> findByNumeroOrdenIgnoreCase(String numeroOrden);
 
-    public Optional<Orden> buscarPorId(UUID id) {
-        return data.getOrdenes().stream()
-                .filter(o -> o.getId().equals(id))
-                .findFirst();
+    List<Orden> findByUsuario_Id(UUID usuarioId);
+
+    List<Orden> findByEstado(EstadoOrden estado);
+
+    long countByEstado(EstadoOrden estado);
+
+    default Optional<Orden> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<Orden> buscarPorNumeroOrden(String numeroOrden) {
-        return data.getOrdenes().stream()
-                .filter(o -> o.getNumeroOrden().equalsIgnoreCase(numeroOrden))
-                .findFirst();
+    default Optional<Orden> buscarPorNumeroOrden(String numeroOrden) {
+        return findByNumeroOrdenIgnoreCase(numeroOrden);
     }
 
-    public List<Orden> buscarPorUsuario(UUID usuarioId) {
-        return data.getOrdenes().stream()
-                .filter(o -> o.getUsuarioId().equals(usuarioId))
-                .toList();
+    default List<Orden> buscarPorUsuario(UUID usuarioId) {
+        return findByUsuario_Id(usuarioId);
     }
 
-    public List<Orden> buscarPorEstado(EstadoOrden estado) {
-        return data.getOrdenes().stream()
-                .filter(o -> o.getEstado() == estado)
-                .toList();
+    default List<Orden> buscarPorEstado(EstadoOrden estado) {
+        return findByEstado(estado);
     }
 
-    public List<Orden> buscarTodos() {
-        return new ArrayList<>(data.getOrdenes());
+    default List<Orden> buscarTodos() {
+        return findAll();
     }
 
-    public Orden guardar(Orden orden) {
-        data.getOrdenes().removeIf(o -> o.getId().equals(orden.getId()));
-        data.getOrdenes().add(orden);
-        return orden;
+    default Orden guardar(Orden orden) {
+        return save(orden);
     }
 
-    public void eliminar(UUID id) {
-        data.getOrdenes().removeIf(o -> o.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public long contar() {
-        return data.getOrdenes().size();
+    default long contar() {
+        return count();
     }
 
-    public long contarPorEstado(EstadoOrden estado) {
-        return data.getOrdenes().stream()
-                .filter(o -> o.getEstado() == estado)
-                .count();
+    default long contarPorEstado(EstadoOrden estado) {
+        return countByEstado(estado);
     }
 }

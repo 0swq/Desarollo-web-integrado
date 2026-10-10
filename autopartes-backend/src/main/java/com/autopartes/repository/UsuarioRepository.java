@@ -1,65 +1,59 @@
 package com.autopartes.repository;
 
-import com.autopartes.DataStore;
 import com.autopartes.model.Rol;
 import com.autopartes.model.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 @Repository
-public class UsuarioRepository {
+public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
-    private final DataStore data = DataStore.obtenerInstancia();
+    Optional<Usuario> findByCorreoIgnoreCase(String correo);
 
-    public Optional<Usuario> buscarPorId(UUID id) {
-        return data.getUsuarios().stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst();
+    boolean existsByCorreoIgnoreCase(String correo);
+
+    List<Usuario> findByRol(Rol rol);
+
+    List<Usuario> findByActivoTrue();
+
+
+    default Optional<Usuario> buscarPorId(UUID id) {
+        return findById(id);
     }
 
-    public Optional<Usuario> buscarPorCorreo(String correo) {
-        return data.getUsuarios().stream()
-                .filter(u -> u.getCorreo().equalsIgnoreCase(correo))
-                .findFirst();
+    default Optional<Usuario> buscarPorCorreo(String correo) {
+        return findByCorreoIgnoreCase(correo);
     }
 
-    public boolean existePorCorreo(String correo) {
-        return data.getUsuarios().stream()
-                .anyMatch(u -> u.getCorreo().equalsIgnoreCase(correo));
+    default boolean existePorCorreo(String correo) {
+        return existsByCorreoIgnoreCase(correo);
     }
 
-    public List<Usuario> buscarPorRol(Rol rol) {
-        return data.getUsuarios().stream()
-                .filter(u -> u.getRol() == rol)
-                .toList();
+    default List<Usuario> buscarPorRol(Rol rol) {
+        return findByRol(rol);
     }
 
-    public List<Usuario> buscarActivos() {
-        return data.getUsuarios().stream()
-                .filter(u -> Boolean.TRUE.equals(u.getActivo()))
-                .toList();
+    default List<Usuario> buscarActivos() {
+        return findByActivoTrue();
     }
 
-    public List<Usuario> buscarTodos() {
-        return new ArrayList<>(data.getUsuarios());
+    default List<Usuario> buscarTodos() {
+        return findAll();
     }
 
-    public Usuario guardar(Usuario usuario) {
-        data.getUsuarios().removeIf(u -> u.getId().equals(usuario.getId()));
-        data.getUsuarios().add(usuario);
-        return usuario;
+    default Usuario guardar(Usuario usuario) {
+        return save(usuario);
     }
 
-    public void eliminar(UUID id) {
-        data.getUsuarios().removeIf(u -> u.getId().equals(id));
+    default void eliminar(UUID id) {
+        deleteById(id);
     }
 
-    public long contar() {
-        return data.getUsuarios().size();
+    default long contar() {
+        return count();
     }
 }

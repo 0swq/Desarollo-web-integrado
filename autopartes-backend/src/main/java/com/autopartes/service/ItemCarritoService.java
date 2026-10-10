@@ -69,8 +69,8 @@ public class ItemCarritoService {
         } else {
             item = new ItemCarrito();
             item.setId(UUID.randomUUID());
-            item.setCarritoId(carritoId);
-            item.setProductoId(producto.getId());
+            item.setCarrito(carrito);
+            item.setProducto(producto);
             item.setCantidad(request.getCantidad());
             item.setPrecioUnitario(precioAplicado);
         }

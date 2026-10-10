@@ -61,4 +61,27 @@ public class Auth {
             return false;
         }
     }
+
+    /**
+     * Saca el id del usuario desde la cabecera "Authorization: Bearer ...".
+     * Devuelve null si la cabecera falta, no tiene el prefijo Bearer o el token es invalido,
+     * de modo que los controllers respondan 401 en lugar de propagar la excepcion como 500.
+     */
+    public static UUID usuarioDeCabecera(String authHeader) {
+        if (authHeader == null || authHeader.isBlank()) {
+            return null;
+        }
+        if (!authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        String token = authHeader.substring(7).trim();
+        if (token.isEmpty()) {
+            return null;
+        }
+        try {
+            return extraerId(token);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

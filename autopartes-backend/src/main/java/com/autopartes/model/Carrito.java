@@ -1,18 +1,30 @@
 package com.autopartes.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity
+@Table(name = "carrito")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Carrito {
-    private java.util.UUID id;
-    private java.util.UUID usuarioId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @UpdateTimestamp
+    @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+
+    public UUID getUsuarioId() {
+        return usuario != null ? usuario.getId() : null;
+    }
 }

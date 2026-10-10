@@ -57,7 +57,7 @@ public class ProductoService {
         producto.setPrecioPromocional(request.getPrecioPromocional());
         producto.setMoneda("PEN");
         producto.setImagenUrl(request.getImagenUrl());
-        producto.setProveedorId(proveedor != null ? proveedor.getId() : null);
+        producto.setProveedor(proveedor);
         producto.setActivo(request.getActivo() != null ? request.getActivo() : true);
         producto.setFechaCreacion(java.time.LocalDateTime.now());
         producto.setFechaActualizacion(java.time.LocalDateTime.now());
@@ -76,7 +76,7 @@ public class ProductoService {
 
         Stock stock = new Stock();
         stock.setId(UUID.randomUUID());
-        stock.setProductoId(guardado.getId());
+        stock.setProducto(guardado);
         stock.setCantidad(stockInicial);
         stock.setStockMinimo(stockMinimo);
         stock.setUbicacionAlmacen(request.getUbicacionAlmacen());
@@ -133,7 +133,7 @@ public class ProductoService {
         producto.setPrecio(request.getPrecio());
         producto.setPrecioPromocional(request.getPrecioPromocional());
         producto.setImagenUrl(request.getImagenUrl());
-        producto.setProveedorId(proveedor != null ? proveedor.getId() : null);
+        producto.setProveedor(proveedor);
         if (request.getActivo() != null) {
             producto.setActivo(request.getActivo());
         }
