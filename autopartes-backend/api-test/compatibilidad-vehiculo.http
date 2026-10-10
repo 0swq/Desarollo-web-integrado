@@ -4,6 +4,20 @@
 @modeloId =
 
 ###
+# @capture compatibilidadId=id
+POST {{baseUrl}}/api/compatibilidades-vehiculos
+Content-Type: application/json
+
+{
+  "productoId": "{{productoId}}",
+  "modeloVehiculoId": "{{modeloId}}",
+  "anioInicio": 2015,
+  "anioFin": 2022,
+  "motor": "1.8L",
+  "notas": "Solo version full"
+}
+
+###
 GET {{baseUrl}}/api/compatibilidades-vehiculos
 
 ###
@@ -17,19 +31,6 @@ GET {{baseUrl}}/api/compatibilidades-vehiculos/modelo/{{modeloId}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/compatibles?modeloId={{modeloId}}&anio=2020
-
-###
-POST {{baseUrl}}/api/compatibilidades-vehiculos
-Content-Type: application/json
-
-{
-  "productoId": "{{productoId}}",
-  "modeloVehiculoId": "{{modeloId}}",
-  "anioInicio": 2015,
-  "anioFin": 2022,
-  "motor": "1.8L",
-  "notas": "Solo versión full"
-}
 
 ###
 DELETE {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}

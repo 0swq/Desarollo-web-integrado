@@ -2,17 +2,12 @@
 @proveedorId =
 
 ###
-GET {{baseUrl}}/api/proveedores
-
-###
-GET {{baseUrl}}/api/proveedores/{{proveedorId}}
-
-###
+# @capture proveedorId=id
 POST {{baseUrl}}/api/proveedores
 Content-Type: application/json
 
 {
-  "ruc": "20123456789",
+  "ruc": "{{ruc}}",
   "razonSocial": "Repuestos del Sur S.A.C.",
   "contactoNombre": "Luis Torres",
   "telefono": "014445566",
@@ -22,11 +17,17 @@ Content-Type: application/json
 }
 
 ###
+GET {{baseUrl}}/api/proveedores
+
+###
+GET {{baseUrl}}/api/proveedores/{{proveedorId}}
+
+###
 PUT {{baseUrl}}/api/proveedores/{{proveedorId}}
 Content-Type: application/json
 
 {
-  "ruc": "20123456789",
+  "ruc": "{{ruc}}",
   "razonSocial": "Repuestos del Sur S.A.C.",
   "contactoNombre": "Luis Torres",
   "telefono": "014445566",

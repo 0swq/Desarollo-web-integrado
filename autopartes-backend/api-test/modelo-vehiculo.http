@@ -3,31 +3,32 @@
 @marcaId =
 
 ###
-GET {{baseUrl}}/api/modelos-vehiculos
-
-###
-GET {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}
-
-###
-GET {{baseUrl}}/api/modelos-vehiculos/marca/{{marcaId}}
-
-###
+# @capture modeloId=id
 POST {{baseUrl}}/api/modelos-vehiculos
 Content-Type: application/json
 
 {
-  "nombre": "Corolla",
+  "nombre": "{{nombreModelo}}",
   "marcaId": "{{marcaId}}",
   "tipoVehiculo": "Sedan",
   "activo": true
 }
 
 ###
+GET {{baseUrl}}/api/modelos-vehiculos
+
+###
+GET {{baseUrl}}/api/modelos-vehiculos/marca/{{marcaId}}
+
+###
+GET {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}
+
+###
 PUT {{baseUrl}}/api/modelos-vehiculos/{{modeloId}}
 Content-Type: application/json
 
 {
-  "nombre": "Corolla",
+  "nombre": "{{nombreModelo}}",
   "marcaId": "{{marcaId}}",
   "tipoVehiculo": "Sedan",
   "activo": true

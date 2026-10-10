@@ -3,6 +3,7 @@
 @categoriaId =
 
 ###
+# @expect 400
 POST {{baseUrl}}/api/producto-categorias
 Content-Type: application/json
 

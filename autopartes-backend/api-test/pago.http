@@ -1,6 +1,24 @@
 @baseUrl = http://localhost:8080/api
 @pagoId =
 @ordenId =
+@ordenSinPago =
+@totalOrden = 0
+
+###
+# @expect 400
+POST {{baseUrl}}/api/pagos
+Content-Type: application/json
+
+{
+  "ordenId": "{{ordenSinPago}}",
+  "monto": {{totalOrden}},
+  "moneda": "PEN",
+  "metodoPago": "MERCADO_PAGO"
+}
+
+###
+# @capture pagoId=id
+GET {{baseUrl}}/api/pagos/orden/{{ordenSinPago}}
 
 ###
 GET {{baseUrl}}/api/pagos
@@ -9,21 +27,10 @@ GET {{baseUrl}}/api/pagos
 GET {{baseUrl}}/api/pagos/{{pagoId}}
 
 ###
-GET {{baseUrl}}/api/pagos/orden/{{ordenId}}
+GET {{baseUrl}}/api/pagos/orden/{{ordenSinPago}}
 
 ###
 GET {{baseUrl}}/api/pagos/estado/PENDIENTE
-
-###
-POST {{baseUrl}}/api/pagos
-Content-Type: application/json
-
-{
-  "ordenId": "{{ordenId}}",
-  "monto": 150.75,
-  "moneda": "PEN",
-  "metodoPago": "MERCADO_PAGO"
-}
 
 ###
 PATCH {{baseUrl}}/api/pagos/{{pagoId}}/estado

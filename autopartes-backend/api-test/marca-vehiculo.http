@@ -2,28 +2,29 @@
 @marcaId =
 
 ###
+# @capture marcaId=id
+POST {{baseUrl}}/api/marcas-vehiculos
+Content-Type: application/json
+
+{
+  "nombre": "{{nombreMarca}}",
+  "paisOrigen": "Japon",
+  "activo": true
+}
+
+###
 GET {{baseUrl}}/api/marcas-vehiculos
 
 ###
 GET {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
 
 ###
-POST {{baseUrl}}/api/marcas-vehiculos
-Content-Type: application/json
-
-{
-  "nombre": "Toyota",
-  "paisOrigen": "Japón",
-  "activo": true
-}
-
-###
 PUT {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
 Content-Type: application/json
 
 {
-  "nombre": "Toyota",
-  "paisOrigen": "Japón",
+  "nombre": "{{nombreMarca}}",
+  "paisOrigen": "Japon",
   "activo": true
 }
 

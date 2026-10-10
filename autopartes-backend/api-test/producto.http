@@ -4,28 +4,14 @@
 @proveedorId =
 
 ###
-GET {{baseUrl}}/api/productos
-
-###
-GET {{baseUrl}}/api/productos/{{productoId}}
-
-###
-GET {{baseUrl}}/api/productos/sku/PAST-TOY-001
-
-###
-GET {{baseUrl}}/api/productos/buscar?q=pastilla
-
-###
-GET {{baseUrl}}/api/productos/proveedor/{{proveedorId}}
-
-###
+# @capture productoId=id
 POST {{baseUrl}}/api/productos
 Content-Type: application/json
 
 {
-  "sku": "PAST-TOY-001",
+  "sku": "{{sku}}",
   "nombre": "Pastilla de freno Toyota",
-  "descripcion": "Pastilla delantera cerámica",
+  "descripcion": "Pastilla delantera ceramica",
   "precio": 120.50,
   "precioPromocional": 99.90,
   "imagenUrl": null,
@@ -38,13 +24,28 @@ Content-Type: application/json
 }
 
 ###
+GET {{baseUrl}}/api/productos
+
+###
+GET {{baseUrl}}/api/productos/{{productoId}}
+
+###
+GET {{baseUrl}}/api/productos/sku/{{sku}}
+
+###
+GET {{baseUrl}}/api/productos/buscar?q=pastilla
+
+###
+GET {{baseUrl}}/api/productos/proveedor/{{proveedorId}}
+
+###
 PUT {{baseUrl}}/api/productos/{{productoId}}
 Content-Type: application/json
 
 {
-  "sku": "PAST-TOY-001",
+  "sku": "{{sku}}",
   "nombre": "Pastilla de freno Toyota",
-  "descripcion": "Pastilla delantera cerámica premium",
+  "descripcion": "Pastilla delantera ceramica premium",
   "precio": 130.00,
   "precioPromocional": null,
   "imagenUrl": null,
@@ -54,6 +55,10 @@ Content-Type: application/json
 }
 
 ###
+PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
+
+###
+# deja el producto activo de nuevo: las pruebas de carrito y orden lo requieren
 PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
 
 ###

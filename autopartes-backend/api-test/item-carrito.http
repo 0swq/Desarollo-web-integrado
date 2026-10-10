@@ -4,9 +4,7 @@
 @productoId =
 
 ###
-GET {{baseUrl}}/api/carritos/{{carritoId}}/items
-
-###
+# @capture itemId=id
 POST {{baseUrl}}/api/carritos/{{carritoId}}/items
 Content-Type: application/json
 
@@ -14,6 +12,9 @@ Content-Type: application/json
   "productoId": "{{productoId}}",
   "cantidad": 2
 }
+
+###
+GET {{baseUrl}}/api/carritos/{{carritoId}}/items
 
 ###
 PUT {{baseUrl}}/api/carritos/{{carritoId}}/items/{{itemId}}

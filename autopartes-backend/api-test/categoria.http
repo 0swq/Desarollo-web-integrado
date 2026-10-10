@@ -2,12 +2,7 @@
 @categoriaId =
 
 ###
-GET {{baseUrl}}/api/categorias
-
-###
-GET {{baseUrl}}/api/categorias/{{categoriaId}}
-
-###
+# @capture categoriaId=id
 POST {{baseUrl}}/api/categorias
 Content-Type: application/json
 
@@ -17,6 +12,12 @@ Content-Type: application/json
   "imagenUrl": null,
   "activo": true
 }
+
+###
+GET {{baseUrl}}/api/categorias
+
+###
+GET {{baseUrl}}/api/categorias/{{categoriaId}}
 
 ###
 PUT {{baseUrl}}/api/categorias/{{categoriaId}}

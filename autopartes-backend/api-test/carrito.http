@@ -1,8 +1,10 @@
 @baseUrl = http://localhost:8080/api
 @token =
 @usuarioId =
+@carritoId =
 
 ###
+# @capture carritoId=id
 GET {{baseUrl}}/api/carritos/usuario/{{usuarioId}}
 Authorization: Bearer {{token}}
 

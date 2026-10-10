@@ -1,25 +1,11 @@
 @baseUrl = http://localhost:8080/api
 @token =
 @ordenId =
+@numeroOrden =
 @usuarioId =
 
 ###
-GET {{baseUrl}}/api/ordenes
-
-###
-GET {{baseUrl}}/api/ordenes/{{ordenId}}
-
-###
-GET {{baseUrl}}/api/ordenes/numero/PEGAR_NUMERO_DE_ORDEN
-
-###
-GET {{baseUrl}}/api/ordenes/usuario/{{usuarioId}}
-Authorization: Bearer {{token}}
-
-###
-GET {{baseUrl}}/api/ordenes/estado/PENDIENTE
-
-###
+# @capture ordenId=id numeroOrden=numeroOrden
 POST {{baseUrl}}/api/ordenes/usuario/{{usuarioId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -30,6 +16,22 @@ Content-Type: application/json
   "notas": "Entregar en horario de oficina",
   "metodoPago": "MERCADO_PAGO"
 }
+
+###
+GET {{baseUrl}}/api/ordenes
+
+###
+GET {{baseUrl}}/api/ordenes/{{ordenId}}
+
+###
+GET {{baseUrl}}/api/ordenes/numero/{{numeroOrden}}
+
+###
+GET {{baseUrl}}/api/ordenes/usuario/{{usuarioId}}
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/api/ordenes/estado/PENDIENTE
 
 ###
 PATCH {{baseUrl}}/api/ordenes/{{ordenId}}/estado
