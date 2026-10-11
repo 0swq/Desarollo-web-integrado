@@ -27,3 +27,8 @@ Thumbs.db
 .classpath
 .project
 nbproject/
+
+# Office: temporales de Word/Excel al abrir un documento
+~$*.docx
+~$*.xlsx
+~$*.pptx
