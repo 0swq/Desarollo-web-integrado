@@ -8,12 +8,16 @@ import com.autopartes.service.ItemCarritoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Items del carrito", description = "Items dentro de un carrito")
 @RequestMapping("/api/carritos/{carritoId}/items")
 public class ItemCarritoController {
 
@@ -23,6 +27,11 @@ public class ItemCarritoController {
         this.service = service;
     }
 
+    @Operation(summary = "Listar items del carrito", description = "Devuelve los items de un carrito")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @GetMapping
     public ResponseEntity<ApiResponse<List<ItemCarritoResponse>>> listar(@PathVariable UUID carritoId) {
         List<ItemCarritoResponse> response = service.obtenerItems(carritoId).stream()
@@ -31,6 +40,12 @@ public class ItemCarritoController {
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
+    @Operation(summary = "Agregar item al carrito", description = "Agrega un producto al carrito validando stock y disponibilidad")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Recurso creado"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PostMapping
     public ResponseEntity<ApiResponse<ItemCarritoResponse>> agregar(@PathVariable UUID carritoId,
                                                                      @Valid @RequestBody ItemCarritoRequest request) {
@@ -38,6 +53,12 @@ public class ItemCarritoController {
         return ResponseEntity.status(201).body(ApiResponse.ok("Item agregado", mapToResponse(item)));
     }
 
+    @Operation(summary = "Actualizar cantidad", description = "Cambia la cantidad de un item validando el stock disponible")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PutMapping("/{itemId}")
     public ResponseEntity<ApiResponse<ItemCarritoResponse>> actualizar(@PathVariable UUID carritoId,
                                                                         @PathVariable UUID itemId,
@@ -46,6 +67,11 @@ public class ItemCarritoController {
         return ResponseEntity.ok(ApiResponse.ok("Cantidad actualizada", mapToResponse(item)));
     }
 
+    @Operation(summary = "Eliminar item del carrito", description = "Elimina un item del carrito")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Operacion completada sin contenido"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @DeleteMapping("/{itemId}")
     public ResponseEntity<ApiResponse<Void>> eliminar(@PathVariable UUID carritoId, @PathVariable UUID itemId) {
         service.eliminarItem(carritoId, itemId);

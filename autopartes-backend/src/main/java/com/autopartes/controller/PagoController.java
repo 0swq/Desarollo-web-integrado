@@ -9,11 +9,15 @@ import com.autopartes.service.PagoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Pagos", description = "Pagos asociados a una orden")
 @RequestMapping("/api/pagos")
 public class PagoController {
 
@@ -23,6 +27,10 @@ public class PagoController {
         this.service = service;
     }
 
+    @Operation(summary = "Listar pagos", description = "Devuelve todos los pagos")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa")
+    })
     @GetMapping
     public ResponseEntity<ApiResponse<List<PagoResponse>>> listar() {
         List<PagoResponse> response = service.buscarTodos().stream()
@@ -31,6 +39,11 @@ public class PagoController {
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
+    @Operation(summary = "Obtener pago", description = "Devuelve un pago por su identificador")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PagoResponse>> obtener(@PathVariable UUID id) {
         return service.buscarPorId(id)
@@ -38,6 +51,11 @@ public class PagoController {
                 .orElse(ResponseEntity.status(404).body(ApiResponse.error("Pago no encontrado")));
     }
 
+    @Operation(summary = "Pago de una orden", description = "Devuelve el pago asociado a una orden")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @GetMapping("/orden/{ordenId}")
     public ResponseEntity<ApiResponse<PagoResponse>> porOrden(@PathVariable UUID ordenId) {
         return service.buscarPorOrden(ordenId)
@@ -45,6 +63,11 @@ public class PagoController {
                 .orElse(ResponseEntity.status(404).body(ApiResponse.error("Pago no encontrado")));
     }
 
+    @Operation(summary = "Pagos por estado", description = "Filtra pagos por estado (PENDIENTE, APROBADO, RECHAZADO, ANULADO)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida")
+    })
     @GetMapping("/estado/{estado}")
     public ResponseEntity<ApiResponse<List<PagoResponse>>> porEstado(@PathVariable EstadoPago estado) {
         List<PagoResponse> response = service.buscarPorEstado(estado).stream()
@@ -53,12 +76,24 @@ public class PagoController {
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
+    @Operation(summary = "Registrar pago", description = "Registra un pago para una orden que aun no tiene uno")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Recurso creado"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PostMapping
     public ResponseEntity<ApiResponse<PagoResponse>> crear(@Valid @RequestBody PagoRequest request) {
         Pago p = service.crear(request);
         return ResponseEntity.status(201).body(ApiResponse.ok("Pago creado", mapToResponse(p)));
     }
 
+    @Operation(summary = "Actualizar estado del pago", description = "Cambia el estado del pago")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PatchMapping("/{id}/estado")
     public ResponseEntity<ApiResponse<PagoResponse>> actualizarEstado(@PathVariable UUID id,
                                                                        @RequestBody ActualizarEstadoRequest request) {
@@ -66,6 +101,12 @@ public class PagoController {
         return ResponseEntity.ok(ApiResponse.ok("Estado actualizado", mapToResponse(p)));
     }
 
+    @Operation(summary = "Actualizar datos de Mercado Pago", description = "Guarda los identificadores de Mercado Pago del pago")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PatchMapping("/{id}/mercado-pago")
     public ResponseEntity<ApiResponse<PagoResponse>> actualizarDatosMercadoPago(@PathVariable UUID id,
                                                                                  @RequestBody MercadoPagoRequest request) {

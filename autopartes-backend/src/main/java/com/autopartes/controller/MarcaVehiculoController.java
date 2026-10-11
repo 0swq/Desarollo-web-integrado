@@ -8,11 +8,15 @@ import com.autopartes.service.MarcaVehiculoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Marcas de vehiculo", description = "Catalogo de marcas")
 @RequestMapping("/api/marcas-vehiculos")
 public class MarcaVehiculoController {
 
@@ -22,6 +26,10 @@ public class MarcaVehiculoController {
         this.service = service;
     }
 
+    @Operation(summary = "Listar marcas de vehiculo", description = "Devuelve todas las marcas")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa")
+    })
     @GetMapping
     public ResponseEntity<ApiResponse<List<MarcaVehiculoResponse>>> listar() {
         List<MarcaVehiculoResponse> response = service.buscarTodos().stream()
@@ -30,6 +38,11 @@ public class MarcaVehiculoController {
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
+    @Operation(summary = "Obtener marca", description = "Devuelve una marca por su identificador")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<MarcaVehiculoResponse>> obtener(@PathVariable UUID id) {
         return service.buscarPorId(id)
@@ -37,18 +50,34 @@ public class MarcaVehiculoController {
                 .orElse(ResponseEntity.status(404).body(ApiResponse.error("Marca no encontrada")));
     }
 
+    @Operation(summary = "Crear marca", description = "Crea una marca. El nombre debe ser unico")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Recurso creado"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida")
+    })
     @PostMapping
     public ResponseEntity<ApiResponse<MarcaVehiculoResponse>> crear(@Valid @RequestBody MarcaVehiculoRequest request) {
         MarcaVehiculo m = service.crear(request);
         return ResponseEntity.status(201).body(ApiResponse.ok("Marca creada", mapToResponse(m)));
     }
 
+    @Operation(summary = "Actualizar marca", description = "Actualiza una marca existente")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos invalidos o regla de negocio incumplida"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<MarcaVehiculoResponse>> actualizar(@PathVariable UUID id, @Valid @RequestBody MarcaVehiculoRequest request) {
         MarcaVehiculo m = service.actualizar(id, request);
         return ResponseEntity.ok(ApiResponse.ok("Marca actualizada", mapToResponse(m)));
     }
 
+    @Operation(summary = "Activar o desactivar marca", description = "Invierte el estado activo de la marca")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @PatchMapping("/{id}/toggle-activo")
     public ResponseEntity<ApiResponse<MarcaVehiculoResponse>> toggleActivo(@PathVariable UUID id) {
         service.toggleActivo(id);
@@ -57,6 +86,11 @@ public class MarcaVehiculoController {
                 .orElse(ResponseEntity.status(404).body(ApiResponse.error("Marca no encontrada")));
     }
 
+    @Operation(summary = "Eliminar marca", description = "Elimina una marca")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Operacion completada sin contenido"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> eliminar(@PathVariable UUID id) {
         service.eliminar(id);
