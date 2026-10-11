@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:8080/api
+@token =
 @compatibilidadId =
 @productoId =
 @modeloId =
@@ -6,6 +7,7 @@
 ###
 # @capture compatibilidadId=id
 POST {{baseUrl}}/api/compatibilidades-vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -19,21 +21,28 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/producto/{{productoId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/modelo/{{modeloId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/compatibles?modeloId={{modeloId}}&anio=2020
+Authorization: Bearer {{token}}
 
 ###
 DELETE {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}
+Authorization: Bearer {{token}}
 
 ###
 DELETE {{baseUrl}}/api/compatibilidades-vehiculos/producto/{{productoId}}
+Authorization: Bearer {{token}}

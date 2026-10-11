@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:8080/api
+@token =
 @productoId =
 @categoriaId =
 @proveedorId =
@@ -6,6 +7,7 @@
 ###
 # @capture productoId=id
 POST {{baseUrl}}/api/productos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -25,21 +27,27 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/productos
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/productos/{{productoId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/productos/sku/{{sku}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/productos/buscar?q=pastilla
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/productos/proveedor/{{proveedorId}}
+Authorization: Bearer {{token}}
 
 ###
 PUT {{baseUrl}}/api/productos/{{productoId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -56,10 +64,13 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
+Authorization: Bearer {{token}}
 
 ###
 # deja el producto activo de nuevo: las pruebas de carrito y orden lo requieren
 PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
+Authorization: Bearer {{token}}
 
 ###
 DELETE {{baseUrl}}/api/productos/{{productoId}}
+Authorization: Bearer {{token}}

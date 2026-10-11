@@ -35,7 +35,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Rutas públicas (no piden token)
+                        // Rutas públicas (no piden token).
+                        // Spring Security evalúa el servletPath (sin el context-path), pero los
+                        // controllers ya anteponen /api en su @RequestMapping. Por eso la URL real
+                        // es /api/api/auth/... y el servletPath es /api/auth/**.
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/v3/api-docs/**",

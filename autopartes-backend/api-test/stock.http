@@ -1,22 +1,28 @@
 @baseUrl = http://localhost:8080/api
+@token =
 @stockId =
 @productoId =
 
 ###
 GET {{baseUrl}}/api/stocks
+Authorization: Bearer {{token}}
 
 ###
 # @capture stockId=id
 GET {{baseUrl}}/api/stocks/producto/{{productoId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/stocks/{{stockId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/stocks/bajo-stock
+Authorization: Bearer {{token}}
 
 ###
 PUT {{baseUrl}}/api/stocks/producto/{{productoId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

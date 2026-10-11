@@ -19,12 +19,15 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/ordenes
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/ordenes/{{ordenId}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/ordenes/numero/{{numeroOrden}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/ordenes/usuario/{{usuarioId}}
@@ -32,9 +35,11 @@ Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/ordenes/estado/PENDIENTE
+Authorization: Bearer {{token}}
 
 ###
 PATCH {{baseUrl}}/api/ordenes/{{ordenId}}/estado
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

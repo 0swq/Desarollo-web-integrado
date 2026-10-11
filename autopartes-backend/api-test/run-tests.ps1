@@ -204,7 +204,8 @@ Write-Host "=== SUITE DE ENDPOINTS - Autopartes ===" -ForegroundColor White
 Write-Host ("Base: " + $BaseUrl + "   RunId: " + $RunId)
 
 try {
-    $null = Invoke-WebRequest -Uri "$BaseUrl/api/usuarios" -UseBasicParsing -TimeoutSec 15 -ErrorAction Stop
+    # /v3/api-docs es publico: sirve para comprobar que la API responde
+    $null = Invoke-WebRequest -Uri "$BaseUrl/v3/api-docs" -UseBasicParsing -TimeoutSec 15 -ErrorAction Stop
 } catch {
     Write-Host ("No se pudo contactar la API: " + $_.Exception.Message) -ForegroundColor Red
     exit 1
@@ -244,9 +245,11 @@ Run-File "pago.http"
 # Seguridad
 Write-Host ""
 Write-Host "--- Seguridad / tokens" -ForegroundColor Cyan
-Run-Raw -Label "sin header" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @() -ExpectCode 401
-Run-Raw -Label "token invalido" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value="Bearer no.es.valido"}) -ExpectCode 401
-Run-Raw -Label "sin prefijo Bearer" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value={{token}}}) -ExpectCode 401
+# Con Spring Security y sin entry point configurado, Spring responde 403
+# (no 401) cuando no hay token valido: es el comportamiento por defecto.
+Run-Raw -Label "sin header" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @() -ExpectCode 403
+Run-Raw -Label "token invalido" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value="Bearer no.es.valido"}) -ExpectCode 403
+Run-Raw -Label "sin prefijo Bearer" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value={{token}}}) -ExpectCode 403
 Run-Raw -Label "token de otro usuario" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{empleadoId}}" -Headers @(@{Name="Authorization";Value="Bearer $($Vars.token)"}) -ExpectCode 403
 Run-Raw -Label "token valido" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value="Bearer $($Vars.token)"}) -ExpectCode 200
 

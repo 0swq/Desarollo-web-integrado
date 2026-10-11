@@ -1,9 +1,11 @@
 @baseUrl = http://localhost:8080/api
+@token =
 @categoriaId =
 
 ###
 # @capture categoriaId=id
 POST {{baseUrl}}/api/categorias
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -15,12 +17,15 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/categorias
+Authorization: Bearer {{token}}
 
 ###
 GET {{baseUrl}}/api/categorias/{{categoriaId}}
+Authorization: Bearer {{token}}
 
 ###
 PUT {{baseUrl}}/api/categorias/{{categoriaId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -32,6 +37,8 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/categorias/{{categoriaId}}/toggle-activo
+Authorization: Bearer {{token}}
 
 ###
 DELETE {{baseUrl}}/api/categorias/{{categoriaId}}
+Authorization: Bearer {{token}}

@@ -1,6 +1,7 @@
 @baseUrl = http://localhost:8080/api
 @correoCliente = cliente@test.com
 @contrasenaCliente = 123456
+@token =
 
 ###
 # @capture usuarioId=id
