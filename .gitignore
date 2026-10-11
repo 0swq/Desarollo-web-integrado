@@ -5,9 +5,25 @@ target/
 # Env / secrets
 .env
 
+# Configuracion local: no se versiona, cada entorno tiene la suya.
+# Usa application.properties.example como plantilla.
+application.properties
+application-local.properties
+application-*.properties
+!application.properties.example
+
 # Logs
 *.log
 
 # OS
 Thumbs.db
 .DS_Store
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+nbproject/
