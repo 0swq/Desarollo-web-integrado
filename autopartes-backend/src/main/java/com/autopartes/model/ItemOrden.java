@@ -27,7 +27,6 @@ public class ItemOrden {
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
-    // Copias del producto al momento de la compra (histórico)
     @Column(name = "nombre_producto", nullable = false)
     private String nombreProducto;
 

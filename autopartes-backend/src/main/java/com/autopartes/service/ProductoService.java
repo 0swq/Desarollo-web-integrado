@@ -64,13 +64,11 @@ public class ProductoService {
 
         Producto guardado = productoRepository.guardar(producto);
 
-        // Asociar categoría (N:M)
         ProductoCategoria pc = new ProductoCategoria();
         pc.setProductoId(guardado.getId());
         pc.setCategoriaId(request.getCategoriaId());
         productoCategoriaRepository.guardar(pc);
 
-        // Inicializar stock
         int stockInicial = request.getStockInicial() != null ? request.getStockInicial() : 0;
         int stockMinimo = request.getStockMinimo() != null ? request.getStockMinimo() : 5;
 

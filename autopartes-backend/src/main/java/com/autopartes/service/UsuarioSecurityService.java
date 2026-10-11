@@ -1,7 +1,7 @@
-package com.autopartes.service; // O el paquete exacto donde tengas tu clase
+package com.autopartes.service;
 
 import com.autopartes.model.Usuario;
-import com.autopartes.repository.UsuarioRepository; // Asegúrate de importar tu repositorio real
+import com.autopartes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

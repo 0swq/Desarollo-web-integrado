@@ -1,4 +1,4 @@
-package com.autopartes.service; // O el paquete exacto donde tengas tu clase
+package com.autopartes.service;
 
 import com.autopartes.model.Usuario;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,18 +18,17 @@ public class UsuarioSecurityDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Convierte tu enum Rol (ej. ADMIN) al formato de Spring Security (ROLE_ADMIN)
         return List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name()));
     }
 
     @Override
     public String getPassword() {
-        return usuario.getContrasena(); // Apunta a tu campo de contraseña cifrada
+        return usuario.getContrasena();
     }
 
     @Override
     public String getUsername() {
-        return usuario.getCorreo(); // Tu sistema usa el correo como identificador principal
+        return usuario.getCorreo();
     }
 
     @Override
@@ -49,7 +48,6 @@ public class UsuarioSecurityDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // Opcional: aprovecha tu campo activo para bloquear usuarios si está en false
         return usuario.getActivo() != null ? usuario.getActivo() : true;
     }
 }
