@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @token =
 @productoId =
 @categoriaId =
@@ -6,7 +6,7 @@
 ###
 # @expect 400
 POST {{baseUrl}}/api/producto-categorias
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -16,12 +16,12 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/producto-categorias/producto/{{productoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/producto-categorias/categoria/{{categoriaId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/producto-categorias/producto/{{productoId}}/categoria/{{categoriaId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}

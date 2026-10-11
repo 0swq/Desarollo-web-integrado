@@ -1,5 +1,5 @@
 param(
-    [string]$BaseUrl = "http://localhost:8080/api",
+    [string]$BaseUrl = "http://localhost:8080",
     [switch]$SkipCleanup
 )
 
@@ -11,12 +11,16 @@ $Vars = @{
     baseUrl           = $BaseUrl
     correoCliente     = "cliente.$RunId@test.com"
     correoEmpleado    = "empleado.$RunId@test.com"
+    correoAdmin       = "admin.$RunId@test.com"
     contrasenaCliente = "123456"
+    contrasenaAdmin   = "123456"
     contrasenaActual  = "123456"
     contrasenaNueva   = "654321"
     usuarioId         = ""
     empleadoId        = ""
     token             = ""
+    tokenAdmin        = ""
+    usuarioAdminId    = ""
     carritoId         = ""
     categoriaId       = ""
     proveedorId       = ""
@@ -160,7 +164,7 @@ function Run-File {
         if ($Only -and ($Only -notcontains $r.Method)) { continue }
         if ($SkipDeletes -and $r.Method -eq "DELETE") { continue }
 
-        $url  = Resolve-Tpl $r.Path
+$url  = Resolve-Tpl $r.Path
         $body = Resolve-Tpl $r.Body
         $res  = Invoke-Req $url $r.Method $body $r.Headers
 
@@ -216,7 +220,7 @@ if ([string]::IsNullOrWhiteSpace($Vars.token)) {
     Write-Host "No se obtuvo token. Abortando." -ForegroundColor Red
     exit 1
 }
-Write-Host ("   [info] token capturado, usuarioId=" + $Vars.usuarioId) -ForegroundColor DarkGray
+Write-Host ("   [info] cliente id=" + $Vars.usuarioId + "  admin id=" + $Vars.usuarioAdminId) -ForegroundColor DarkGray
 
 Run-File "categoria.http"            -SkipDeletes
 Run-File "proveedor.http"            -SkipDeletes
@@ -247,9 +251,9 @@ Write-Host ""
 Write-Host "--- Seguridad / tokens" -ForegroundColor Cyan
 # Con Spring Security y sin entry point configurado, Spring responde 403
 # (no 401) cuando no hay token valido: es el comportamiento por defecto.
-Run-Raw -Label "sin header" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @() -ExpectCode 403
-Run-Raw -Label "token invalido" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value="Bearer no.es.valido"}) -ExpectCode 403
-Run-Raw -Label "sin prefijo Bearer" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value={{token}}}) -ExpectCode 403
+Run-Raw -Label "sin header" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @() -ExpectCode 401
+Run-Raw -Label "token invalido" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value="Bearer no.es.valido"}) -ExpectCode 401
+Run-Raw -Label "sin prefijo Bearer" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value={{token}}}) -ExpectCode 401
 Run-Raw -Label "token de otro usuario" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{empleadoId}}" -Headers @(@{Name="Authorization";Value="Bearer $($Vars.token)"}) -ExpectCode 403
 Run-Raw -Label "token valido" -Method "GET" -Path "{{baseUrl}}/api/carritos/usuario/{{usuarioId}}" -Headers @(@{Name="Authorization";Value="Bearer $($Vars.token)"}) -ExpectCode 200
 

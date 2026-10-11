@@ -1,7 +1,12 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @correoCliente = cliente@test.com
 @contrasenaCliente = 123456
+@correoAdmin = admin@test.com
+@contrasenaAdmin = 123456
 @token =
+@tokenAdmin =
+@usuarioId =
+@usuarioAdminId =
 
 ###
 # @capture usuarioId=id
@@ -26,4 +31,29 @@ Content-Type: application/json
 {
   "correo": "{{correoCliente}}",
   "contrasena": "{{contrasenaCliente}}"
+}
+
+###
+# @capture usuarioAdminId=id
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "correo": "{{correoAdmin}}",
+  "contrasena": "{{contrasenaAdmin}}",
+  "nombre": "Admin",
+  "apellido": "Prueba",
+  "telefono": "999000111",
+  "direccion": "Av. Central 100",
+  "rol": "ADMIN"
+}
+
+###
+# @capture tokenAdmin=token
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "{{correoAdmin}}",
+  "contrasena": "{{contrasenaAdmin}}"
 }

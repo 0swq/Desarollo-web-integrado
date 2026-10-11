@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @token =
 @productoId =
 @categoriaId =
@@ -7,7 +7,7 @@
 ###
 # @capture productoId=id
 POST {{baseUrl}}/api/productos
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -27,27 +27,27 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/productos
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/productos/{{productoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/productos/sku/{{sku}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/productos/buscar?q=pastilla
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/productos/proveedor/{{proveedorId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 PUT {{baseUrl}}/api/productos/{{productoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -64,13 +64,13 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 # deja el producto activo de nuevo: las pruebas de carrito y orden lo requieren
 PATCH {{baseUrl}}/api/productos/{{productoId}}/toggle-activo
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/productos/{{productoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}

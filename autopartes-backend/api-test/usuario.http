@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @token =
 @usuarioId =
 @empleadoId =
@@ -8,16 +8,16 @@
 
 ###
 GET {{baseUrl}}/api/usuarios
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/usuarios/{{usuarioId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 # @capture empleadoId=id
 POST {{baseUrl}}/api/usuarios
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/usuarios/{{empleadoId}}/password
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -42,8 +42,8 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/usuarios/{{empleadoId}}/toggle-activo
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/usuarios/{{empleadoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}

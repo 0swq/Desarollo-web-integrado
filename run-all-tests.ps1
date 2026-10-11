@@ -1,5 +1,5 @@
 param(
-    [string]$BaseUrl = "http://localhost:8080/api",
+    [string]$BaseUrl = "http://localhost:8080",
     [switch]$KeepServer,
     [switch]$SkipCleanup
 )

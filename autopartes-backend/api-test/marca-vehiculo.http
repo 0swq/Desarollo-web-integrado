@@ -1,11 +1,11 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @token =
 @marcaId =
 
 ###
 # @capture marcaId=id
 POST {{baseUrl}}/api/marcas-vehiculos
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -16,15 +16,15 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/marcas-vehiculos
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 PUT {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -35,8 +35,8 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}/toggle-activo
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/marcas-vehiculos/{{marcaId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}

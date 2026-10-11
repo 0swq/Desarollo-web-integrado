@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @token =
 @compatibilidadId =
 @productoId =
@@ -7,7 +7,7 @@
 ###
 # @capture compatibilidadId=id
 POST {{baseUrl}}/api/compatibilidades-vehiculos
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -21,28 +21,28 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/producto/{{productoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/modelo/{{modeloId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/compatibilidades-vehiculos/compatibles?modeloId={{modeloId}}&anio=2020
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/compatibilidades-vehiculos/{{compatibilidadId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/compatibilidades-vehiculos/producto/{{productoId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}

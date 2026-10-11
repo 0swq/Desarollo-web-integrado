@@ -1,7 +1,7 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api
+  # No se define server.servlet.context-path: los controllers ya anteponen
+  # /api en su @RequestMapping. Con context-path las URLs quedaban /api/api/...
 
 spring:
   application:

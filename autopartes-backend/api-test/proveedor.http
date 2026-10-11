@@ -1,11 +1,11 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080
 @token =
 @proveedorId =
 
 ###
 # @capture proveedorId=id
 POST {{baseUrl}}/api/proveedores
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -20,15 +20,15 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/api/proveedores
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 GET {{baseUrl}}/api/proveedores/{{proveedorId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 PUT {{baseUrl}}/api/proveedores/{{proveedorId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
@@ -43,8 +43,8 @@ Content-Type: application/json
 
 ###
 PATCH {{baseUrl}}/api/proveedores/{{proveedorId}}/toggle-activo
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
 
 ###
 DELETE {{baseUrl}}/api/proveedores/{{proveedorId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenAdmin}}
