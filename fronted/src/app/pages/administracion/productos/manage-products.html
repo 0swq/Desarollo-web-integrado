@@ -19,11 +19,11 @@
     <div class="stats">
       <article>
         <span class="stat-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
-        <div><span>Total de productos</span><strong>{{ productos().length }}</strong></div>
+        <div><span>Total de productos</span><strong>{{ total() }}</strong></div>
       </article>
       <article>
         <span class="stat-icon green"><i class="bi bi-check-circle" aria-hidden="true"></i></span>
-        <div><span>Productos activos</span><strong>{{ activos() }}</strong></div>
+        <div><span>Activos en esta página</span><strong>{{ activos() }}</strong></div>
       </article>
     </div>
   }
@@ -42,7 +42,7 @@
     <div class="toolbar">
       <label class="search">
         <i class="bi bi-search" aria-hidden="true"></i>
-        <input type="search" [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)"
+        <input type="search" [ngModel]="busqueda()" (ngModelChange)="buscar($event)"
           placeholder="Buscar por nombre, SKU o descripción" aria-label="Buscar productos">
       </label>
     </div>
@@ -63,7 +63,7 @@
       <div class="state" role="status">
         <i class="bi" [class.bi-search]="productos().length > 0" [class.bi-box-seam]="!productos().length"
           aria-hidden="true"></i>
-        @if (productos().length) {
+        @if (busqueda()) {
           <h3>No encontramos productos</h3>
           <p>Prueba con otro nombre, SKU o descripción.</p>
         } @else {
@@ -136,7 +136,7 @@
 
     @if (!cargando() && !error() && productos().length) {
       <div class="pagination">
-        <span>Mostrando <b>{{ visibles().length }}</b> de <b>{{ productos().length }}</b> productos</span>
+        <span>Mostrando <b>{{ visibles().length }}</b> de <b>{{ total() }}</b> productos · Página {{pagina()}} de {{totalPaginas()}}</span><div class="page-buttons"><button type="button" class="refresh" (click)="irPagina(pagina()-1)" [disabled]="pagina()<=1||cargando()">Anterior</button><button type="button" class="refresh" (click)="irPagina(pagina()+1)" [disabled]="pagina()>=totalPaginas()||cargando()">Siguiente</button></div>
       </div>
     }
   </div>
@@ -200,9 +200,16 @@
             <p class="action-error full-width" role="status">Crea una categoría para poder guardar un producto.</p>
           }
 
-          <label class="form-field full-width">URL o ruta de la imagen (opcional)
-            <input formControlName="imagenUrl" maxlength="255">
-          </label>
+                    <div class="form-field full-width">Imagen del producto (opcional)
+            <div class="image-drop" [class.dragging]="arrastrando()" (dragover)="$event.preventDefault();arrastrando.set(true)" (dragleave)="arrastrando.set(false)" (drop)="soltarImagen($event)">
+              @if(vistaPrevia()){<img [src]="vistaPrevia()" alt="Vista previa del producto">}@else{<i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>}
+              <strong>{{vistaPrevia() ? 'Cambiar imagen del producto' : 'Arrastra tu imagen aquí'}}</strong><span>JPG, PNG o WebP · máximo 10 MB</span>
+              <input #archivoProducto type="file" accept="image/jpeg,image/png,image/webp" hidden (change)="seleccionarArchivo($event)" [disabled]="procesando()">
+              <button type="button" class="refresh" (click)="archivoProducto.click()" [disabled]="procesando()"><i class="bi bi-folder2-open"></i> Seleccionar archivo</button>
+              @if(archivoImagen()){<small>{{archivoImagen()!.name}}</small>}
+              @if(vistaPrevia()){<button type="button" class="remove-image" (click)="quitarImagen()" [disabled]="procesando()">Quitar imagen</button>}
+            </div>@if(errorImagen()){<p class="action-error" role="alert">{{errorImagen()}}</p>}
+          </div>
           @if (!editandoId()) {
             <label class="form-field">Stock inicial
               <input type="number" formControlName="stockInicial" min="0" max="2147483647" step="1">

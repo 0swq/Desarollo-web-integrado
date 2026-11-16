@@ -38,6 +38,14 @@ public class ProductoController {
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
+    @GetMapping("/pagina")
+    @Operation(summary="Consultar productos paginados")
+    public ResponseEntity<ApiResponse<java.util.Map<String,Object>>> pagina(
+            @RequestParam(defaultValue="0") int pagina, @RequestParam(defaultValue="10") int tamano,
+            @RequestParam(defaultValue="") String q) {
+        var resultado=service.pagina(pagina,tamano,q);
+        return ResponseEntity.ok(ApiResponse.ok(java.util.Map.of("contenido",resultado.getContent().stream().map(this::mapToResponse).toList(),"total",resultado.getTotalElements(),"paginas",resultado.getTotalPages())));
+    }
     @Operation(summary = "Obtener producto", description = "Devuelve un producto por su identificador")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Operacion exitosa"),

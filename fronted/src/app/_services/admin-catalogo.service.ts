@@ -59,7 +59,7 @@ export class AdminCatalogoService {
     }));
   }
 
-  subirImagen(archivo: File, carpeta: 'marcas' | 'modelos' | 'categorias' | 'proveedores'): Observable<{ ruta: string; url: string }> {
+  subirImagen(archivo: File, carpeta: 'productos' | 'marcas' | 'modelos' | 'categorias' | 'proveedores'): Observable<{ ruta: string; url: string }> {
     const datos = new FormData(); datos.append('archivo', archivo);
     return this.http.post<ApiResponse<{ ruta: string; url: string }>>(`${environment.apiUrl}/storage/imagenes?carpeta=${carpeta}`, datos).pipe(map(respuesta => {
       if (!respuesta.success || !respuesta.data) throw new Error(respuesta.message || 'No se pudo subir la imagen.');

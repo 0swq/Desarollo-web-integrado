@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
+@org.springframework.transaction.annotation.Transactional
 public class StockService {
 
     private final com.autopartes.repository.StockRepository stockRepository;
@@ -85,7 +86,7 @@ public class StockService {
     }
 
     private MovimientoStock registrarMovimiento(UUID productoId, TipoMovimiento tipo, Integer cantidad, String motivo, String referencia, UUID usuarioId) {
-        Producto producto = productoRepository.buscarPorId(productoId)
+        Producto producto = productoRepository.bloquearPorId(productoId)
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Producto no encontrado"));
 
         Stock stock = stockRepository.buscarPorProducto(productoId)
@@ -99,12 +100,13 @@ public class StockService {
                     return stockRepository.guardar(nuevo);
                 });
 
+        if(cantidad==null || cantidad<0 || (tipo!=TipoMovimiento.AJUSTE && cantidad==0)) throw new com.autopartes.exception.BusinessException("Cantidad inválida");
         int stockAnterior = stock.getCantidad();
         int stockNuevo;
 
         switch (tipo) {
             case ENTRADA:
-                stockNuevo = stockAnterior + cantidad;
+                if((long)stockAnterior+cantidad>Integer.MAX_VALUE) throw new com.autopartes.exception.BusinessException("Cantidad fuera de rango"); stockNuevo = stockAnterior + cantidad;
                 break;
             case SALIDA:
                 if (stockAnterior < cantidad) {
@@ -141,6 +143,16 @@ public class StockService {
         return movimientoRepository.guardar(movimiento);
     }
 
+    public MovimientoStock manual(UUID productoId, TipoMovimiento tipo, Integer cantidad, String motivo, String referencia, String confirmacion, Integer esperado, String correo) {
+        if(!"confirmo hacer este movimiento".equals(confirmacion)) throw new com.autopartes.exception.BusinessException("Escribe la frase de confirmación exacta");
+        if(motivo==null || motivo.trim().length()<5 || motivo.length()>255 || (referencia!=null && referencia.length()>255)) throw new com.autopartes.exception.BusinessException("Revisa el motivo y la referencia");
+        productoRepository.bloquearPorId(productoId).orElseThrow(()->new com.autopartes.exception.ResourceNotFoundException("Producto no encontrado"));
+        Stock stock=stockRepository.buscarPorProducto(productoId).orElseThrow(()->new com.autopartes.exception.ResourceNotFoundException("Stock no encontrado"));
+        if(!java.util.Objects.equals(esperado,stock.getCantidad())) throw new com.autopartes.exception.BusinessException("El stock cambió. Actualiza antes de confirmar");
+        if(tipo==TipoMovimiento.AJUSTE && java.util.Objects.equals(cantidad,esperado)) throw new com.autopartes.exception.BusinessException("El ajuste debe cambiar el stock actual");
+        Usuario usuario=usuarioRepository.buscarPorCorreo(correo).orElseThrow(()->new com.autopartes.exception.ResourceNotFoundException("Usuario no encontrado"));
+        return registrarMovimiento(productoId,tipo,cantidad,motivo.trim(),referencia,usuario.getId());
+    }
     public long contar() {
         return stockRepository.contar();
     }

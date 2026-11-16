@@ -1,5 +1,7 @@
+import { environment } from '../../../../environments/environment';
+import { ApiResponse } from '../../../models/auth.interface';
 import { DatePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, DestroyRef, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -72,6 +74,17 @@ export class ManageStock implements OnInit {
     ubicacionAlmacen: '',
   });
 
+  private http=inject(HttpClient);
+  protected movimientoStock=signal<Stock|null>(null);protected historial=signal<{id:string;tipo:string;cantidad:number;stockAnterior:number;stockNuevo:number;motivo:string;referencia:string;fecha:string}[]>([]);
+  protected cargandoHistorial=signal(false);protected errorMovimiento=signal('');protected enviando=signal(false);
+  protected tipoMovimiento='ENTRADA';protected cantidadMovimiento:number|null=null;protected motivoMovimiento='';protected referenciaMovimiento='';protected frase='';protected intentoMovimiento=false;
+  private movimientoDialog=viewChild.required<ElementRef<HTMLDialogElement>>('movimientoDialog');
+  protected abrirMovimiento(stock:Stock){this.movimientoStock.set(stock);this.historial.set([]);this.errorMovimiento.set('');this.tipoMovimiento='ENTRADA';this.cantidadMovimiento=null;this.motivoMovimiento='';this.referenciaMovimiento='';this.frase='';this.intentoMovimiento=false;this.movimientoDialog().nativeElement.showModal();this.cargarHistorial();}
+  protected cargarHistorial(){const stock=this.movimientoStock();if(!stock)return;this.cargandoHistorial.set(true);this.errorMovimiento.set('');this.http.get<ApiResponse<ReturnType<typeof this.historial>>>(`${environment.apiUrl}/stocks/producto/${stock.productoId}/movimientos`).pipe(takeUntilDestroyed(this.destroyRef),finalize(()=>this.cargandoHistorial.set(false))).subscribe({next:r=>{if(r.success&&r.data)this.historial.set(r.data);else this.errorMovimiento.set(r.message||'No se pudo consultar el historial.');},error:()=>this.errorMovimiento.set('No se pudo cargar el historial. Actualiza antes de registrar un movimiento.')});}
+  protected errorCantidad(){const c=this.cantidadMovimiento;const stock=this.movimientoStock();if(c===null||!Number.isInteger(c)||c<0||c>2147483647||this.tipoMovimiento!=='AJUSTE'&&c===0)return 'Ingresa una cantidad entera válida (mayor que cero en entradas y salidas).';if(this.tipoMovimiento==='SALIDA'&&c>(stock?.cantidad||0))return 'La salida supera las existencias actuales.';if(this.tipoMovimiento==='ENTRADA'&&c+(stock?.cantidad||0)>2147483647)return 'El stock resultante excede el límite permitido.';if(this.tipoMovimiento==='AJUSTE'&&c===stock?.cantidad)return 'El ajuste debe cambiar la cantidad actual.';return '';}
+  protected get resultadoMovimiento(){const actual=this.movimientoStock()?.cantidad||0,c=this.cantidadMovimiento||0;return this.tipoMovimiento==='AJUSTE'?c:this.tipoMovimiento==='SALIDA'?actual-c:actual+c;}
+  protected guardarMovimiento(){if(this.enviando())return;this.intentoMovimiento=true;const stock=this.movimientoStock();if(!stock||this.errorCantidad()||this.motivoMovimiento.trim().length<5||this.frase!=='confirmo hacer este movimiento'){this.errorMovimiento.set('Revisa la cantidad, escribe un motivo y completa la frase exacta.');return;}this.enviando.set(true);this.errorMovimiento.set('');this.http.post<ApiResponse<{stockNuevo:number}>>(`${environment.apiUrl}/stocks/producto/${stock.productoId}/movimientos`,{tipo:this.tipoMovimiento,cantidad:this.cantidadMovimiento,motivo:this.motivoMovimiento.trim(),referencia:this.referenciaMovimiento.trim(),confirmacion:this.frase,stockEsperado:stock.cantidad}).pipe(takeUntilDestroyed(this.destroyRef),finalize(()=>this.enviando.set(false))).subscribe({next:r=>{if(!r.success||!r.data){this.errorMovimiento.set(r.message||'No se pudo registrar.');return;}this.actualizarFila({...stock,cantidad:r.data.stockNuevo});this.movimientoDialog().nativeElement.close();toast.success('Movimiento registrado.');},error:e=>this.errorMovimiento.set(mensajeError(e,'No se pudo registrar el movimiento. Actualiza el stock e inténtalo de nuevo.'))});}
+  protected cerrarMovimiento(event?:Event){event?.preventDefault();if(!this.enviando())this.movimientoDialog().nativeElement.close();}
   ngOnInit(): void {
     this.cargar();
   }

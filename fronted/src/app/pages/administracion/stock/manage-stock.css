@@ -108,3 +108,4 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+.movement-dialog{width:min(850px,calc(100vw - 32px));max-height:90vh;overflow:auto}.movement-dialog fieldset{border:0;padding:0;margin:0}.movement-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.movement-dialog .form-field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}.movement-dialog input,.movement-dialog select{padding:11px;border:1px solid #dfe6ef;border-radius:6px;min-width:0;width:100%;box-sizing:border-box}.movement-preview{padding:16px;background:#fff6e6;border-radius:8px;color:#8c713c}.movement-heading{display:flex;justify-content:space-between;align-items:center;margin:24px 0 15px}.movement-dialog td small{display:block;color:#91a0b3}@media(max-width:600px){.movement-grid{grid-template-columns:1fr}}

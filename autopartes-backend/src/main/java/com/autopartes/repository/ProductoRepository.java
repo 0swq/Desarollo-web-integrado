@@ -15,6 +15,9 @@ public interface ProductoRepository extends JpaRepository<Producto, UUID> {
     Optional<Producto> bloquearPorId(@org.springframework.data.repository.query.Param("id") UUID id);
 
 
+    org.springframework.data.domain.Page<Producto> findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCaseOrSkuContainingIgnoreCase(
+            String nombre, String descripcion, String sku, org.springframework.data.domain.Pageable pageable);
+
     Optional<Producto> findBySkuIgnoreCase(String sku);
 
     boolean existsBySkuIgnoreCase(String sku);

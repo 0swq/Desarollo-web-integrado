@@ -1,4 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-@Component({selector:'app-reportes-page',standalone:true,imports:[RouterLink],templateUrl:'./reportes.html',styleUrl:'./reportes.css'})
-export class ReportesPage { }
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { ApiResponse } from '../../../models/auth.interface';
+interface Dashboard {desde:string;hasta:string;moneda:string;resumen:{ventas:number;pedidos:number;ticket:number;unidades:number};mensual:{mes:string;monto:number}[];categorias:{nombre:string;monto:number}[];productos:{sku:string;nombre:string;cantidad:number;total:number}[];semanal:{dia:number;cantidad:number}[];}
+@Component({selector:'app-reportes-page',standalone:true,imports:[CommonModule,FormsModule],templateUrl:'./reportes.html',styleUrl:'./reportes.css'})
+export class ReportesPage implements OnInit {
+ private http=inject(HttpClient);hasta=this.fecha(new Date());desde=this.fecha(new Date(new Date().getFullYear(),new Date().getMonth()-5,1));datos:Dashboard|null=null;cargando=false;exportando=false;error='';errorExportar='';dias=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+ fecha(d:Date){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+ ngOnInit(){this.cargar();}
+ get invalido(){return !this.desde||!this.hasta||this.desde>this.hasta||(Date.parse(this.hasta)-Date.parse(this.desde))/86400000>731;}
+ cargar(){if(this.cargando)return;if(this.invalido){this.error='Selecciona fechas válidas en orden y un rango de hasta dos años.';return;}this.cargando=true;this.error='';this.http.get<ApiResponse<Dashboard>>(`${environment.apiUrl}/dashboard`,{params:{desde:this.desde,hasta:this.hasta}}).pipe(finalize(()=>this.cargando=false)).subscribe({next:r=>{if(r.success&&r.data)this.datos=r.data;else this.error=r.message||'No se pudo cargar el reporte.';},error:e=>this.error=e.error?.message||'No pudimos consultar el reporte. Inténtalo de nuevo.'});}
+ get maxVentas(){return Math.max(1,...(this.datos?.mensual.map(m=>Number(m.monto))||[]));}
+ get puntos(){const lista=this.datos?.mensual||[];return lista.map((v,i)=>`${50+i*650/Math.max(1,lista.length-1)},${235-Number(v.monto)/this.maxVentas*180}`).join(' ');}
+ get totalCategorias(){return this.datos?.categorias.reduce((s,c)=>s+Number(c.monto),0)||0;}
+ get maxSemana(){return Math.max(1,...(this.datos?.semanal.map(s=>Number(s.cantidad))||[]));}
+ async exportar(){if(!this.datos||this.exportando)return;this.exportando=true;this.errorExportar='';const d=this.datos;try{const {Workbook}=await import('exceljs');const libro=new Workbook();libro.creator='Autopartes';const agregar=(nombre:string,encabezados:string[],filas:(string|number)[][])=>{const hoja=libro.addWorksheet(nombre);hoja.addRow(['Reporte Autopartes',d.desde,d.hasta]);hoja.addRow(['Pedidos no cancelados con pago aprobado · PEN']);hoja.addRow(encabezados);filas.forEach(f=>hoja.addRow(f));hoja.getRow(3).font={bold:true,color:{argb:'FFFFFFFF'}};hoja.getRow(3).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFD92332'}};hoja.columns.forEach(col=>col.width=28);hoja.views=[{state:'frozen',ySplit:3}];hoja.autoFilter={from:{row:3,column:1},to:{row:Math.max(3,hoja.rowCount),column:encabezados.length}};return hoja;};agregar('Resumen',['Indicador','Valor'],[['Ventas PEN',Number(d.resumen.ventas)],['Pedidos',Number(d.resumen.pedidos)],['Ticket promedio PEN',Number(d.resumen.ticket)],['Unidades',Number(d.resumen.unidades)]]);agregar('Ventas mensuales',['Mes','Importe PEN'],d.mensual.map(v=>[v.mes,Number(v.monto)]));agregar('Categorías',['Categoría','Subtotal PEN'],d.categorias.map(v=>[v.nombre,Number(v.monto)]));agregar('Productos',['SKU','Producto','Unidades','Subtotal PEN'],d.productos.map(v=>[v.sku,v.nombre,Number(v.cantidad),Number(v.total)]));agregar('Actividad semanal',['Día','Pedidos'],d.semanal.map(v=>[this.dias[v.dia-1],Number(v.cantidad)]));const buffer=await libro.xlsx.writeBuffer();const url=URL.createObjectURL(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));const a=document.createElement('a');a.href=url;a.download=`reportes-${d.desde}-${d.hasta}.xlsx`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch{this.errorExportar='No se pudo generar el Excel. Inténtalo nuevamente.';}finally{this.exportando=false;}}
+}

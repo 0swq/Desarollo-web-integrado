@@ -121,6 +121,12 @@ public class CompatibilidadVehiculoController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Actualizar compatibilidad")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<CompatibilidadVehiculoResponse>> actualizar(
+            @PathVariable UUID id, @Valid @RequestBody CompatibilidadVehiculoRequest request) {
+        return ResponseEntity.ok(ApiResponse.ok("Compatibilidad actualizada", mapToResponse(service.actualizar(id, request))));
+    }
     private CompatibilidadVehiculoResponse mapToResponse(CompatibilidadVehiculo c) {
         CompatibilidadVehiculoResponse r = new CompatibilidadVehiculoResponse();
         r.setId(c.getId());

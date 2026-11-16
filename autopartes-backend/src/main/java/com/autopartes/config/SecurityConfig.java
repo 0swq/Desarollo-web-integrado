@@ -57,6 +57,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/storage/imagenes/**").hasAnyRole("ADMIN", "EMPLEADO")
                         .requestMatchers(HttpMethod.DELETE, "/api/storage/imagenes/**").hasAnyRole("ADMIN", "EMPLEADO")
 
+                        .requestMatchers("/api/stocks/producto/*/movimientos").hasAnyRole("ADMIN", "EMPLEADO")
                         .requestMatchers(HttpMethod.GET, "/api/stocks/bajo-stock")
                             .hasAnyRole("ADMIN", "EMPLEADO")
 
@@ -95,6 +96,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.PATCH, "/api/usuarios/*/password").authenticated()
                         .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers("/api/dashboard", "/api/dashboard/**").hasAnyRole("ADMIN", "EMPLEADO")
                         .requestMatchers("/api/pagos/**").hasAnyRole("ADMIN", "EMPLEADO")
 
                         .requestMatchers(HttpMethod.GET,

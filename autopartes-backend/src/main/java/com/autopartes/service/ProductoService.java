@@ -34,6 +34,12 @@ public class ProductoService {
         this.productoCategoriaRepository = productoCategoriaRepository;
     }
 
+    public org.springframework.data.domain.Page<Producto> pagina(int pagina, int tamano, String q) {
+        if(pagina<0 || tamano<1 || tamano>100) throw new com.autopartes.exception.BusinessException("Paginación inválida");
+        var pageable=org.springframework.data.domain.PageRequest.of(pagina,tamano,org.springframework.data.domain.Sort.by("nombre").ascending().and(org.springframework.data.domain.Sort.by("id")));
+        return productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCaseOrSkuContainingIgnoreCase(q.trim(),q.trim(),q.trim(),pageable);
+    }
+
     public Producto crear(ProductoRequest request) {
         if (productoRepository.existePorSku(request.getSku())) {
             throw new com.autopartes.exception.BusinessException("Ya existe un producto con el SKU: " + request.getSku());

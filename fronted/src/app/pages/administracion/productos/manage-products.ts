@@ -1,10 +1,12 @@
+import { environment } from '../../../../environments/environment';
+import { ApiResponse } from '../../../models/auth.interface';
 import { CurrencyPipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, DestroyRef, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { toast } from 'ngx-sonner';
-import { finalize, forkJoin, of, Subscription } from 'rxjs';
+import { finalize, forkJoin, of, switchMap, Subscription } from 'rxjs';
 import { AdminCatalogoService } from '../../../_services/admin-catalogo.service';
 import { ProductoService } from '../../../_services/producto.service';
 import { Categoria } from '../../../models/categoria.interface';
@@ -32,6 +34,22 @@ export class ManageProducts implements OnInit {
   private readonly confirmacion = viewChild.required<ElementRef<HTMLDialogElement>>('confirmacion');
   private cargaEditor?: Subscription;
 
+  protected readonly archivoImagen = signal<File | null>(null);
+  protected readonly vistaPrevia = signal('');
+  protected readonly errorImagen = signal('');
+  protected readonly arrastrando = signal(false);
+  private limpiarImagen(): void { if(this.vistaPrevia().startsWith('blob:')) URL.revokeObjectURL(this.vistaPrevia()); this.archivoImagen.set(null);this.vistaPrevia.set('');this.errorImagen.set('');this.arrastrando.set(false); }
+  protected seleccionarArchivo(event: Event): void {const input=event.target as HTMLInputElement;this.recibirImagen(input.files);input.value='';}
+  protected soltarImagen(event: DragEvent): void {event.preventDefault();this.arrastrando.set(false);if(!this.procesando())this.recibirImagen(event.dataTransfer?.files);}
+  private recibirImagen(files?: FileList|null): void {if(this.procesando()||!files?.length)return;if(files.length!==1){this.errorImagen.set('Selecciona una sola imagen.');return;}const file=files[0];if(!['image/jpeg','image/png','image/webp'].includes(file.type)){this.errorImagen.set('Usa una imagen JPG, PNG o WebP.');return;}if(!file.size||file.size>10*1024*1024){this.errorImagen.set('La imagen debe tener contenido y pesar como máximo 10 MB.');return;}const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{if(this.vistaPrevia().startsWith('blob:'))URL.revokeObjectURL(this.vistaPrevia());this.archivoImagen.set(file);this.vistaPrevia.set(url);this.errorImagen.set('');};img.onerror=()=>{URL.revokeObjectURL(url);this.errorImagen.set('El archivo no contiene una imagen válida.');};img.src=url;}
+  protected quitarImagen(): void {if(this.procesando())return;this.limpiarImagen();this.formulario.controls.imagenUrl.setValue('');}
+  private peticionPagina?: Subscription; private temporizador?: ReturnType<typeof setTimeout>;
+  private readonly http=inject(HttpClient);
+  protected readonly pagina=signal(1);
+  protected readonly total=signal(0);
+  protected readonly totalPaginas=signal(1);
+  protected buscar(texto:string){this.busqueda.set(texto);this.pagina.set(1);clearTimeout(this.temporizador);this.temporizador=setTimeout(()=>this.cargar(),250);}
+  protected irPagina(p:number){if(p<1||p>this.totalPaginas()||this.cargando())return;this.pagina.set(p);this.cargar();}
   protected readonly productos = signal<Producto[]>([]);
   protected readonly busqueda = signal('');
   protected readonly cargando = signal(false);
@@ -58,38 +76,33 @@ export class ManageProducts implements OnInit {
   });
 
   protected readonly activos = computed(() => this.productos().filter(producto => producto.activo).length);
-  protected readonly visibles = computed(() => {
-    const termino = normalizar(this.busqueda().trim());
-    const productos = this.productos();
-
-    return termino ? productos.filter(producto =>
-      normalizar(`${producto.nombre} ${producto.sku} ${producto.descripcion ?? ''}`).includes(termino),
-    ) : productos;
-  });
+  protected readonly visibles = computed(()=>this.productos());
 
   ngOnInit(): void {
+    this.destroyRef.onDestroy(()=>this.limpiarImagen());
     this.cargar();
   }
 
   protected cargar(): void {
-    if (this.cargando()) return;
+    this.peticionPagina?.unsubscribe();
 
     this.cargando.set(true);
     this.error.set('');
-    this.catalogo.listar<Producto>('productos').pipe(
+    this.peticionPagina=this.http.get<ApiResponse<{contenido:Producto[];total:number;paginas:number}>>(`${environment.apiUrl}/productos/pagina`,{params:{pagina:this.pagina()-1,tamano:10,q:this.busqueda()}}).pipe(
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.cargando.set(false)),
     ).subscribe({
       next: productos => {
         this.fotosFallidas.clear();
-        this.productos.set(productos);
+        if(!productos.success||!productos.data){this.error.set('No se pudo cargar la página.');return;}
+        this.productos.set(productos.data.contenido);this.total.set(productos.data.total);this.totalPaginas.set(Math.max(1,productos.data.paginas));
       },
       error: error => this.error.set(mensajeError(error, 'No se pudo consultar el catálogo.')),
     });
   }
 
   protected abrirEditor(producto?: Producto): void {
-    this.editandoId.set(producto?.id ?? null);
+    this.limpiarImagen();this.editandoId.set(producto?.id ?? null);
     this.editor().nativeElement.showModal();
     this.cargarEditor();
   }
@@ -121,6 +134,7 @@ export class ManageProducts implements OnInit {
           stockInicial: 0,
           activo: producto?.activo ?? true,
         });
+        this.vistaPrevia.set(this.catalogo.imagenPublica(producto?.imagenUrl));
         this.datosEditor.set(datos);
       },
       error: error => this.errorCargaEditor.set(mensajeError(error, 'No pudimos cargar los datos del formulario.')),
@@ -175,7 +189,8 @@ export class ManageProducts implements OnInit {
 
     this.procesando.set(true);
     this.errorAccion.set('');
-    this.catalogo.guardar<Producto>('productos', solicitud, id ?? undefined).pipe(
+    (this.archivoImagen() ? this.catalogo.subirImagen(this.archivoImagen()!, 'productos') : of<{ruta:string;url:string}|null>(null)).pipe(
+      switchMap(imagen => {if(imagen) {solicitud.imagenUrl=imagen.url;this.formulario.controls.imagenUrl.setValue(imagen.url);this.archivoImagen.set(null);}return this.catalogo.guardar<Producto>('productos', solicitud, id ?? undefined);}),
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.procesando.set(false)),
     ).subscribe({
@@ -184,6 +199,7 @@ export class ManageProducts implements OnInit {
         this.productos.update(productos => id
           ? productos.map(item => item.id === id ? producto : item)
           : [producto, ...productos]);
+        this.cargar();
         this.editor().nativeElement.close();
         toast.success(id ? 'Producto actualizado.' : 'Producto creado.');
       },

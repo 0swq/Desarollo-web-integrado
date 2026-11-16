@@ -27,6 +27,16 @@ public class CompatibilidadVehiculoService {
     }
 
     public CompatibilidadVehiculo crear(CompatibilidadVehiculoRequest request) {
+        return guardar(new CompatibilidadVehiculo(), request);
+    }
+
+    public CompatibilidadVehiculo actualizar(UUID id, CompatibilidadVehiculoRequest request) {
+        CompatibilidadVehiculo actual = repository.buscarPorId(id)
+                .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Compatibilidad no encontrada"));
+        return guardar(actual, request);
+    }
+
+    private CompatibilidadVehiculo guardar(CompatibilidadVehiculo compatibilidad, CompatibilidadVehiculoRequest request) {
         if (request.getAnioInicio() > request.getAnioFin()) {
             throw new com.autopartes.exception.BusinessException("El año de inicio no puede ser mayor que el año final");
         }
@@ -37,8 +47,15 @@ public class CompatibilidadVehiculoService {
         ModeloVehiculo modeloVehiculo = modeloRepository.buscarPorId(request.getModeloVehiculoId())
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Modelo de vehículo no encontrado"));
 
-        CompatibilidadVehiculo compatibilidad = new CompatibilidadVehiculo();
-        compatibilidad.setId(UUID.randomUUID());
+
+
+        boolean duplicada = repository.buscarPorProductoYModelo(request.getProductoId(), request.getModeloVehiculoId()).stream()
+                .anyMatch(c -> !c.getId().equals(compatibilidad.getId())
+                        && java.util.Objects.equals(c.getAnioInicio(), request.getAnioInicio())
+                        && java.util.Objects.equals(c.getAnioFin(), request.getAnioFin())
+                        && java.util.Objects.toString(c.getMotor(), "").trim().equalsIgnoreCase(
+                                java.util.Objects.toString(request.getMotor(), "").trim()));
+        if (duplicada) throw new com.autopartes.exception.BusinessException("Esta compatibilidad ya está registrada para el producto");
         compatibilidad.setProducto(producto);
         compatibilidad.setModeloVehiculo(modeloVehiculo);
         compatibilidad.setAnioInicio(request.getAnioInicio());
