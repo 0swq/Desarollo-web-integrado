@@ -1,1 +1,196 @@
-<section class="admin-simple-page"><span class="eyebrow">Inventario</span><h1>Stock</h1><p>Gestiona las existencias y ubicaciones de los repuestos.</p></section>
+<section class="catalog-page stock-page" aria-labelledby="titulo-stock">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">INVENTARIO</span>
+      <h1 id="titulo-stock">Stock<span aria-hidden="true">.</span></h1>
+      <p>Consulta las existencias y configura el mínimo y la ubicación de cada repuesto.</p>
+    </div>
+    <button type="button" class="refresh" (click)="cargar()" [disabled]="cargando() || guardando()">
+      <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Actualizar
+    </button>
+  </header>
+
+  @if (!cargando() && !error()) {
+    <div class="stats">
+      <article>
+        <span class="stat-icon blue"><i class="bi bi-boxes" aria-hidden="true"></i></span>
+        <div><span>Productos con registro</span><strong>{{ total() }}</strong></div>
+      </article>
+      <article>
+        <span class="stat-icon warning"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+        <div><span>En el mínimo o por debajo</span><strong>{{ stocksBajos().length }}</strong></div>
+      </article>
+      <article>
+        <span class="stat-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
+        <div><span>Agotados</span><strong>{{ agotados() }}</strong></div>
+      </article>
+    </div>
+  }
+
+  <div class="table-panel">
+    <div class="table-heading">
+      <h2>Existencias por producto</h2>
+      <span class="access-label" aria-live="polite">
+        @if (!cargando() && !error()) {
+          <i class="bi bi-list-ul" aria-hidden="true"></i>
+          {{ visibles().length }} {{ visibles().length === 1 ? 'resultado' : 'resultados' }}
+        }
+      </span>
+    </div>
+
+    <div class="toolbar">
+      <label class="search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="search" [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)"
+          placeholder="Buscar por producto, SKU o ubicación" aria-label="Buscar existencias">
+      </label>
+      <label class="select-field">Estado
+        <select [ngModel]="filtro()" (ngModelChange)="filtro.set($event)">
+          <option value="todos">Todos los estados</option>
+          <option value="bajo">En el mínimo o por debajo</option>
+          <option value="agotado">Agotados</option>
+          <option value="disponible">Disponibles sobre el mínimo</option>
+          <option value="sin-minimo">Sin mínimo configurado</option>
+        </select>
+      </label>
+    </div>
+
+    @if (cargando()) {
+      <div class="state" role="status">
+        <i class="bi bi-boxes" aria-hidden="true"></i><h3>Cargando existencias</h3>
+      </div>
+    } @else if (error()) {
+      <div class="state" role="alert">
+        <i class="bi bi-wifi-off" aria-hidden="true"></i><h3>No pudimos cargar el stock</h3>
+        <p>{{ error() }}</p>
+        <button type="button" class="primary" (click)="cargar()">Reintentar</button>
+      </div>
+    } @else if (!visibles().length) {
+      <div class="state" role="status">
+        <i class="bi" [class.bi-search]="total() > 0" [class.bi-boxes]="total() === 0" aria-hidden="true"></i>
+        @if (total()) {
+          <h3>No hay existencias que coincidan</h3><p>Cambia la búsqueda o el filtro de estado.</p>
+        } @else {
+          <h3>Aún no hay registros de stock</h3><p>El registro de stock se crea al registrar un producto.</p>
+        }
+      </div>
+    } @else {
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla de existencias">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Existencias</th>
+              <th scope="col">Mínimo</th>
+              <th scope="col">Ubicación</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Última actualización</th>
+              <th scope="col" class="actions-th">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (fila of visibles(); track fila.stock.id) {
+              @let stock = fila.stock;
+              @let nombre = fila.producto?.nombre || 'Producto sin datos';
+              <tr>
+                <td>
+                  <div class="item-cell">
+                    <span class="category-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
+                    <div><strong>{{ nombre }}</strong>
+                      @if (fila.producto?.sku) { <small class="sku">{{ fila.producto?.sku }}</small> }
+                    </div>
+                  </div>
+                </td>
+                <td class="dato-corto"><strong>{{ stock.cantidad }}</strong></td>
+                <td class="dato-corto">{{ stock.stockMinimo ?? '—' }}</td>
+                <td class="ubicacion">{{ stock.ubicacionAlmacen?.trim() || 'Sin ubicación' }}</td>
+                <td>
+                  <span class="status" [attr.data-estado]="fila.estado">
+                    <span aria-hidden="true"></span>{{ nombresEstado[fila.estado] }}
+                  </span>
+                </td>
+                <td class="dato-corto">{{ (stock.fechaActualizacion | date:'dd/MM/yyyy, HH:mm') || '—' }}</td>
+                <td>
+                  <div class="row-actions">
+                    <button type="button" title="Ver detalle" (click)="abrir('detalle', stock)"
+                      [attr.aria-label]="'Ver detalle de stock de ' + nombre">
+                      <i class="bi bi-eye" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" title="Editar configuración" (click)="abrir('editar', stock)"
+                      [disabled]="!stock.productoId" [attr.aria-label]="'Editar stock de ' + nombre">
+                      <i class="bi bi-pencil" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    @if (!cargando() && !error() && total()) {
+      <div class="pagination">
+        <span>Mostrando <b>{{ visibles().length }}</b> de <b>{{ total() }}</b> registros</span>
+      </div>
+    }
+  </div>
+
+  <dialog #dialogo class="catalog-dialog" aria-labelledby="titulo-dialogo-stock" (cancel)="cerrar($event)">
+    @let editando = accion() === 'editar';
+    <div class="dialog-heading">
+      <h2 id="titulo-dialogo-stock">{{ editando ? 'Editar configuración de stock' : 'Detalle de stock' }}</h2>
+      <button type="button" class="close" (click)="cerrar()" [disabled]="guardando()" aria-label="Cerrar">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    @if (errorDetalle()) {
+      <p class="action-error" role="alert">{{ errorDetalle() }}</p>
+      <div class="dialog-actions">
+        <button type="button" class="refresh" (click)="cerrar()">Cerrar</button>
+        <button type="button" class="primary" (click)="cargarDetalle()">Reintentar</button>
+      </div>
+    } @else if (detalle(); as stock) {
+      @let producto = productoDe(stock);
+      <div class="stock-heading">
+        <div><strong>{{ producto?.nombre || 'Producto sin datos' }}</strong>
+          @if (producto?.sku) { <small class="sku">{{ producto?.sku }}</small> }
+        </div>
+        <span>{{ stock.cantidad }} {{ stock.cantidad === 1 ? 'unidad' : 'unidades' }}</span>
+      </div>
+
+      @if (editando) {
+        <form [formGroup]="formulario" (ngSubmit)="guardar()">
+          <fieldset class="stock-fields" [disabled]="guardando()">
+            <label class="form-field">Stock mínimo
+              <input type="number" formControlName="stockMinimo" min="0" max="2147483647" step="1"
+                aria-describedby="ayuda-minimo-stock">
+              <small id="ayuda-minimo-stock">Deja el campo vacío para conservar el valor actual.</small>
+            </label>
+            <label class="form-field">Ubicación en almacén
+              <input formControlName="ubicacionAlmacen" maxlength="100">
+              <small>Deja el campo vacío para quitar la ubicación.</small>
+            </label>
+          </fieldset>
+          @if (errorAccion()) { <p class="action-error" role="alert">{{ errorAccion() }}</p> }
+          <div class="dialog-actions">
+            <button type="button" class="refresh" (click)="cerrar()" [disabled]="guardando()">Cancelar</button>
+            <button type="submit" class="primary" [disabled]="guardando()">
+              {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </form>
+      } @else {
+        <dl class="stock-details">
+          <div><dt>Stock mínimo</dt><dd>{{ stock.stockMinimo ?? 'Sin mínimo' }}</dd></div>
+          <div><dt>Ubicación en almacén</dt><dd>{{ stock.ubicacionAlmacen?.trim() || 'Sin ubicación' }}</dd></div>
+          <div><dt>Última actualización</dt><dd>{{ (stock.fechaActualizacion | date:'dd/MM/yyyy, HH:mm') || '—' }}</dd></div>
+        </dl>
+        <div class="dialog-actions"><button type="button" class="refresh" (click)="cerrar()">Cerrar</button></div>
+      }
+    } @else {
+      <div class="state" role="status">Cargando datos de stock…</div>
+    }
+  </dialog>
+</section>

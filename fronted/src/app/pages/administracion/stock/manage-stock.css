@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.stock-page .table-heading h2,
+.stock-page .dialog-heading h2 {
+  margin: 0;
+}
+
+.stock-page table {
+  min-width: 700px;
+}
+
+.stock-page .row-actions {
+  justify-content: flex-end;
+}
+
+.stock-page .dialog-heading {
+  margin-bottom: 16px;
+}
+
+.stock-page .stat-icon.warning {
+  background: #fff5e6;
+  color: #8a622a;
+}
+
+.dato-corto {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.ubicacion,
+.item-cell strong,
+.stock-heading strong,
+.stock-details dd {
+  overflow-wrap: anywhere;
+}
+
+.sku {
+  display: block;
+  margin-top: 4px;
+  color: #657891;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.status[data-estado='bajo'] {
+  color: #8a622a;
+}
+
+.status[data-estado='agotado'] {
+  color: #b43947;
+}
+
+.status[data-estado='disponible'] {
+  color: #3f775d;
+}
+
+.status[data-estado='sin-minimo'] {
+  color: #64748b;
+}
+
+.stock-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #f7f9fc;
+  font-size: 13px;
+}
+
+.stock-heading > span {
+  flex-shrink: 0;
+  font-weight: 650;
+}
+
+.stock-details,
+.stock-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
+
+.stock-details dt,
+.stock-fields small {
+  color: #627895;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.stock-details dd {
+  margin: 3px 0 0;
+  font-size: 13px;
+}
+
+@media (max-width: 540px) {
+  .stock-page .page-heading {
+    flex-wrap: wrap;
+  }
+
+  .stock-details,
+  .stock-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
