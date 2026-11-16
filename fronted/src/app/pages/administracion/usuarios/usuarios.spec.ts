@@ -1,0 +1,26 @@
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
+import { of, throwError } from 'rxjs';
+import { UsuariosPage } from './usuarios';
+import { UsuariosService } from '../../../_services/usuarios.service';
+import { StorageService } from '../../../_services/storage.service';
+import { UsuarioResponse } from '../../../models/auth.interface';
+const base={telefono:'940061944',direccion:'Calle 123',fotoPerfilUrl:null,fechaActualizacion:'2026-11-14T10:00:00'};
+const usuarios:UsuarioResponse[]=[{...base,id:'admin',nombre:'Ana',apellido:'Perez',correo:'ana@example.com',rol:'ADMIN',activo:true,fechaCreacion:'2026-11-01T10:00:00'},{...base,id:'emp',nombre:'Bruno',apellido:'Diaz',correo:'bruno@example.com',rol:'EMPLEADO',activo:true,fechaCreacion:'2026-11-03T10:00:00'},{...base,id:'cli',nombre:'Carla',apellido:'Lopez',correo:'carla@example.com',rol:'CLIENTE',activo:false,fechaCreacion:'2026-11-12T10:00:00'}];
+describe('Directorio de usuarios',()=>{
+ let service:any;let page:UsuariosPage;
+ beforeEach(()=>{service={listar:vi.fn(()=>of(structuredClone(usuarios))),cambiarRol:vi.fn(()=>of({...usuarios[2],rol:'EMPLEADO'})),cambiarEstado:vi.fn(()=>of({...usuarios[2],activo:true}))};TestBed.configureTestingModule({imports:[UsuariosPage],providers:[{provide:UsuariosService,useValue:service},{provide:StorageService,useValue:{obtenerUsuarioId:()=> 'admin'}}]});page=TestBed.createComponent(UsuariosPage).componentInstance;page.ngOnInit();});
+ afterEach(()=>vi.useRealTimers());
+ it('carga cuentas y contadores reales',()=>{expect(page.usuarios.length).toBe(3);expect(page.activos).toBe(2);expect(page.equipo).toBe(2);expect(page.clientes).toBe(1);});
+ it('busca después de 300 ms y reinicia la página',()=>{vi.useFakeTimers();page.pagina=2;page.buscar('Bruno');expect(page.busqueda).toBe('');vi.advanceTimersByTime(300);expect(page.visibles.map(u=>u.id)).toEqual(['emp']);expect(page.pagina).toBe(1);});
+ it('combina rol y estado y permite limpiar filtros',()=>{page.rol='CLIENTE';page.estado='inactivo';page.filtrar();expect(page.filtrados.map(u=>u.id)).toEqual(['cli']);page.estado='activo';expect(page.filtrados.length).toBe(0);page.limpiar();expect(page.filtrados.length).toBe(3);});
+ it('ordena y pagina sin omitir usuarios',()=>{page.orden='nombre';page.porPagina=1;expect(page.visibles[0].id).toBe('admin');page.pagina=3;expect(page.visibles[0].id).toBe('cli');expect(page.desde).toBe(3);expect(page.hasta).toBe(3);expect(page.paginas).toBe(3);});
+ it('muestra errores y permite reintentar la carga',()=>{service.listar.mockReturnValueOnce(throwError(()=>({status:0})));page.cargar();expect(page.error).not.toBe('');page.cargar();expect(page.error).toBe('');expect(page.cargando).toBe(false);});
+ it('actualiza el estado confirmado con el resultado del servidor',()=>{page.seleccionado=page.usuarios[2];page.confirmando=true;page.cambiarEstado();expect(service.cambiarEstado).toHaveBeenCalledWith('cli');expect(page.usuarios.find(u=>u.id==='cli')?.activo).toBe(true);expect(page.activos).toBe(3);expect(page.confirmando).toBe(false);});
+ it('impide cambios sin confirmar y desactivar la cuenta propia',()=>{page.seleccionado=page.usuarios[2];page.cambiarEstado();page.confirmando=true;page.seleccionado=page.usuarios[0];page.cambiarEstado();expect(service.cambiarEstado).not.toHaveBeenCalled();});
+ it('conserva el estado si el servidor rechaza el cambio',()=>{service.cambiarEstado.mockReturnValueOnce(throwError(()=>({error:{message:'No autorizado'}})));page.seleccionado=page.usuarios[2];page.confirmando=true;page.cambiarEstado();expect(page.usuarios[2].activo).toBe(false);expect(page.errorAccion).toBe('No autorizado');expect(page.guardando).toBe(false);});
+ it('requiere confirmación antes de cambiar el rol',()=>{page.seleccionado=page.usuarios[2];page.rolNuevo='EMPLEADO';page.guardarRol();expect(service.cambiarRol).not.toHaveBeenCalled();page.revisarRol();expect(page.confirmandoRol).toBe(true);page.guardarRol();expect(service.cambiarRol).toHaveBeenCalledWith('cli','EMPLEADO');expect(page.usuarios.find(u=>u.id==='cli')?.rol).toBe('EMPLEADO');expect(page.equipo).toBe(3);expect(page.confirmandoRol).toBe(false);});
+ it('no permite modificar el rol propio',()=>{page.seleccionado=page.usuarios[0];page.rolNuevo='CLIENTE';page.revisarRol();expect(page.confirmandoRol).toBe(false);page.confirmandoRol=true;page.guardarRol();expect(service.cambiarRol).not.toHaveBeenCalled();});
+ it('conserva el rol anterior si el cambio falla',()=>{service.cambiarRol.mockReturnValueOnce(throwError(()=>({error:{message:'No se pudo cambiar'}})));page.seleccionado=page.usuarios[2];page.rolNuevo='EMPLEADO';page.revisarRol();page.guardarRol();expect(page.usuarios[2].rol).toBe('CLIENTE');expect(page.errorAccion).toBe('No se pudo cambiar');expect(page.guardando).toBe(false);});
+ it('no envía un rol que ya tiene la cuenta',()=>{page.seleccionado=page.usuarios[2];page.rolNuevo='CLIENTE';page.revisarRol();expect(page.confirmandoRol).toBe(false);expect(service.cambiarRol).not.toHaveBeenCalled();});
+});

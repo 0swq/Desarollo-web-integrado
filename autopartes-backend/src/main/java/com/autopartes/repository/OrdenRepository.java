@@ -11,6 +11,10 @@ import java.util.UUID;
 
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden, UUID> {
+    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @org.springframework.data.jpa.repository.Query("select o from Orden o where o.id = :id")
+    Optional<Orden> bloquearPorId(@org.springframework.data.repository.query.Param("id") UUID id);
+
 
     Optional<Orden> findByNumeroOrdenIgnoreCase(String numeroOrden);
 

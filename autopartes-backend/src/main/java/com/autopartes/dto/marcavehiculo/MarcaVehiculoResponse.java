@@ -16,5 +16,6 @@ public class MarcaVehiculoResponse {
     private UUID id;
     private String nombre;
     private String paisOrigen;
+    private String imagenUrl;
     private Boolean activo;
 }

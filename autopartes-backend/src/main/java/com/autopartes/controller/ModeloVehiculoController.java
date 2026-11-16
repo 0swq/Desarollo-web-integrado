@@ -115,6 +115,7 @@ public class ModeloVehiculoController {
         r.setNombre(m.getNombre());
         r.setMarcaId(m.getMarcaId());
         r.setTipoVehiculo(m.getTipoVehiculo());
+        r.setImagenUrl(m.getImagenUrl());
         r.setActivo(m.getActivo());
         return r;
     }

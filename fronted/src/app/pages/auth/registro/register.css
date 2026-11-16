@@ -1,0 +1,2 @@
+@import '../auth-shared.css';
+.auth-grid{grid-template-columns:.7fr 1.1fr;max-width:1200px}@media(max-width:720px){.auth-grid{grid-template-columns:1fr;max-width:540px}}

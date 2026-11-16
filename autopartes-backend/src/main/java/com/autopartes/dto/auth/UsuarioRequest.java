@@ -32,5 +32,7 @@ public class UsuarioRequest {
 
     private String telefono;
     private String direccion;
+    @Size(max = 2048, message = "La URL de foto de perfil no puede superar 2048 caracteres")
+    private String fotoPerfilUrl;
     private Rol rol;
 }

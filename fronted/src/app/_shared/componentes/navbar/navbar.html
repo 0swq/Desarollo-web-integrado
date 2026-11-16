@@ -1,0 +1,41 @@
+<nav class="main-navbar">
+  <div class="navbar-container">
+    <a class="brand-logo" routerLink="/inicio" (click)="cerrarMenu()">
+      <img src="/images/autopartes-quiroz-blanco.svg" [alt]="parametros.contacto().nombre">
+    </a>
+
+    <button class="mobile-menu-button" type="button" (click)="alternarMenu()"
+      [attr.aria-expanded]="menuAbierto" aria-label="Abrir menú">
+      <i class="bi" [ngClass]="menuAbierto ? 'bi-x-lg' : 'bi-list'"></i>
+    </button>
+
+    <div class="navbar-content" [class.menu-open]="menuAbierto">
+      <div class="nav-links">
+        <a routerLink="/inicio" routerLinkActive="active" (click)="cerrarMenu()">Inicio</a>
+        <a routerLink="/catalogo" routerLinkActive="active" (click)="cerrarMenu()">Catálogo</a>
+        <a routerLink="/nosotros" routerLinkActive="active" (click)="cerrarMenu()">Nosotros</a>
+      </div>
+
+      <app-product-search (searched)="cerrarMenu()" />
+
+      <div class="nav-actions">
+        <ng-container *ngIf="!haySesion; else accionesConSesion">
+          <a class="login-link" routerLink="/iniciar-sesion" (click)="cerrarMenu()">Iniciar sesión</a>
+          <a class="register-button" routerLink="/registro" (click)="cerrarMenu()">Registrarme</a>
+        </ng-container>
+
+        <ng-template #accionesConSesion>
+          <a *ngIf="puedeGestionar" class="admin-button" routerLink="/administracion" (click)="cerrarMenu()"><i class="bi bi-grid-1x2" aria-hidden="true"></i> Panel admin</a>
+          <a class="icon-action" routerLink="/carrito" [attr.aria-label]="'Carrito de compras: ' + cantidadCarrito() + ' productos'" title="Carrito">
+            <i class="bi bi-cart3"></i><span class="cart-count" aria-live="polite">{{ cantidadCarrito() }}</span>
+          </a>
+          <button type="button" class="icon-action profile-trigger" (click)="cerrarMenu(); perfilModal.abrir()" aria-label="Abrir mi cuenta" aria-haspopup="dialog" title="Mi perfil">
+            <img *ngIf="fotoPerfil() && !fotoFallida(); else avatarPredeterminado" class="user-avatar" [src]="fotoPerfil()" alt="Mi foto de perfil" (error)="fotoFallida.set(true)">
+            <ng-template #avatarPredeterminado><i class="bi bi-person-circle"></i></ng-template>
+          </button>
+          <button type="button" class="header-logout" (click)="cerrarSesion()"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>Cerrar sesión</span></button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,21 @@
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  width: 100%;
+  padding: 25px 0;
+}
+
+.access-top{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#171b22;padding:12px var(--page-section-inset);min-height:78px}.access-logo img{display:block;width:155px;height:50px;object-fit:contain}.store-link{display:inline-flex;align-items:center;gap:8px;color:#c7d0dc;font-size:12px;text-decoration:none}.store-link:hover{color:white}.access-top a:focus-visible{outline:2px solid #ed4b59;outline-offset:3px}@media(max-width:480px){.access-logo img{width:125px}.store-link{font-size:11px}}
+
+.page-content.admin-content{padding:0;display:flex;flex-direction:column}

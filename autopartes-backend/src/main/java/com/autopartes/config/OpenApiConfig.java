@@ -19,19 +19,17 @@ public class OpenApiConfig {
     public OpenAPI configuracionOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API Autopartes")
-                        .version("1.0.0")
-                        .description("API REST para la gestion de un catalogo de autopartes: "
-                                + "usuarios, productos, stock, carrito, ordenes y pagos.")
-                        .contact(new Contact().name("Equipo Autopartes"))
-                        .license(new License().name("MIT")))
+                        .title("desarollo web integrado")
+                        .version("1")
+                        .description("pruebas")
+                        .contact(new Contact().name(""))
+                        .license(new License().name("")))
                 .components(new Components().addSecuritySchemes(ESQUEMA_SEGURIDAD,
                         new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")
-                                .description("Pega aqui el token que devuelve POST /api/auth/login. "
-                                        + "El token ya incluye el prefijo 'Bearer '.")))
+                                .description("token")))
                 .addSecurityItem(new SecurityRequirement().addList(ESQUEMA_SEGURIDAD));
     }
 }

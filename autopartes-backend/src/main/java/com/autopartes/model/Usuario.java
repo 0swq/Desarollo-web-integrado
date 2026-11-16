@@ -34,6 +34,9 @@ public class Usuario {
 
     private String direccion;
 
+    @Column(name = "foto_perfil_url", length = 2048)
+    private String fotoPerfilUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private Rol rol;

@@ -73,6 +73,17 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponse.ok("Usuario actualizado", mapToResponse(usuario)));
     }
 
+    @PatchMapping("/{id}/rol")
+    public ResponseEntity<ApiResponse<UsuarioResponse>> cambiarRol(@PathVariable UUID id,
+            @Valid @RequestBody com.autopartes.dto.auth.CambioRolRequest request, java.security.Principal principal) {
+        Usuario usuario = usuarioService.cambiarRol(id, request.rol(), principal.getName());
+        return ResponseEntity.ok(ApiResponse.ok("Rol actualizado", mapToResponse(usuario)));
+    }
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<Void>> formatoInvalido() {
+        return ResponseEntity.badRequest().body(ApiResponse.error("Revisa los datos. Los roles válidos son ADMIN, EMPLEADO y CLIENTE."));
+    }
+
     @Operation(summary = "Cambiar contrasena", description = "Cambia la contrasena validando la actual")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Operacion completada sin contenido"),
@@ -126,6 +137,7 @@ public class UsuarioController {
         r.setApellido(u.getApellido());
         r.setTelefono(u.getTelefono());
         r.setDireccion(u.getDireccion());
+        r.setFotoPerfilUrl(u.getFotoPerfilUrl());
         r.setRol(u.getRol());
         r.setActivo(u.getActivo());
         r.setFechaCreacion(u.getFechaCreacion());

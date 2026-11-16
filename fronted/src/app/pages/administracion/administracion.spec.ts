@@ -1,0 +1,22 @@
+import { provideHttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, provideRouter } from '@angular/router';
+import { of } from 'rxjs';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { SidebarAdmin } from '../../_shared/componentes/sidebar-admin/sidebar-admin';
+import { StorageService } from '../../_services/storage.service';
+import { AuthService } from '../../_services/auth.service';
+import { PerfilService } from '../../_services/perfil.service';
+import { PerfilModalService } from '../../_services/perfil-modal.service';
+import { administracionRoutes } from './administracion.routes';
+import { roleGuard } from '../../_helpers/role.guard';
+import { environment } from '../../../environments/environment';
+describe('Navegación de administración',()=>{
+ let rol:string;const original=environment.authEnabled;
+ beforeEach(()=>{rol='ADMIN';environment.authEnabled=true;TestBed.configureTestingModule({imports:[SidebarAdmin],providers: [provideHttpClient(),provideRouter([]),{provide:StorageService,useValue:{obtenerRol:()=>rol,obtenerToken:()=> 'token',obtenerNombre:()=> 'Ana'}},{provide:AuthService,useValue:{logout:vi.fn()}},{provide:PerfilService,useValue:{obtener:()=>of(null)}},{provide:PerfilModalService,useValue:{abrir:vi.fn()}}]});});
+ afterEach(()=>environment.authEnabled=original);
+ it('muestra Gestión y Admin al administrador',()=>{const fixture=TestBed.createComponent(SidebarAdmin);fixture.detectChanges();expect(fixture.nativeElement.querySelector('nav[aria-label="Gestión"]')).toBeTruthy();expect(fixture.nativeElement.querySelector('nav[aria-label="Admin"]')).toBeTruthy();expect(fixture.nativeElement.textContent).toContain('Reportes');expect(fixture.nativeElement.textContent).toContain('Parámetros');});
+ it('solo muestra Gestión al empleado',()=>{rol='EMPLEADO';const fixture=TestBed.createComponent(SidebarAdmin);fixture.detectChanges();expect(fixture.nativeElement.querySelector('nav[aria-label="Gestión"]')).toBeTruthy();expect(fixture.nativeElement.querySelector('nav[aria-label="Admin"]')).toBeNull();expect(fixture.nativeElement.textContent).not.toContain('Reportes');});
+ it.each(['usuarios','reportes','parametros'])('protege la ruta %s aunque se escriba manualmente',ruta=>{const config=administracionRoutes[0].children!.find(r=>r.path===ruta)!;expect(config).toBeTruthy();const snapshot={data:config.data} as ActivatedRouteSnapshot;rol='ADMIN';expect(TestBed.runInInjectionContext(()=>roleGuard(snapshot,{} as RouterStateSnapshot))).toBe(true);rol='EMPLEADO';expect(TestBed.runInInjectionContext(()=>roleGuard(snapshot,{} as RouterStateSnapshot))).not.toBe(true);rol='CLIENTE';expect(TestBed.runInInjectionContext(()=>roleGuard(snapshot,{} as RouterStateSnapshot))).not.toBe(true);});
+ it('mantiene Gestión habilitada para administradores y empleados',()=>{const data=administracionRoutes[0].children!.find(r=>r.path==='productos')!.data;const snapshot={data} as ActivatedRouteSnapshot;for(const role of ['ADMIN','EMPLEADO']){rol=role;expect(TestBed.runInInjectionContext(()=>roleGuard(snapshot,{} as RouterStateSnapshot))).toBe(true);}});
+});

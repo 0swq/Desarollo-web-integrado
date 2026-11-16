@@ -23,6 +23,9 @@ public class MarcaVehiculo {
     @Column(name = "pais_origen", length = 100)
     private String paisOrigen;
 
+    @Column(name = "imagen_url", length = 2048)
+    private String imagenUrl;
+
     @Builder.Default
     @Column(nullable = false)
     private Boolean activo = true;

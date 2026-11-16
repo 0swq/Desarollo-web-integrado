@@ -102,6 +102,7 @@ public class MarcaVehiculoController {
         r.setId(m.getId());
         r.setNombre(m.getNombre());
         r.setPaisOrigen(m.getPaisOrigen());
+        r.setImagenUrl(m.getImagenUrl());
         r.setActivo(m.getActivo());
         return r;
     }

@@ -20,5 +20,6 @@ public class JwtAuthResponse {
     private String correo;
     private String nombre;
     private String apellido;
+    private String fotoPerfilUrl;
     private Rol rol;
 }

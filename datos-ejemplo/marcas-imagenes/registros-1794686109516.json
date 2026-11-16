@@ -1,0 +1,71 @@
+[ {
+  "id" : "adffc69d-3398-4770-a20d-beb0cc58f674",
+  "marca" : "Toyota",
+  "archivo" : "originales/toyota.png",
+  "ruta" : "marcas/3adc64f8-66fd-44a5-a8ad-7653711279f7.png",
+  "url" : "/api/storage/imagenes/marcas/3adc64f8-66fd-44a5-a8ad-7653711279f7.png",
+  "urlAnterior" : null
+}, {
+  "id" : "70384674-2e47-4d4a-bc23-c9fa63cf3f68",
+  "marca" : "Suzuki",
+  "archivo" : "originales/suzuki.png",
+  "ruta" : "marcas/3efd95bd-480a-4638-9ee5-67359610dcac.png",
+  "url" : "/api/storage/imagenes/marcas/3efd95bd-480a-4638-9ee5-67359610dcac.png",
+  "urlAnterior" : null
+}, {
+  "id" : "aca5ebe5-683e-4ba0-b51d-385435c732e6",
+  "marca" : "Volkswagen",
+  "archivo" : "originales/volkswagen.png",
+  "ruta" : "marcas/f7e2ff98-5ca5-458b-8f1b-abdeae2be488.png",
+  "url" : "/api/storage/imagenes/marcas/f7e2ff98-5ca5-458b-8f1b-abdeae2be488.png",
+  "urlAnterior" : null
+}, {
+  "id" : "27c06ca5-3414-4ea0-bc7b-2a2c9569222a",
+  "marca" : "Chevrolet",
+  "archivo" : "originales/chevrolet.png",
+  "ruta" : "marcas/7b137141-05a4-42dd-ae5f-b791e6d71603.png",
+  "url" : "/api/storage/imagenes/marcas/7b137141-05a4-42dd-ae5f-b791e6d71603.png",
+  "urlAnterior" : null
+}, {
+  "id" : "6ed2973b-4f71-4bb5-89b4-1156c8591f25",
+  "marca" : "Mitsubishi",
+  "archivo" : "originales/mitsubishi.png",
+  "ruta" : "marcas/040e7ae7-396f-4923-b7ef-d1082461d04b.png",
+  "url" : "/api/storage/imagenes/marcas/040e7ae7-396f-4923-b7ef-d1082461d04b.png",
+  "urlAnterior" : null
+}, {
+  "id" : "612fca0d-e73d-48cc-a106-a748a3bb8ff6",
+  "marca" : "Nissan",
+  "archivo" : "originales/nissan.png",
+  "ruta" : "marcas/0ac3cb09-b9aa-4307-8813-d120f7d7bd5a.png",
+  "url" : "/api/storage/imagenes/marcas/0ac3cb09-b9aa-4307-8813-d120f7d7bd5a.png",
+  "urlAnterior" : null
+}, {
+  "id" : "3f4f255f-12c4-45bf-b176-6ba673765249",
+  "marca" : "Kia",
+  "archivo" : "originales/kia.png",
+  "ruta" : "marcas/6f6a8174-6c01-4b33-bb75-5c5a230df713.png",
+  "url" : "/api/storage/imagenes/marcas/6f6a8174-6c01-4b33-bb75-5c5a230df713.png",
+  "urlAnterior" : null
+}, {
+  "id" : "37990dcc-a3e4-4341-9e2e-4be9ff046ce7",
+  "marca" : "Mazda",
+  "archivo" : "originales/mazda.png",
+  "ruta" : "marcas/dd6c7e83-ea03-42a5-8ec2-a1117f6862ad.png",
+  "url" : "/api/storage/imagenes/marcas/dd6c7e83-ea03-42a5-8ec2-a1117f6862ad.png",
+  "urlAnterior" : null
+}, {
+  "id" : "3bd99fb9-1f5f-4947-ab10-05470441d5c1",
+  "marca" : "Hyundai",
+  "archivo" : "originales/hyundai.png",
+  "ruta" : "marcas/b7d530fd-1685-4b0c-bb7e-844fe8346432.png",
+  "url" : "/api/storage/imagenes/marcas/b7d530fd-1685-4b0c-bb7e-844fe8346432.png",
+  "urlAnterior" : null
+}, {
+  "id" : "252a6fca-4447-4e62-9236-727299409447",
+  "marca" : "Honda",
+  "archivo" : "originales/honda.png",
+  "ruta" : "marcas/1ef3e88c-4d15-4bd0-88d2-69445eb5356b.png",
+  "url" : "/api/storage/imagenes/marcas/1ef3e88c-4d15-4bd0-88d2-69445eb5356b.png",
+  "urlAnterior" : null
+} ]

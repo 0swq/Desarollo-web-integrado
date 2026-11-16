@@ -1,0 +1,46 @@
+<div class="detail-shell">
+  <nav class="breadcrumbs" aria-label="Ubicación"><a routerLink="/inicio">Inicio</a><i class="bi bi-chevron-right" aria-hidden="true"></i><a routerLink="/catalogo">Catálogo</a><i class="bi bi-chevron-right" aria-hidden="true"></i><span>{{ producto?.nombre || 'Producto' }}</span></nav>
+  <a class="back-link" routerLink="/catalogo"><i class="bi bi-arrow-left" aria-hidden="true"></i> Volver al catálogo</a>
+
+  <div *ngIf="cargando" class="loading-state" role="status" aria-label="Cargando producto"><i class="bi bi-box-seam" aria-hidden="true"></i> Cargando producto...</div>
+  <section *ngIf="!cargando && (error || noEncontrado)" class="error-state" role="alert"><i class="bi" [ngClass]="noEncontrado ? 'bi-box-seam' : 'bi-wifi-off'" aria-hidden="true"></i><h1>{{ noEncontrado ? 'Este producto no está disponible' : 'No pudimos cargar el producto' }}</h1><p>{{ noEncontrado ? 'Puede que el enlace haya cambiado o que el repuesto ya no esté publicado.' : error }}</p><button *ngIf="!noEncontrado" type="button" (click)="reintentar()">Volver a intentar</button><a routerLink="/catalogo">Explorar catálogo</a></section>
+
+  <ng-container *ngIf="!cargando && !error && !noEncontrado && producto as p">
+    <div class="product-layout">
+      <section class="gallery" aria-label="Imagen del producto">
+        <div class="main-image"><span *ngIf="enOferta" class="discount-badge">−{{ descuento }}% <span>OFERTA</span></span>
+          <img *ngIf="p.imagenUrl && !imagenFallida; else noImage" [src]="p.imagenUrl" [alt]="p.nombre" (error)="imagenFallida = true">
+          <ng-template #noImage><div class="image-placeholder"><i class="bi bi-gear-wide-connected" aria-hidden="true"></i><span>Imagen no disponible</span></div></ng-template>
+          <a *ngIf="p.imagenUrl && !imagenFallida" class="zoom-link" [href]="p.imagenUrl" target="_blank" rel="noopener" aria-label="Ampliar imagen en otra pestaña"><i class="bi bi-arrows-angle-expand" aria-hidden="true"></i></a>
+        </div>
+        <p class="image-caption"><i class="bi bi-image" aria-hidden="true"></i> {{ p.sku.startsWith('DEMO-') ? 'Imagen ilustrativa del producto de demostración.' : 'Imagen del producto.' }}</p>
+      </section>
+
+      <section class="purchase-panel" aria-labelledby="product-title">
+        <div class="product-kicker"><span>{{ categorias }}</span><span class="availability" [class.empty]="!disponible"><i class="bi" [ngClass]="disponible ? 'bi-check-circle-fill' : 'bi-info-circle'" aria-hidden="true"></i> {{ disponible ? 'En stock' : stock === 0 ? 'Agotado' : 'Stock por confirmar' }}</span></div>
+        <h1 id="product-title">{{ p.nombre }}</h1><p class="product-code">SKU <strong>{{ p.sku }}</strong></p>
+        <div class="price-block"><div class="old-price" *ngIf="enOferta"><del>{{ p.precio | currency:(p.moneda || 'PEN'):'symbol':'1.2-2' }}</del><span>Ahorras {{ (p.precio - precio) | currency:(p.moneda || 'PEN'):'symbol':'1.2-2' }}</span></div><div class="current-price">{{ precio | currency:(p.moneda || 'PEN'):'symbol':'1.2-2' }}</div><span class="price-unit">Precio por unidad · {{ p.moneda || 'PEN' }}</span></div>
+        <p class="intro-description">{{ p.descripcion || 'Consulta la ficha del producto y verifica su compatibilidad antes de realizar tu compra.' }}</p>
+        <div class="inventory-line"><i class="bi bi-box-seam" aria-hidden="true"></i><span>{{ stock !== null ? stock + ' unidades en inventario' : 'No se pudo confirmar la disponibilidad.' }}</span></div>
+        <form class="purchase-form" (ngSubmit)="agregar()">
+          <div class="quantity-label"><label for="product-quantity">Cantidad</label><span *ngIf="disponible">Máximo {{ stock }} unidades</span></div>
+          <div class="purchase-actions"><div class="quantity-control"><button type="button" (click)="cantidad = cantidad - 1" [disabled]="!disponible || agregando || cantidad <= 1" aria-label="Disminuir cantidad">−</button><input id="product-quantity" name="cantidad" type="number" min="1" [max]="stock ?? 1" step="1" [(ngModel)]="cantidad" (blur)="normalizarCantidad()" [disabled]="!disponible || agregando"><button type="button" (click)="cantidad = cantidad + 1" [disabled]="!disponible || agregando || cantidad >= (stock ?? 0)" aria-label="Aumentar cantidad">+</button></div><button class="add-button" type="submit" [disabled]="!disponible || !cantidadValida || agregando"><i class="bi bi-cart-plus" aria-hidden="true"></i>{{ agregando ? 'Añadiendo...' : stock === 0 ? 'Producto agotado' : 'Añadir al carrito' }}</button></div>
+          <p *ngIf="!haySesion && disponible" class="login-hint"><button type="button" (click)="iniciarSesion()">Inicia sesión</button> para añadir este producto a tu carrito.</p>
+          <div *ngIf="agregado" class="cart-success" role="status"><span><i class="bi bi-check-circle" aria-hidden="true"></i> Producto añadido</span><a routerLink="/carrito">Ver carrito <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
+        </form>
+        <div class="fit-note"><i class="bi bi-car-front" aria-hidden="true"></i><div><strong>La pieza correcta para tu vehículo</strong><p>Revisa la referencia y las compatibilidades antes de comprar.</p><button type="button" (click)="tab = 'compatibilidad'">Ver compatibilidades <i class="bi bi-arrow-down-right" aria-hidden="true"></i></button></div></div>
+      </section>
+    </div>
+
+    <div *ngIf="detalle?.datosIncompletos" class="metadata-warning" role="status"><i class="bi bi-info-circle" aria-hidden="true"></i> Algunos datos adicionales no están disponibles en este momento.</div>
+    <section class="product-information" aria-label="Información del producto">
+      <nav class="detail-tabs" aria-label="Secciones del producto"><button type="button" [class.active]="tab === 'descripcion'" [attr.aria-pressed]="tab === 'descripcion'" (click)="tab = 'descripcion'">Descripción</button><button type="button" [class.active]="tab === 'ficha'" [attr.aria-pressed]="tab === 'ficha'" (click)="tab = 'ficha'">Ficha del producto</button><button type="button" [class.active]="tab === 'compatibilidad'" [attr.aria-pressed]="tab === 'compatibilidad'" (click)="tab = 'compatibilidad'">Compatibilidades <span>{{ detalle?.compatibilidades?.length || 0 }}</span></button></nav>
+      <div class="tab-content" aria-live="polite">
+        <div *ngIf="tab === 'descripcion'" class="description-content"><div><span class="section-eyebrow">CONOCE TU REPUESTO</span><h2>Detalles del producto</h2><p>{{ p.descripcion || 'Este producto todavía no tiene una descripción detallada.' }}</p></div><aside><i class="bi bi-info-circle" aria-hidden="true"></i><h3>Antes de comprar</h3><p>Confirma el SKU y la referencia requerida por tu vehículo. Si no encuentras una compatibilidad registrada, evita asumir que la pieza es universal.</p></aside></div>
+        <div *ngIf="tab === 'ficha'"><h2>Ficha del producto</h2><dl class="specifications"><div><dt>Código SKU</dt><dd>{{ p.sku }}</dd></div><div><dt>Nombre</dt><dd>{{ p.nombre }}</dd></div><div><dt>Categoría</dt><dd>{{ categorias }}</dd></div><div><dt>Moneda</dt><dd>{{ p.moneda || 'PEN' }}</dd></div><div><dt>Disponibilidad</dt><dd>{{ stock === null ? 'Por confirmar' : stock > 0 ? 'En stock' : 'Agotado' }}</dd></div></dl></div>
+        <div *ngIf="tab === 'compatibilidad'"><h2>Compatibilidad con vehículos</h2><p class="section-note">Verifica modelo, año y motorización junto con la referencia de la pieza.</p><div *ngIf="detalle?.compatibilidades?.length; else sinCompatibilidad" class="compatibility-grid"><app-compatibility-card *ngFor="let c of detalle?.compatibilidades" [compatibilidad]="c" [modelo]="modelo(c)" [marca]="marca(c)" [anios]="anios(c)" /></div><ng-template #sinCompatibilidad><div class="no-fit"><i class="bi bi-car-front" aria-hidden="true"></i><div><h3>{{ detalle?.datosIncompletos ? 'No se pudieron confirmar las compatibilidades' : 'Sin compatibilidades registradas' }}</h3><p>Consulta la referencia de la pieza antes de utilizarla en tu vehículo.</p></div></div></ng-template></div>
+      </div>
+    </section>
+    <section *ngIf="detalle?.otros?.length" class="other-products"><div class="section-heading"><div><span class="section-eyebrow">SIGUE EXPLORANDO</span><h2>También en el catálogo</h2></div><a routerLink="/catalogo">Ver todos <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div><div class="other-grid"><app-product-card *ngFor="let other of detalle?.otros" [producto]="other" /></div></section>
+  </ng-container>
+</div>

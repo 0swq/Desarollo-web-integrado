@@ -1,0 +1,442 @@
+[ {
+  "id" : "dc80808c-a616-4276-b6cc-3e44ad09d152",
+  "marca" : "Chevrolet",
+  "modelo" : "Captiva",
+  "url" : "/api/storage/imagenes/modelos/3be8f026-984b-43d7-bd70-591da4ee41b2.webp",
+  "ruta" : "modelos/3be8f026-984b-43d7-bd70-591da4ee41b2.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/chevrolet-captiva.webp",
+  "fuente" : "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/suvs/captiva/captiva-xl-jelly-pe.jpg?imwidth=800"
+}, {
+  "id" : "ce4c0e1c-a707-46df-8110-851ba6a41456",
+  "marca" : "Chevrolet",
+  "modelo" : "Colorado",
+  "url" : "/api/storage/imagenes/modelos/a5b44a4c-0231-4713-9604-92aff94f5e5b.webp",
+  "ruta" : "modelos/a5b44a4c-0231-4713-9604-92aff94f5e5b.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/chevrolet-colorado.webp",
+  "fuente" : "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/pickups/colorado/colorado-z71-jelly.jpg?imwidth=800"
+}, {
+  "id" : "03ec38ee-aea3-4123-a6c7-fa7133f2bee4",
+  "marca" : "Chevrolet",
+  "modelo" : "Tracker",
+  "url" : "/api/storage/imagenes/modelos/7b5e6d87-e933-434a-939c-99cf6f24cccf.webp",
+  "ruta" : "modelos/7b5e6d87-e933-434a-939c-99cf6f24cccf.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/chevrolet-tracker.webp",
+  "fuente" : "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2027/suvs/tracker/nueva-tracker-rs-jelly.jpg?imwidth=800"
+}, {
+  "id" : "c50c46ac-595b-4bb8-9bc2-0b41ff5b3d41",
+  "marca" : "Chevrolet",
+  "modelo" : "Traverse",
+  "url" : "/api/storage/imagenes/modelos/4730a7df-f822-4029-b10d-f55be9d2d3eb.webp",
+  "ruta" : "modelos/4730a7df-f822-4029-b10d-f55be9d2d3eb.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/chevrolet-traverse.webp",
+  "fuente" : "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/suvs/traverse/new/traverse-z71-logo-jelly.jpg?imwidth=800"
+}, {
+  "id" : "80d299f9-099c-4eb8-a70a-5b68289b0133",
+  "marca" : "Honda",
+  "modelo" : "BR-V",
+  "url" : "/api/storage/imagenes/modelos/22a88482-8792-47dd-af09-e55309008e57.webp",
+  "ruta" : "modelos/22a88482-8792-47dd-af09-e55309008e57.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/honda-br-v.webp",
+  "fuente" : "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2026/01/HONDA-WEB-MINIATURASBRV.png"
+}, {
+  "id" : "ce2febf9-785a-4fc8-83f7-da60437a6d51",
+  "marca" : "Honda",
+  "modelo" : "CR-V",
+  "url" : "/api/storage/imagenes/modelos/9322f0cf-3fb9-4f80-ab48-382f836d51a2.webp",
+  "ruta" : "modelos/9322f0cf-3fb9-4f80-ab48-382f836d51a2.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/honda-cr-v.webp",
+  "fuente" : "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2026/03/crv-miniatura.webp"
+}, {
+  "id" : "cf7c97bb-9285-4330-a3d8-8a5d8b72659a",
+  "marca" : "Honda",
+  "modelo" : "HR-V",
+  "url" : "/api/storage/imagenes/modelos/9614a360-d04c-45ee-802f-ecd1e2ebe04d.webp",
+  "ruta" : "modelos/9614a360-d04c-45ee-802f-ecd1e2ebe04d.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/honda-hr-v.webp",
+  "fuente" : "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2023/08/HONDA-WEB-MINIATURASHRV-2026-copia.png"
+}, {
+  "id" : "bbb5673b-a8f4-45df-b21c-f3f47ac9626c",
+  "marca" : "Honda",
+  "modelo" : "Pilot",
+  "url" : "/api/storage/imagenes/modelos/db88e151-c6df-4558-ba7d-1d47736191ac.webp",
+  "ruta" : "modelos/db88e151-c6df-4558-ba7d-1d47736191ac.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/honda-pilot.webp",
+  "fuente" : "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2023/05/HONDA-WEB-MINIATURASPILOT.png"
+}, {
+  "id" : "c47ec231-2d8a-450a-9fbb-83a356b1719c",
+  "marca" : "Hyundai",
+  "modelo" : "Accent",
+  "url" : "/api/storage/imagenes/modelos/724bab8d-854f-472c-99b2-ee05e545bc58.webp",
+  "ruta" : "modelos/724bab8d-854f-472c-99b2-ee05e545bc58.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/hyundai-accent.webp",
+  "fuente" : "https://hyundai.pe/wp-content/uploads/2026/03/PrincpalAccent.png"
+}, {
+  "id" : "ad2dac7a-4353-49c9-9b5b-fdcefd7e1811",
+  "marca" : "Hyundai",
+  "modelo" : "Creta",
+  "url" : "/api/storage/imagenes/modelos/10fa4559-cd45-4491-bd49-e1122b71e7ac.webp",
+  "ruta" : "modelos/10fa4559-cd45-4491-bd49-e1122b71e7ac.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/hyundai-creta.webp",
+  "fuente" : "https://hyundai.pe/wp-content/uploads/2024/09/creta_2.png"
+}, {
+  "id" : "96fa5a97-07c9-4093-8e76-0f30c64508a9",
+  "marca" : "Hyundai",
+  "modelo" : "Grand i10 Hatch",
+  "url" : "/api/storage/imagenes/modelos/2f27d2e8-36ab-4b7d-bd46-6ac498ec2006.webp",
+  "ruta" : "modelos/2f27d2e8-36ab-4b7d-bd46-6ac498ec2006.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/hyundai-grand-i10-hatch.webp",
+  "fuente" : "https://hyundai.pe/wp-content/uploads/2023/08/i10Hatch-calada-468x260-1.png"
+}, {
+  "id" : "bed7393a-8e3a-40e4-b112-9f938649db50",
+  "marca" : "Hyundai",
+  "modelo" : "Grand i10 Sedán",
+  "url" : "/api/storage/imagenes/modelos/68fe134c-df99-4960-b3de-6510af68addf.webp",
+  "ruta" : "modelos/68fe134c-df99-4960-b3de-6510af68addf.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/hyundai-grand-i10-sedan.webp",
+  "fuente" : "https://hyundai.pe/wp-content/uploads/2023/08/i10Sedan-calada-468x260-1.png"
+}, {
+  "id" : "400ff97b-ee1c-4563-b2fc-7f968284edd7",
+  "marca" : "Hyundai",
+  "modelo" : "Santa Fe",
+  "url" : "/api/storage/imagenes/modelos/80de09c7-ca4a-4bc7-a339-684582acb108.webp",
+  "ruta" : "modelos/80de09c7-ca4a-4bc7-a339-684582acb108.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/hyundai-santa-fe.webp",
+  "fuente" : "https://hyundai.pe/wp-content/uploads/2024/04/new-santa-fe-miniatura-cotizador-469x260-2.png"
+}, {
+  "id" : "16ec948e-6c16-409b-adb1-775e71130e37",
+  "marca" : "Hyundai",
+  "modelo" : "Tucson",
+  "url" : "/api/storage/imagenes/modelos/f50a0e9e-a2b0-47be-a6dc-8578ad5a895c.webp",
+  "ruta" : "modelos/f50a0e9e-a2b0-47be-a6dc-8578ad5a895c.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/hyundai-tucson.webp",
+  "fuente" : "https://hyundai.pe/wp-content/uploads/2026/09/Tucson1.png"
+}, {
+  "id" : "a7d78213-b83b-4865-a609-da03425a8e96",
+  "marca" : "Kia",
+  "modelo" : "K3 Sedán",
+  "url" : "/api/storage/imagenes/modelos/5f239bc0-2bbf-4dd6-ab11-6f0c41aa5a48.webp",
+  "ruta" : "modelos/5f239bc0-2bbf-4dd6-ab11-6f0c41aa5a48.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/kia-k3-sedan.webp",
+  "fuente" : "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/k3.png"
+}, {
+  "id" : "c7231c7d-e39d-477b-ab53-4ef22373e923",
+  "marca" : "Kia",
+  "modelo" : "Picanto",
+  "url" : "/api/storage/imagenes/modelos/bb5333ba-fe12-4fd5-a7b7-36c417375434.webp",
+  "ruta" : "modelos/bb5333ba-fe12-4fd5-a7b7-36c417375434.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/kia-picanto.webp",
+  "fuente" : "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/new-picanto-green.png"
+}, {
+  "id" : "c6cebb1d-5435-4e7d-907c-dc60570de2ef",
+  "marca" : "Kia",
+  "modelo" : "Seltos",
+  "url" : "/api/storage/imagenes/modelos/e66f334b-7015-4199-83b5-68712a9ba054.webp",
+  "ruta" : "modelos/e66f334b-7015-4199-83b5-68712a9ba054.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/kia-seltos.webp",
+  "fuente" : "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/new-seltos.png"
+}, {
+  "id" : "957b7410-7b2d-4e3c-a8a6-539a916d8b40",
+  "marca" : "Kia",
+  "modelo" : "Soluto",
+  "url" : "/api/storage/imagenes/modelos/f9eac18c-d63e-46c4-a668-5588bcbdc615.webp",
+  "ruta" : "modelos/f9eac18c-d63e-46c4-a668-5588bcbdc615.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/kia-soluto.webp",
+  "fuente" : "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/soluto.png"
+}, {
+  "id" : "b82f66b0-bd93-44a4-933a-f1666ba5f4d0",
+  "marca" : "Kia",
+  "modelo" : "Sorento",
+  "url" : "/api/storage/imagenes/modelos/fc190ca2-57b8-4cea-809e-e8ce98752749.webp",
+  "ruta" : "modelos/fc190ca2-57b8-4cea-809e-e8ce98752749.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/kia-sorento.webp",
+  "fuente" : "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/new-sorento.png"
+}, {
+  "id" : "78b3d271-4573-4c11-b704-887a7559697e",
+  "marca" : "Kia",
+  "modelo" : "Sportage",
+  "url" : "/api/storage/imagenes/modelos/708e3535-50b2-4037-b918-ef1d7a70c4ea.webp",
+  "ruta" : "modelos/708e3535-50b2-4037-b918-ef1d7a70c4ea.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/kia-sportage.webp",
+  "fuente" : "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/sportage_2026.png"
+}, {
+  "id" : "8e066066-1cf2-4750-a2e9-ff1dcefd4dfb",
+  "marca" : "Mazda",
+  "modelo" : "BT-50",
+  "url" : "/api/storage/imagenes/modelos/92e1fa1a-1bce-4c4e-b920-e2293827a2dd.webp",
+  "ruta" : "modelos/92e1fa1a-1bce-4c4e-b920-e2293827a2dd.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/mazda-bt-50.webp",
+  "fuente" : "https://www.mazda.pe/media/zd5pnadp/img-model.webp"
+}, {
+  "id" : "fc6a5a52-571f-444b-a1e6-7cc6788715de",
+  "marca" : "Mazda",
+  "modelo" : "CX-30",
+  "url" : "/api/storage/imagenes/modelos/340068b0-5f10-4b46-ae47-7c5141c3b560.png",
+  "ruta" : "modelos/340068b0-5f10-4b46-ae47-7c5141c3b560.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/mazda-cx-30.png",
+  "fuente" : "https://www.mazda.pe/media/5ohjdy0r/mazda-cx30-caracteristicas-high-25-awd-6at-7g-rojo-cristal.png"
+}, {
+  "id" : "920d7796-c761-45bb-b792-1e2e9fa4f3f2",
+  "marca" : "Mazda",
+  "modelo" : "CX-5",
+  "url" : "/api/storage/imagenes/modelos/6cf1cd86-9c59-4c46-95cc-9115e152bbfb.png",
+  "ruta" : "modelos/6cf1cd86-9c59-4c46-95cc-9115e152bbfb.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/mazda-cx-5.png",
+  "fuente" : "https://www.mazda.pe/media/0pvho5ax/mazda-cx5-caracteristicas-signature-25t-awd-6at-rojo-cristal.png"
+}, {
+  "id" : "bcdef71b-efd5-43b9-b6fd-148b0fe095a3",
+  "marca" : "Mazda",
+  "modelo" : "Mazda3 Sedán",
+  "url" : "/api/storage/imagenes/modelos/2d5fb5de-3cf8-49de-8eb9-6b2b242cc51a.png",
+  "ruta" : "modelos/2d5fb5de-3cf8-49de-8eb9-6b2b242cc51a.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/mazda-mazda3-sedan.png",
+  "fuente" : "https://www.mazda.pe/media/qfqleszd/mazda-3-p.png"
+}, {
+  "id" : "d2fd4bcb-6586-4074-ac91-a2f34fb2ace7",
+  "marca" : "Mitsubishi",
+  "modelo" : "L200",
+  "url" : "/api/storage/imagenes/modelos/0a01341e-2e24-43f7-b4e2-73a4a662b6be.webp",
+  "ruta" : "modelos/0a01341e-2e24-43f7-b4e2-73a4a662b6be.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/mitsubishi-l200.webp",
+  "fuente" : "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_l200-thumb-2025.webp"
+}, {
+  "id" : "5a2355a0-fd68-42ac-a16d-0d5a635f6239",
+  "marca" : "Mitsubishi",
+  "modelo" : "Montero Sport",
+  "url" : "/api/storage/imagenes/modelos/f9638b47-af18-4433-9b6e-0f430d3ceaa1.webp",
+  "ruta" : "modelos/f9638b47-af18-4433-9b6e-0f430d3ceaa1.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/mitsubishi-montero-sport.webp",
+  "fuente" : "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_montero_sport_plata_thumb_2026-500x230.webp"
+}, {
+  "id" : "f0507baa-f70c-4e3a-a17d-d5e1ff5a8a76",
+  "marca" : "Mitsubishi",
+  "modelo" : "Outlander Sport",
+  "url" : "/api/storage/imagenes/modelos/72423bc8-d597-45d3-b299-0d971e4c7697.webp",
+  "ruta" : "modelos/72423bc8-d597-45d3-b299-0d971e4c7697.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/mitsubishi-outlander-sport.webp",
+  "fuente" : "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_outlander-sport-thumb-2025.webp"
+}, {
+  "id" : "55b25844-94eb-4dd2-9d9f-86ba0b0734e5",
+  "marca" : "Mitsubishi",
+  "modelo" : "Xpander",
+  "url" : "/api/storage/imagenes/modelos/fba309ef-27a2-4fca-bf88-22d48c28c920.webp",
+  "ruta" : "modelos/fba309ef-27a2-4fca-bf88-22d48c28c920.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/mitsubishi-xpander.webp",
+  "fuente" : "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_2027_xpander_thmb.webp"
+}, {
+  "id" : "8c4b2f9f-9641-4bec-b1c3-d567dc328c00",
+  "marca" : "Nissan",
+  "modelo" : "Frontier",
+  "url" : "/api/storage/imagenes/modelos/542bfd5b-c4cc-441b-ba2c-25ca1a6aa786.png",
+  "ruta" : "modelos/542bfd5b-c4cc-441b-ba2c-25ca1a6aa786.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/nissan-frontier.png",
+  "fuente" : "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/Frontier21/2-major-facelift/packshots/frontier-packshots-v3.png.ximg.l_3_m.smart.png"
+}, {
+  "id" : "690ed96d-1b3b-4d54-b1b2-bfeb6f272349",
+  "marca" : "Nissan",
+  "modelo" : "Kicks",
+  "url" : "/api/storage/imagenes/modelos/e6515dd2-cff0-4c70-afc8-700f3ef307cc.jpg",
+  "ruta" : "modelos/e6515dd2-cff0-4c70-afc8-700f3ef307cc.jpg",
+  "urlAnterior" : null,
+  "archivo" : "originales/nissan-kicks.jpg",
+  "fuente" : "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/Kicks/my25/Kicks%20Bitono%201061X444-v3.jpg.ximg.l_3_m.smart.jpg"
+}, {
+  "id" : "9cca61c5-561b-4069-8cfa-50a158172fe9",
+  "marca" : "Nissan",
+  "modelo" : "Pathfinder",
+  "url" : "/api/storage/imagenes/modelos/e6a1ec71-d318-4911-8b94-5bd39e92fcc9.png",
+  "ruta" : "modelos/e6a1ec71-d318-4911-8b94-5bd39e92fcc9.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/nissan-pathfinder.png",
+  "fuente" : "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/thumbs/pathfinder.png.ximg.l_3_m.smart.png"
+}, {
+  "id" : "9fac82f8-a291-4aba-8956-2422aee6f2a3",
+  "marca" : "Nissan",
+  "modelo" : "Urvan",
+  "url" : "/api/storage/imagenes/modelos/91c02cf1-a8bc-4932-82a3-7bef691c65c2.png",
+  "ruta" : "modelos/91c02cf1-a8bc-4932-82a3-7bef691c65c2.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/nissan-urvan.png",
+  "fuente" : "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/assets/urvan/my23/vlp/packshots/packshot-urvan-2023-v6.png.ximg.l_3_m.smart.png"
+}, {
+  "id" : "34692d13-8f60-46d5-b07f-5fdecc8dcfb4",
+  "marca" : "Nissan",
+  "modelo" : "Versa",
+  "url" : "/api/storage/imagenes/modelos/2d80de56-a41c-4346-9fcf-6893e0b8ff70.png",
+  "ruta" : "modelos/2d80de56-a41c-4346-9fcf-6893e0b8ff70.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/nissan-versa.png",
+  "fuente" : "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/thumbs/versa-2027-v2.png.ximg.l_3_m.smart.png"
+}, {
+  "id" : "166310e3-0c5c-43ba-8f05-faaa1d14ed0a",
+  "marca" : "Nissan",
+  "modelo" : "X-Trail",
+  "url" : "/api/storage/imagenes/modelos/390770ec-fc76-490b-a797-03f3b946d02e.png",
+  "ruta" : "modelos/390770ec-fc76-490b-a797-03f3b946d02e.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/nissan-x-trail.png",
+  "fuente" : "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/nuevo-x-trail/NUEVA-XTRAIL.png.ximg.l_3_m.smart.png"
+}, {
+  "id" : "a0f5b980-00b6-4cec-bccd-8c428af543b6",
+  "marca" : "Suzuki",
+  "modelo" : "Baleno",
+  "url" : "/api/storage/imagenes/modelos/3680dd25-7ba6-411f-b7fa-3a25c2c33f48.png",
+  "ruta" : "modelos/3680dd25-7ba6-411f-b7fa-3a25c2c33f48.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/suzuki-baleno.png",
+  "fuente" : "https://www.suzuki.com.pe/media/gxkc5rkf/balenope.png"
+}, {
+  "id" : "b8457378-187d-402a-8e21-91a9ae9fb358",
+  "marca" : "Suzuki",
+  "modelo" : "Grand Vitara",
+  "url" : "/api/storage/imagenes/modelos/e3ced950-adfe-4a76-a6f3-0ddcda49683a.webp",
+  "ruta" : "modelos/e3ced950-adfe-4a76-a6f3-0ddcda49683a.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/suzuki-grand-vitara.webp",
+  "fuente" : "https://www.suzuki.com.pe/media/urufuxcn/vista-frontal-del-suv-suzuki-all-new-grand-vitara-smart-hybrid-girs-mostrando-su-diseño-elegante.webp"
+}, {
+  "id" : "784cbf0c-978e-4206-b30e-8ab2596da962",
+  "marca" : "Suzuki",
+  "modelo" : "Jimny",
+  "url" : "/api/storage/imagenes/modelos/5779faa9-88dd-4274-b564-ace98a2ce423.png",
+  "ruta" : "modelos/5779faa9-88dd-4274-b564-ace98a2ce423.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/suzuki-jimny.png",
+  "fuente" : "https://www.suzuki.com.pe/media/xfdnmb4h/jimny-all-grip-peru.png"
+}, {
+  "id" : "548b7ca7-9b3b-440f-9008-43bf6b944d62",
+  "marca" : "Suzuki",
+  "modelo" : "Swift",
+  "url" : "/api/storage/imagenes/modelos/c3168f2d-046d-4753-b2a4-3ce8a01ea23a.webp",
+  "ruta" : "modelos/c3168f2d-046d-4753-b2a4-3ce8a01ea23a.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/suzuki-swift.webp",
+  "fuente" : "https://www.suzuki.com.pe/media/4kjhn24c/model-header.webp"
+}, {
+  "id" : "abdf3b53-d2d2-4f0c-a7bf-c5e9df24212d",
+  "marca" : "Suzuki",
+  "modelo" : "XL7",
+  "url" : "/api/storage/imagenes/modelos/13b58710-a7f5-4039-a8f6-ca840cdde4f3.png",
+  "ruta" : "modelos/13b58710-a7f5-4039-a8f6-ca840cdde4f3.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/suzuki-xl7.png",
+  "fuente" : "https://www.suzuki.com.pe/media/fmkcoxgk/xl7pe.png"
+}, {
+  "id" : "db8987c8-1e29-424e-b7e3-58bf474744a8",
+  "marca" : "Toyota",
+  "modelo" : "Corolla Cross",
+  "url" : "/api/storage/imagenes/modelos/fee1c1ae-4664-4f6e-8563-1ab2167916ab.webp",
+  "ruta" : "modelos/fee1c1ae-4664-4f6e-8563-1ab2167916ab.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/toyota-corolla-cross.webp",
+  "fuente" : "https://central-content.tdp.production.simplitec.io/assets/076f98ef-1431-4086-9cb0-85693f780719?format=webp"
+}, {
+  "id" : "f8a8e885-7039-4c0b-ac0a-ee928b3b3c76",
+  "marca" : "Toyota",
+  "modelo" : "Corolla Sedán",
+  "url" : "/api/storage/imagenes/modelos/7b599b61-40d7-46d4-9b7e-ab7d5b27c31b.webp",
+  "ruta" : "modelos/7b599b61-40d7-46d4-9b7e-ab7d5b27c31b.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/toyota-corolla-sedan.webp",
+  "fuente" : "https://central-content.tdp.production.simplitec.io/assets/6d0b3b7b-868f-4353-b13d-74f99a3a2e25?format=webp"
+}, {
+  "id" : "8d6e17ab-9156-45f9-9a34-7a4062130cf0",
+  "marca" : "Toyota",
+  "modelo" : "Hiace",
+  "url" : "/api/storage/imagenes/modelos/510868d5-7381-4363-a30b-70d7983b50aa.webp",
+  "ruta" : "modelos/510868d5-7381-4363-a30b-70d7983b50aa.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/toyota-hiace.webp",
+  "fuente" : "https://central-content.tdp.production.simplitec.io/assets/5caf9f91-5338-44d9-9baa-b0a44617aa3d?format=webp"
+}, {
+  "id" : "00280e2b-cb36-44b7-9ad0-752ea82f84ff",
+  "marca" : "Toyota",
+  "modelo" : "Hilux",
+  "url" : "/api/storage/imagenes/modelos/815055ae-9a3b-4eab-a41f-5b7f94b8dbe9.webp",
+  "ruta" : "modelos/815055ae-9a3b-4eab-a41f-5b7f94b8dbe9.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/toyota-hilux.webp",
+  "fuente" : "https://central-content.tdp.production.simplitec.io/assets/7e06f925-236e-4bf4-8f43-ace18bfdcf40?format=webp"
+}, {
+  "id" : "87ce98e7-f9a5-4250-be4d-4b909e58da4c",
+  "marca" : "Toyota",
+  "modelo" : "RAV4",
+  "url" : "/api/storage/imagenes/modelos/1d92ff79-0180-416b-af1c-e74ac4fe67c3.webp",
+  "ruta" : "modelos/1d92ff79-0180-416b-af1c-e74ac4fe67c3.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/toyota-rav4.webp",
+  "fuente" : "https://central-content.tdp.production.simplitec.io/assets/b22bea8d-f475-42b4-a139-0cfbedc5f933?format=webp"
+}, {
+  "id" : "5d50b5cd-6d91-4e72-8719-603cab7f0d7d",
+  "marca" : "Toyota",
+  "modelo" : "Yaris Sedán",
+  "url" : "/api/storage/imagenes/modelos/e9902d73-c93f-49f7-a4fc-528dbd04203b.webp",
+  "ruta" : "modelos/e9902d73-c93f-49f7-a4fc-528dbd04203b.webp",
+  "urlAnterior" : null,
+  "archivo" : "originales/toyota-yaris-sedan.webp",
+  "fuente" : "https://central-content.tdp.production.simplitec.io/assets/b47ce45f-d09f-423b-b0d0-b712fb5a202b?format=webp"
+}, {
+  "id" : "b22093cc-9671-4bbc-b82f-ecd1b8d2c6a1",
+  "marca" : "Volkswagen",
+  "modelo" : "Polo",
+  "url" : "/api/storage/imagenes/modelos/1a1d2acc-4e9a-440b-b41f-e701d8e80731.jpg",
+  "ruta" : "modelos/1a1d2acc-4e9a-440b-b41f-e701d8e80731.jpg",
+  "urlAnterior" : null,
+  "archivo" : "originales/volkswagen-polo.jpg",
+  "fuente" : "https://uploads.vw-mms.de/system/production/images/vwn/037/292/images/8832a53ba69e41af4e45d0c481196bae7b307b68/DB2021AU00705_web_1600.jpg?1656497089"
+}, {
+  "id" : "dbe36c8a-93cd-45ae-bf53-b29589ed2d99",
+  "marca" : "Volkswagen",
+  "modelo" : "T-Cross",
+  "url" : "/api/storage/imagenes/modelos/18dcd9de-b7f2-4483-9ed7-92a4338960c4.jpg",
+  "ruta" : "modelos/18dcd9de-b7f2-4483-9ed7-92a4338960c4.jpg",
+  "urlAnterior" : null,
+  "archivo" : "originales/volkswagen-t-cross.jpg",
+  "fuente" : "https://uploads.vw-mms.de/system/production/images/vwn/079/468/images/40f8c6ee5302e6a639dc1ec4d594c6529f157524/DB2023AU00634_web_1600.jpg?1717576164"
+}, {
+  "id" : "4d5206bc-03d3-4dbb-9544-8c25846af9ca",
+  "marca" : "Volkswagen",
+  "modelo" : "Tiguan",
+  "url" : "/api/storage/imagenes/modelos/fd2afb3f-c69b-4779-bfe9-06528723293e.jpg",
+  "ruta" : "modelos/fd2afb3f-c69b-4779-bfe9-06528723293e.jpg",
+  "urlAnterior" : null,
+  "archivo" : "originales/volkswagen-tiguan.jpg",
+  "fuente" : "https://uploads.vw-mms.de/system/production/images/vwn/083/726/images/1ca05214057dd9666b17cb0ae901ad31dac856fe/DB2025AU00268_web_1600.jpg?1739801794"
+}, {
+  "id" : "040d9ffe-57d1-43e2-9d0e-265967c08751",
+  "marca" : "Volkswagen",
+  "modelo" : "Virtus",
+  "url" : "/api/storage/imagenes/modelos/426a78a2-6c8c-4a3e-aeb1-df860514f4e4.png",
+  "ruta" : "modelos/426a78a2-6c8c-4a3e-aeb1-df860514f4e4.png",
+  "urlAnterior" : null,
+  "archivo" : "originales/volkswagen-virtus.png",
+  "fuente" : "https://upload.wikimedia.org/wikipedia/commons/9/9e/2022_Volkswagen_Virtus_1.5_GT_%28India%29_front_view_02.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled"
+} ]

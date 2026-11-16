@@ -27,6 +27,9 @@ public class ModeloVehiculo {
     @Column(name = "tipo_vehiculo", length = 50)
     private String tipoVehiculo;
 
+    @Column(name = "imagen_url", length = 2048)
+    private String imagenUrl;
+
     @Builder.Default
     @Column(nullable = false)
     private Boolean activo = true;

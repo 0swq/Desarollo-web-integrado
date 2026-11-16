@@ -10,6 +10,10 @@ import java.util.UUID;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, UUID> {
+    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @org.springframework.data.jpa.repository.Query("select p from Producto p where p.id = :id")
+    Optional<Producto> bloquearPorId(@org.springframework.data.repository.query.Param("id") UUID id);
+
 
     Optional<Producto> findBySkuIgnoreCase(String sku);
 

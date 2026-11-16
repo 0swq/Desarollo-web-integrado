@@ -54,11 +54,12 @@ public class OrdenService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public Orden crearOrdenDesdeCarrito(UUID usuarioId, OrdenRequest request) {
         Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
                 .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Usuario no encontrado"));
 
-        Carrito carrito = carritoRepository.buscarPorUsuario(usuarioId)
+        Carrito carrito = carritoRepository.bloquearPorUsuario(usuarioId)
                 .orElseThrow(() -> new com.autopartes.exception.BusinessException("El carrito no existe"));
 
         List<ItemCarrito> itemsCarrito = itemCarritoRepository.buscarPorCarrito(carrito.getId());
@@ -67,17 +68,20 @@ public class OrdenService {
         }
 
         // Generar número de orden
-        String numeroOrden = "ORD-" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE) + "-"
+        String numeroOrden = ("SIMULADO".equals(request.getMetodoPago()) ? "SIM-" : "ORD-") + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE) + "-"
                 + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
 
         // Calcular totales y crear items de orden
         BigDecimal subtotal = BigDecimal.ZERO;
         List<ItemOrden> itemsOrden = new ArrayList<>();
 
+        itemsCarrito.sort(java.util.Comparator.comparing(i -> i.getProductoId().toString()));
         for (ItemCarrito itemCarrito : itemsCarrito) {
-            Producto producto = productoRepository.buscarPorId(itemCarrito.getProductoId())
+            Producto producto = productoRepository.bloquearPorId(itemCarrito.getProductoId())
                     .orElseThrow(() -> new com.autopartes.exception.ResourceNotFoundException("Producto no encontrado: " + itemCarrito.getProductoId()));
 
+            if (!Boolean.TRUE.equals(producto.getActivo()))
+                throw new com.autopartes.exception.BusinessException("El producto ya no está disponible: " + producto.getNombre());
             BigDecimal itemSubtotal = itemCarrito.getPrecioUnitario().multiply(BigDecimal.valueOf(itemCarrito.getCantidad()));
             subtotal = subtotal.add(itemSubtotal);
 

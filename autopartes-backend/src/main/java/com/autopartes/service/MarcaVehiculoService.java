@@ -27,6 +27,7 @@ public class MarcaVehiculoService {
         marca.setId(UUID.randomUUID());
         marca.setNombre(request.getNombre().trim());
         marca.setPaisOrigen(request.getPaisOrigen());
+        marca.setImagenUrl(request.getImagenUrl() == null || request.getImagenUrl().isBlank() ? null : request.getImagenUrl().trim());
         marca.setActivo(request.getActivo() != null ? request.getActivo() : true);
 
         return repository.guardar(marca);
@@ -58,6 +59,9 @@ public class MarcaVehiculoService {
 
         marca.setNombre(request.getNombre().trim());
         marca.setPaisOrigen(request.getPaisOrigen());
+        if (request.getImagenUrl() != null) {
+            marca.setImagenUrl(request.getImagenUrl().isBlank() ? null : request.getImagenUrl().trim());
+        }
         if (request.getActivo() != null) {
             marca.setActivo(request.getActivo());
         }

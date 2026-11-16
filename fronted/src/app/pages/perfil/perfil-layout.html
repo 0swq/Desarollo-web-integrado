@@ -1,0 +1,21 @@
+<dialog #dialog class="account-modal" aria-labelledby="account-title" (cancel)="modal.cerrar()" (close)="modal.cerrar()" (click)="cerrarFuera($event)">
+  <header class="modal-header"><div><span>ESPACIO PERSONAL</span><h2 id="account-title">Mi cuenta</h2></div><button type="button" class="close-button" (click)="modal.cerrar()" aria-label="Cerrar mi cuenta"><i class="bi bi-x-lg" aria-hidden="true"></i></button></header>
+  @if (modal.abierto()) {
+    <div class="account-layout">
+      <aside class="account-sidebar"><div class="account-welcome"><i class="bi bi-person-circle" aria-hidden="true"></i><div><span>Hola,</span><strong>{{ storage.obtenerNombre() || 'bienvenido' }}</strong></div></div>
+        <nav aria-label="Secciones de mi cuenta">
+          <button type="button" [class.active]="modal.seccion() === 'mi-perfil'" [attr.aria-current]="modal.seccion() === 'mi-perfil' ? 'page' : null" (click)="modal.abrir('mi-perfil')"><i class="bi bi-person" aria-hidden="true"></i>Mi perfil</button>
+          <button type="button" [class.active]="modal.seccion() === 'mis-pedidos'" [attr.aria-current]="modal.seccion() === 'mis-pedidos' ? 'page' : null" (click)="modal.abrir('mis-pedidos')"><i class="bi bi-box-seam" aria-hidden="true"></i>Mis pedidos</button>
+          <button type="button" [class.active]="modal.seccion() === 'seguridad'" [attr.aria-current]="modal.seccion() === 'seguridad' ? 'page' : null" (click)="modal.abrir('seguridad')"><i class="bi bi-shield-lock" aria-hidden="true"></i>Seguridad</button>
+        </nav>
+      </aside>
+      <section class="account-content" aria-live="polite">
+        @switch (modal.seccion()) {
+          @case ('mi-perfil') { <app-mi-perfil-page /> }
+          @case ('mis-pedidos') { <app-mis-pedidos-page /> }
+          @case ('seguridad') { <app-seguridad-page /> }
+        }
+      </section>
+    </div>
+  }
+</dialog>

@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @Tag(name = "Autenticacion", description = "Registro e inicio de sesion")
 public class AuthController {
-
     private final UsuarioService usuarioService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -58,6 +57,7 @@ public class AuthController {
                     .correo(usuario.getCorreo())
                     .nombre(usuario.getNombre())
                     .apellido(usuario.getApellido())
+                    .fotoPerfilUrl(usuario.getFotoPerfilUrl())
                     .rol(usuario.getRol())
                     .build();
             return ResponseEntity.ok(ApiResponse.ok("Login exitoso", response));
@@ -74,6 +74,7 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UsuarioResponse>> register(@Valid @RequestBody UsuarioRequest request) {
+        request.setRol(com.autopartes.model.Rol.CLIENTE);
         Usuario usuario = usuarioService.registrar(request);
 
         UsuarioResponse response = new UsuarioResponse();
@@ -83,6 +84,7 @@ public class AuthController {
         response.setApellido(usuario.getApellido());
         response.setTelefono(usuario.getTelefono());
         response.setDireccion(usuario.getDireccion());
+        response.setFotoPerfilUrl(usuario.getFotoPerfilUrl());
         response.setRol(usuario.getRol());
         response.setActivo(usuario.getActivo());
         response.setFechaCreacion(usuario.getFechaCreacion());

@@ -1,0 +1,20 @@
+<section class="security-page"><header><span class="eyebrow">PROTEGE TU CUENTA</span><h1>Seguridad</h1><p>Administra tu correo de acceso y tu contraseña.</p></header>
+@if (cargando) { <p class="state" role="status">Consultando tu cuenta...</p> }
+@else if (errorCarga) { <div class="state" role="alert"><p>{{ errorCarga }}</p><button type="button" (click)="cargar()">Reintentar</button></div> }
+@else {
+<form [formGroup]="password" (ngSubmit)="guardarPassword()" class="security-card" [attr.aria-busy]="ocupado === 'password'"><div class="card-title"><i class="bi bi-shield-lock" aria-hidden="true"></i><div><h2>Cambiar contraseña</h2><p>Confirma tu contraseña actual antes de crear una nueva.</p></div></div>
+<label>Contraseña actual<input formControlName="contrasenaActual" [type]="verPasswords ? 'text' : 'password'" autocomplete="current-password" maxlength="200">@if (password.controls.contrasenaActual.touched && password.controls.contrasenaActual.invalid) { <small>Ingresa tu contraseña actual.</small> }</label>
+<label>Nueva contraseña<input formControlName="contrasenaNueva" [type]="verPasswords ? 'text' : 'password'" autocomplete="new-password" maxlength="72"><span class="hint">Entre 8 y 72 caracteres. Debe ser distinta de la actual.</span>@if (password.controls.contrasenaNueva.touched && password.controls.contrasenaNueva.invalid) { <small>Ingresa una contraseña válida de al menos 8 caracteres.</small> }</label>
+<label>Confirmar nueva contraseña<input formControlName="confirmacionContrasena" [type]="verPasswords ? 'text' : 'password'" autocomplete="new-password" maxlength="72">@if (password.controls.confirmacionContrasena.touched && (password.controls.confirmacionContrasena.invalid || password.hasError('noCoinciden'))) { <small>Las contraseñas deben coincidir.</small> }</label>
+<button class="visibility" type="button" [attr.aria-pressed]="verPasswords" (click)="verPasswords = !verPasswords"><i class="bi" [class.bi-eye]="!verPasswords" [class.bi-eye-slash]="verPasswords" aria-hidden="true"></i> {{ verPasswords ? 'Ocultar contraseñas' : 'Mostrar contraseñas' }}</button>
+@if (errorPassword) { <p class="error-message" role="alert">{{ errorPassword }}</p> }
+<div class="actions"><button class="primary" type="submit" [disabled]="!!ocupado">{{ ocupado === 'password' ? 'Actualizando...' : 'Actualizar contraseña' }}</button></div></form>
+<form [formGroup]="correo" (ngSubmit)="guardarCorreo()" class="security-card" [attr.aria-busy]="ocupado === 'correo'"><div class="card-title"><i class="bi bi-envelope" aria-hidden="true"></i><div><h2>Cambiar correo</h2><p>Este será tu nuevo correo para iniciar sesión.</p></div></div><div class="current-email"><span>Correo actual</span><strong>{{ correoActual }}</strong></div>
+<label>Nuevo correo<input formControlName="correoNuevo" type="email" autocomplete="email" maxlength="254">@if (correo.controls.correoNuevo.touched && correo.controls.correoNuevo.invalid) { <small>Ingresa un correo válido.</small> }</label>
+<label>Confirmar nuevo correo<input formControlName="confirmacionCorreo" type="email" autocomplete="off" maxlength="254">@if (correo.controls.confirmacionCorreo.touched && (correo.controls.confirmacionCorreo.invalid || correo.hasError('noCoinciden'))) { <small>Los correos deben coincidir.</small> }</label>
+<label>Contraseña actual<input formControlName="contrasenaActual" type="password" autocomplete="current-password" maxlength="200">@if (correo.controls.contrasenaActual.touched && correo.controls.contrasenaActual.invalid) { <small>Confirma tu contraseña actual.</small> }</label>
+<p class="hint email-hint">Al guardar, iniciarás sesión con el nuevo correo. Tu sesión actual se actualizará automáticamente.</p>
+@if (errorCorreo) { <p class="error-message" role="alert">{{ errorCorreo }}</p> }
+<div class="actions"><button class="primary" type="submit" [disabled]="!!ocupado">{{ ocupado === 'correo' ? 'Actualizando...' : 'Actualizar correo' }}</button></div></form>
+}
+</section>

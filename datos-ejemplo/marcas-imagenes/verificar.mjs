@@ -1,0 +1,8 @@
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const root='backend/datos-ejemplo/marcas-imagenes';const base='http://localhost:4200';const manifestFiles=(await fs.readdir(root)).filter(f=>/^registros-\d+\.json$/.test(f)).sort();const manifest=JSON.parse(await fs.readFile(root+'/'+manifestFiles.at(-1),'utf8'));
+let brands;for(let i=0;i<12;i++){try{const r=await fetch(base+'/api/marcas-vehiculos',{signal:AbortSignal.timeout(2500)});if(!r.ok)throw Error(r.status);brands=(await r.json()).data;break}catch(e){if(i===11)throw e;await new Promise(r=>setTimeout(r,2000));}}
+let verified=0;
+await Promise.all(manifest.map(async entry=>{const brand=brands.find(b=>b.id===entry.id);if(brand?.imagenUrl!==entry.url)throw Error('URL incorrecta '+entry.marca);const r=await fetch(base+brand.imagenUrl,{signal:AbortSignal.timeout(30000)});if(!r.ok)throw Error(entry.marca+': '+r.status);const hash=createHash('sha256');for await(const chunk of r.body)hash.update(chunk);const expected=createHash('sha256').update(await fs.readFile(root+'/'+entry.archivo)).digest('hex');if(hash.digest('hex')!==expected)throw Error('Imagen distinta '+entry.marca);verified++;console.log('Verificado: '+entry.marca);}));
+const count=async path=>(await(await fetch(base+'/api/'+path)).json()).data.length;
+const report={marcas:brands.length,logosVerificados:verified,modelos:await count('modelos-vehiculos'),compatibilidades:await count('compatibilidades-vehiculos'),productos:await count('productos')};await fs.writeFile(root+'/verificacion.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));

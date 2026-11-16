@@ -1,0 +1,35 @@
+<section class="inicio-portada" aria-labelledby="titulo-inicio">
+  <div class="portada-fondo" aria-hidden="true"></div>
+  <div class="portada-contenido">
+    <span class="portada-insignia"><i class="bi bi-speedometer2"></i> {{parametros.contacto().nombre}}</span>
+    <p class="portada-pretitulo">REPUESTOS PARA CADA KILÓMETRO</p>
+    <h1 id="titulo-inicio">Tu próximo viaje empieza con <span>la pieza correcta.</span></h1>
+    <p class="portada-descripcion">Encuentra repuestos y accesorios de calidad para mantener tu vehículo siempre en marcha.</p>
+    <div class="portada-acciones">
+      <a class="boton-principal" routerLink="/catalogo">Explorar catálogo <i class="bi bi-arrow-right"></i></a>
+      <a class="boton-secundario" routerLink="/nosotros">Conoce {{parametros.contacto().nombre}}</a>
+    </div>
+    <div class="portada-confianza" [attr.aria-label]="'Beneficios de ' + parametros.contacto().nombre">
+      <span><i class="bi bi-patch-check-fill"></i> Calidad garantizada</span>
+      <span><i class="bi bi-tools"></i> Asesoría especializada</span>
+    </div>
+  </div>
+  <a class="indicador-deslizar" href="#categorias" aria-label="Deslizar para descubrir"><span></span></a>
+</section>
+
+<section class="categorias-seccion" id="categorias" aria-labelledby="titulo-categorias">
+  <div class="seccion-cabecera">
+    <div><p class="seccion-etiqueta">ENCUENTRA LO QUE BUSCAS</p><h2 id="titulo-categorias">Todo para tu vehículo</h2></div>
+    <a class="enlace-seccion" routerLink="/catalogo">Ver catálogo completo <i class="bi bi-arrow-up-right"></i></a>
+  </div>
+  <div class="categorias-grid">
+    <a class="categoria-tarjeta categoria-motor" routerLink="/catalogo"><i class="bi bi-gear-wide-connected"></i><span>Motor y rendimiento</span><i class="bi bi-arrow-up-right flecha"></i></a>
+    <a class="categoria-tarjeta categoria-frenos" routerLink="/catalogo"><i class="bi bi-disc"></i><span>Frenos y suspensión</span><i class="bi bi-arrow-up-right flecha"></i></a>
+    <a class="categoria-tarjeta categoria-accesorios" routerLink="/catalogo"><i class="bi bi-lightning-charge"></i><span>Accesorios</span><i class="bi bi-arrow-up-right flecha"></i></a>
+  </div>
+</section>
+
+<section class="nosotros-seccion" id="nosotros" aria-labelledby="titulo-nosotros">
+  <div class="nosotros-marca"><span class="marca-inicial">AQ</span><span>DESDE EL PRIMER<br>ARRANQUE</span></div>
+  <div class="nosotros-texto"><p class="seccion-etiqueta">SOMOS {{parametros.contacto().nombre}}</p><h2 id="titulo-nosotros">Tu vehículo merece piezas en las que puedas confiar.</h2><p>Te acompañamos a encontrar el repuesto adecuado con atención cercana y productos pensados para seguir avanzando.</p><a class="enlace-seccion" routerLink="/catalogo">Conoce nuestros productos <i class="bi bi-arrow-right"></i></a></div>
+</section>

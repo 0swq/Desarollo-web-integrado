@@ -1,0 +1,20 @@
+@if (compacto()) {
+  <footer class="compact-footer"><div class="compact-inner"><p>© {{ anio }} {{ contacto.nombre }}</p><nav aria-label="Información"><a routerLink="/nosotros">Nosotros</a><a [href]="contacto.whatsappUrl" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp" aria-hidden="true"></i> ¿Necesitas ayuda?</a></nav></div></footer>
+} @else {
+<footer class="main-footer">
+  <div class="footer-inner">
+    <div class="contact-band"><div class="contact-band-copy"><span class="contact-icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></span><div><strong>¿Buscas una pieza en particular?</strong><p>Cuéntanos qué necesitas. Conversemos por WhatsApp.</p></div></div><a [href]="contacto.whatsappUrl" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp" aria-hidden="true"></i>{{ contacto.telefono }}<i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
+    <div class="footer-grid">
+      <div class="footer-brand"><a routerLink="/inicio" [attr.aria-label]="contacto.nombre + ' , inicio'"><img src="/images/autopartes-quiroz-blanco.svg" [alt]="contacto.nombre"></a><p>Repuestos y accesorios para cuidar tu vehículo y seguir en marcha.</p><span class="business-name">{{ contacto.local }}</span><p>{{contacto.direccion}}</p>@if(contacto.correoContacto){<a [href]="'mailto:'+contacto.correoContacto">{{contacto.correoContacto}}</a>}</div>
+      <nav class="footer-column" aria-label="Tienda"><h2>Tienda</h2><a routerLink="/catalogo">Explorar catálogo</a><a routerLink="/carrito">Mi carrito</a><a routerLink="/catalogo" [queryParams]="{ oferta: true }">Productos en oferta</a></nav>
+      <nav class="footer-column" aria-label="Mi cuenta"><h2>Mi cuenta</h2>
+        @if (autenticado) {<span class="account-name"><i class="bi bi-person-circle" aria-hidden="true"></i> Hola, {{ nombre }}</span><button type="button" (click)="perfilModal.abrir('mi-perfil')">Mi perfil</button><button type="button" (click)="perfilModal.abrir('mis-pedidos')">Mis pedidos</button><button type="button" (click)="perfilModal.abrir('seguridad')">Seguridad de mi cuenta</button>@if (puedeGestionar) {<a routerLink="/administracion">Administración</a>}<button type="button" (click)="cerrarSesion()">Cerrar sesión <i class="bi bi-box-arrow-right" aria-hidden="true"></i></button>}
+        @else {<a class="account-login" routerLink="/iniciar-sesion"><i class="bi bi-person-circle" aria-hidden="true"></i> Iniciar sesión <i class="bi bi-arrow-right" aria-hidden="true"></i></a><a routerLink="/registro">Crear una cuenta</a><p class="account-hint">Accede a tu perfil y consulta tus pedidos desde tu cuenta.</p>}
+      </nav>
+      <nav class="footer-column" aria-label="Información"><h2>Información</h2><a routerLink="/nosotros">Sobre nosotros</a><a routerLink="/nosotros" fragment="ubicacion">Dónde encontrarnos</a><a [href]="contacto.mapsUrl" target="_blank" rel="noopener noreferrer">Abrir ubicación en Maps <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a><a [href]="contacto.whatsappUrl" target="_blank" rel="noopener noreferrer">Atención por WhatsApp <i class="bi bi-whatsapp" aria-hidden="true"></i></a></nav>
+    </div>
+    <div class="footer-bottom"><p>© {{ anio }} {{ contacto.nombre }}. Todos los derechos reservados.</p><a routerLink="/nosotros">Encuentra la pieza correcta. Sigue tu camino. <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
+  </div>
+</footer>
+
+}

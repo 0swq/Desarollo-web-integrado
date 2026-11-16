@@ -1,0 +1,7 @@
+:host { display: block; min-width: 0; }
+.product-search { display: flex; background: white; border-radius: 24px; padding: 4px; border: 1px solid #ddd; }
+.product-search:focus-within { outline: 2px solid #e52b39; outline-offset: 3px; }
+input { width: 100%; min-width: 0; border: 0; background: transparent; outline: none; padding: 7px 12px; color: #222; font: inherit; font-size: 14px; }
+button { flex-shrink: 0; width: 34px; height: 34px; border: 0; border-radius: 50%; background: #d92332; color: white; cursor: pointer; }
+button:hover { background: #b91c2b; }
+button:focus-visible { outline: 2px solid #111; outline-offset: 2px; }

@@ -1,13 +1,16 @@
+# Carga credenciales desde .env (CLAVE=VALOR). Copia .env.example como .env en la raiz del proyecto.
+spring.config.import=optional:file:.env[.properties],optional:file:../.env[.properties],optional:file:../../.env[.properties]
+
 server.port=8080
 spring.application.name=autopartes-backend
 spring.servlet.multipart.enabled=true
 spring.servlet.multipart.max-file-size=10MB
-spring.servlet.multipart.max-request-size=10MB
-spring.datasource.url=jdbc:postgresql://db.ruvuaponemmepdwnqfce.supabase.co:5432/postgres
-spring.datasource.username=postgres
+spring.servlet.multipart.max-request-size=11MB
+spring.datasource.url=${DB_URL:jdbc:postgresql://db.ruvuaponemmepdwnqfce.supabase.co:5432/postgres}
+spring.datasource.username=${DB_USERNAME:postgres}
 spring.datasource.password=${DB_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.flyway.enabled=false
@@ -25,3 +28,10 @@ springdoc.swagger-ui.operationsSorter=method
 springdoc.swagger-ui.tagsSorter=alpha
 springdoc.swagger-ui.displayRequestDuration=true
 springdoc.swagger-ui.disable-swagger-default-url=true
+# Supabase Storage: la clave nunca se devuelve al frontend.
+app.storage.supabase.url=${SUPABASE_URL:}
+app.storage.supabase.key=${SUPABASE_STORAGE_KEY:}
+app.storage.supabase.bucket=${SUPABASE_STORAGE_BUCKET:autopartes-imagenes}
+app.storage.supabase.max-bytes=10485760
+app.storage.supabase.timeout-millis=30000
+app.storage.supabase.create-bucket=true

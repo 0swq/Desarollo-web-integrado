@@ -1,0 +1,132 @@
+<div class="catalog-shell">
+  <div class="breadcrumb-line"><a routerLink="/inicio">Inicio</a><span>/</span><span>Catálogo de repuestos</span></div>
+  <div class="catalog-heading">
+    <div><span class="eyebrow">ENCUENTRA LA PIEZA CORRECTA</span>
+      <h1>Catálogo de repuestos<span>.</span></h1>
+      <p>Selecciona tu vehículo y encuentra lo que necesitas.</p></div>
+    <span class="catalog-label"><i class="bi bi-grid" aria-hidden="true"></i> {{parametros.contacto().nombre}}</span></div>
+  <button class="mobile-filters" type="button" (click)="filtrosAbiertos = !filtrosAbiertos"
+          [attr.aria-expanded]="filtrosAbiertos" aria-controls="catalog-filters"><i class="bi bi-sliders"></i>
+    Filtros {{ cantidadFiltros ? '(' + cantidadFiltros + ')' : '' }}
+  </button>
+  <div class="catalog-layout">
+    <aside id="catalog-filters" class="filters" [class.open]="filtrosAbiertos" aria-label="Filtros del catálogo">
+      <div class="filter-heading"><h2><i class="bi bi-sliders" aria-hidden="true"></i> Filtros</h2>
+        <button type="button" (click)="limpiar()">Limpiar</button>
+      </div>
+      <form (ngSubmit)="actualizarFiltros()">
+        <fieldset [disabled]="cargando || !!error">
+          <section class="filter-section"><h3>Encuentra tu repuesto</h3>
+            <label>Nombre o descripción<input name="q" [(ngModel)]="filtros.q" (ngModelChange)="actualizarFiltros(true)" placeholder="Ej. filtro de aceite"
+                                              type="search"></label>
+            <label>SKU exacto<input name="sku" [(ngModel)]="filtros.sku" (ngModelChange)="actualizarFiltros(true)" placeholder="Código de la pieza"></label>
+            <label>Categoría<select name="categoria" [(ngModel)]="filtros.categoria" (ngModelChange)="actualizarFiltros()">
+              <option value="">Todas las categorías</option>@for (c of data.categorias; track c.id) {
+              @if (c.activo) {
+                <option [value]="c.id">{{ c.nombre }}</option>
+              }
+            }</select></label>
+          </section>
+          <section class="filter-section vehicle"><h3><i class="bi bi-car-front" aria-hidden="true"></i> Tu vehículo
+          </h3>
+            <p class="filter-hint">Filtra por compatibilidad.</p>
+            <app-vehicle-picker etiqueta="Marca" placeholder="Todas las marcas" [opciones]="opcionesMarcas" [valor]="filtros.marca" (valorChange)="seleccionarMarca($event)" />
+            <label>Tipo de vehículo<select name="tipo" [(ngModel)]="filtros.tipo" (ngModelChange)="cambiarTipo()">
+              <option value="">Todos los tipos</option>
+              <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</option>
+            </select></label>
+            <app-vehicle-picker etiqueta="Modelo" placeholder="Todos los modelos" [opciones]="opcionesModelos" [valor]="filtros.modelo" (valorChange)="seleccionarModelo($event)" />
+            <div class="field-row"><label>Año<input name="anio" type="number" min="1900" max="2100" step="1"
+                                                    [(ngModel)]="filtros.anio" (ngModelChange)="actualizarFiltros(true)" placeholder="Ej. 2020"></label><label>Motor<select
+              name="motor" [(ngModel)]="filtros.motor" (ngModelChange)="actualizarFiltros()">
+              <option value="">Todos</option>
+              <option *ngFor="let m of motores" [value]="m">{{ m }}</option>
+            </select></label></div>
+          </section>
+          <section class="filter-section"><h3>Precio y disponibilidad</h3>
+            <label>Moneda<select name="moneda" [(ngModel)]="filtros.moneda" (ngModelChange)="actualizarFiltros()">
+              <option value="">Todas las monedas</option>
+              <option *ngFor="let moneda of monedas" [value]="moneda">{{ moneda }}</option>
+            </select></label>
+            <div class="field-row"><label>Desde<input type="number" min="0" step="0.01" name="minimo"
+                                                      [(ngModel)]="filtros.minimo" (ngModelChange)="actualizarFiltros(true)" placeholder="0.00"></label><label>Hasta<input
+              type="number" min="0" step="0.01" name="maximo" [(ngModel)]="filtros.maximo" (ngModelChange)="actualizarFiltros(true)"
+              placeholder="Sin límite"></label></div>
+            <p *ngIf="rangoInvalido" class="range-error" role="alert">El precio mínimo debe ser menor o igual al
+              máximo.</p>
+            <label class="check-label"><input type="checkbox" name="stock" [(ngModel)]="filtros.stock" (ngModelChange)="actualizarFiltros()"> Solo con
+              stock</label>
+            <label class="check-label"><input type="checkbox" name="oferta" [(ngModel)]="filtros.oferta" (ngModelChange)="actualizarFiltros()"> Solo
+              ofertas</label>
+          </section>
+          <section class="filter-section"><h3>Proveedor</h3><label class="sr-label">Proveedor<select name="proveedor"
+                                                                                                     [(ngModel)]="filtros.proveedor" (ngModelChange)="actualizarFiltros()">
+            <option value="">Todos los proveedores</option>@for (p of data.proveedores; track p.id) {
+            @if (p.activo) {
+              <option [value]="p.id">{{ p.razonSocial }}</option>
+            }
+          }</select></label></section>
+        </fieldset>
+      </form>
+    </aside>
+    <main class="results" aria-label="Resultados del catálogo" [attr.aria-busy]="cargando">
+      <div class="results-toolbar">
+        <div><h2>Todos los repuestos</h2>
+          <p
+            aria-live="polite">{{ cargando ? 'Cargando catálogo...' : desde + '–' + hasta + ' de ' + resultados.length + ' productos' }}</p>
+        </div>
+        <label>Ordenar por<select [(ngModel)]="orden" (ngModelChange)="navegar(1)" aria-label="Ordenar productos">
+          <option value="nombre">Nombre: A a Z</option>
+          <option value="precio-asc">Menor precio</option>
+          <option value="precio-desc">Mayor precio</option>
+          <option value="recientes">Más recientes</option>
+        </select></label></div>
+      <div *ngIf="cantidadFiltros" class="active-summary"><span><i class="bi bi-funnel"
+                                                                   aria-hidden="true"></i> {{ cantidadFiltros }} filtros seleccionados</span>
+        <button type="button" (click)="limpiar()">Restablecer todo <i class="bi bi-x"></i></button>
+      </div>
+      <div *ngIf="cargando" class="loading-grid" role="status" aria-label="Cargando productos">
+        <div *ngFor="let n of [1,2,3,4,5,6]" class="skeleton"><span></span><span></span><span></span></div>
+      </div>
+      <div *ngIf="error" class="empty-state" role="alert"><i class="bi bi-wifi-off"></i>
+        <h3>No pudimos conectar</h3>
+        <p>{{ error }}</p>
+        <button type="button" (click)="cargar()">Volver a intentar</button>
+      </div>
+      <ng-container *ngIf="!cargando && !error">
+        <div *ngIf="!resultados.length" class="empty-state"><i class="bi bi-search"></i>
+          <h3>No encontramos repuestos</h3>
+          <p>{{ cantidadFiltros ? 'Prueba con otros filtros o amplía tu búsqueda.' : 'Aún no hay productos publicados en el catálogo.' }}</p>
+          <button *ngIf="cantidadFiltros" type="button" (click)="limpiar()">Limpiar filtros</button>
+        </div>
+        <div class="product-grid">
+          <app-product-card *ngFor="let p of visibles" [producto]="p" [categoria]="categoria(p)" [stock]="stock(p)"
+                            [compatibilidad]="compatibilidad(p)"/>
+        </div>
+        <div *ngIf="resultados.length" class="pagination-bar"><label>Mostrar<select [(ngModel)]="porPagina"
+                                                                                    (ngModelChange)="navegar(1)"
+                                                                                    aria-label="Productos por página">
+          <option [ngValue]="12">12</option>
+          <option [ngValue]="24">24</option>
+          <option [ngValue]="48">48</option>
+        </select>por página</label>
+          <nav aria-label="Paginación del catálogo">
+            <button type="button" [disabled]="pagina === 1" (click)="navegar(1)" aria-label="Primera página">«</button>
+            <button type="button" [disabled]="pagina === 1" (click)="navegar(pagina - 1)" aria-label="Página anterior">
+              ‹
+            </button>
+            <button *ngFor="let n of paginas" type="button" [class.current]="pagina === n"
+                    [attr.aria-current]="pagina === n ? 'page' : null" (click)="navegar(n)">{{ n }}
+            </button>
+            <button type="button" [disabled]="pagina === totalPaginas" (click)="navegar(pagina + 1)"
+                    aria-label="Página siguiente">›
+            </button>
+            <button type="button" [disabled]="pagina === totalPaginas" (click)="navegar(totalPaginas)"
+                    aria-label="Última página">»
+            </button>
+          </nav>
+          <span>{{ pagina }} de {{ totalPaginas }}</span></div>
+      </ng-container>
+    </main>
+  </div>
+</div>

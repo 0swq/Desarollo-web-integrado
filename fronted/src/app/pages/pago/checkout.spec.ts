@@ -1,0 +1,30 @@
+import { provideHttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router, ActivatedRoute } from '@angular/router';
+import { of, throwError, Subject } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { PagoPage } from './pago/pago';
+import { LlenarDatosPage } from './llenar-datos/llenar-datos';
+import { ConfirmacionPage } from './confirmacion/confirmacion';
+import { CheckoutService } from '../../_services/checkout.service';
+import { PerfilService } from '../../_services/perfil.service';
+import { PerfilModalService } from '../../_services/perfil-modal.service';
+const entrega={direccionEntrega:'Calle 123, Chimbote',telefonoContacto:'940061944',notas:''};
+const vista={items:[{nombreProducto:'Aceite',sku:'DEMO',cantidad:1,subtotal:100}],subtotal:100,igv:18,total:118,moneda:'PEN'};
+const compra={orden:{id:'o1',numeroOrden:'ORD-DEMO',estado:'PENDIENTE',total:118,direccionEntrega:entrega.direccionEntrega,telefonoContacto:entrega.telefonoContacto},pago:{estado:'PENDIENTE',metodoPago:'SIMULADO'},items:[{id:'i1',nombreProducto:'Aceite',cantidad:1,subtotal:100}]};
+describe('Flujo de compra',()=>{
+ let service:any;let pedido:string|null;
+ beforeEach(()=>{
+  pedido=null;service={entrega:vi.fn(()=>entrega),guardarEntrega:vi.fn(),carrito:vi.fn(()=>of(vista)),crear:vi.fn(()=>of(structuredClone(compra))),obtener:vi.fn(()=>of(structuredClone(compra))),simular:vi.fn(()=>of({...structuredClone(compra),pago:{estado:'APROBADO'}}))};
+  TestBed.configureTestingModule({imports:[PagoPage,LlenarDatosPage,ConfirmacionPage],providers: [provideHttpClient(),provideRouter([]),{provide:CheckoutService,useValue:service},{provide:PerfilService,useValue:{obtener:()=>of({nombre:'Ana',apellido:'Perez',correo:'ana@example.com'})}},{provide:PerfilModalService,useValue:{abrir:vi.fn()}},{provide:ActivatedRoute,useValue:{snapshot:{queryParamMap:{get:()=>pedido}}}}]});
+  vi.spyOn(TestBed.inject(Router),'navigate').mockResolvedValue(true);
+ });
+ it('valida los datos antes de avanzar',()=>{const p=TestBed.createComponent(LlenarDatosPage).componentInstance;p.ngOnInit();p.form.controls.direccionEntrega.setValue('');p.continuar();expect(service.guardarEntrega).not.toHaveBeenCalled();p.form.setValue(entrega);p.continuar();expect(service.guardarEntrega).toHaveBeenCalledWith(entrega);});
+ it('no paga sin aceptar la simulación',()=>{const p=TestBed.createComponent(PagoPage).componentInstance;p.ngOnInit();p.pagar();expect(service.crear).not.toHaveBeenCalled();});
+ it('crea el pedido y simula su pago una sola vez',()=>{const p=TestBed.createComponent(PagoPage).componentInstance;p.ngOnInit();p.aceptado=true;p.pagar();expect(service.crear).toHaveBeenCalledWith(entrega);expect(service.simular).toHaveBeenCalledWith('o1','APROBADO');});
+ it('si falla el simulador reintenta el mismo pedido',()=>{service.simular.mockReturnValueOnce(throwError(()=>new Error('Sin conexión')));const p=TestBed.createComponent(PagoPage).componentInstance;p.ngOnInit();p.aceptado=true;p.pagar();expect(p.error).toBe('Sin conexión');p.pagar();expect(service.crear).toHaveBeenCalledTimes(1);expect(service.simular).toHaveBeenCalledTimes(2);});
+ it('bloquea envíos duplicados mientras procesa',()=>{const pendiente=new Subject();service.crear.mockReturnValueOnce(pendiente);const p=TestBed.createComponent(PagoPage).componentInstance;p.ngOnInit();p.aceptado=true;p.pagar();p.pagar();expect(service.crear).toHaveBeenCalledTimes(1);pendiente.complete();});
+ it('recupera un pedido desde su URL al recargar',()=>{pedido='o1';const p=TestBed.createComponent(PagoPage).componentInstance;p.ngOnInit();expect(service.obtener).toHaveBeenCalledWith('o1');expect(service.carrito).not.toHaveBeenCalled();expect(p.compra?.orden.id).toBe('o1');});
+ it('no muestra éxito si el pago fue rechazado',()=>{pedido='o1';service.obtener.mockReturnValueOnce(of({...compra,pago:{estado:'RECHAZADO'}}));const p=TestBed.createComponent(ConfirmacionPage).componentInstance;p.ngOnInit();expect(p.rechazada).toBe(true);expect(p.aprobada).toBe(false);});
+ it('requiere un pedido real para mostrar confirmación',()=>{const p=TestBed.createComponent(ConfirmacionPage).componentInstance;p.ngOnInit();expect(p.error).not.toBe('');expect(service.obtener).not.toHaveBeenCalled();});
+});

@@ -1,0 +1,17 @@
+
+<div class="app-layout">
+  <app-toast-layer />
+  @if (!esAdministracion) {
+  @if (esAcceso) {
+    <div class="access-top"><a class="access-logo" routerLink="/inicio" [attr.aria-label]="parametros.contacto().nombre + ' , inicio'"><img src="/images/autopartes-quiroz-blanco.svg" [alt]="parametros.contacto().nombre"></a><a class="store-link" routerLink="/catalogo"><i class="bi bi-arrow-left" aria-hidden="true"></i> Volver a la tienda</a></div>
+  } @else { <app-navbar /> }
+  }
+
+  <main class="page-content" [class.admin-content]="esAdministracion">
+    <router-outlet></router-outlet>
+  </main>
+
+  @if (!esAdministracion) { <app-footer [compacto]="esAcceso" /> }
+</div>
+
+<app-perfil-layout />

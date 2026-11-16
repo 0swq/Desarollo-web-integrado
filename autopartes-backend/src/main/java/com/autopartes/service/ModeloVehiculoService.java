@@ -35,6 +35,7 @@ public class ModeloVehiculoService {
         modelo.setNombre(request.getNombre().trim());
         modelo.setMarca(marca);
         modelo.setTipoVehiculo(request.getTipoVehiculo());
+        modelo.setImagenUrl(request.getImagenUrl() == null || request.getImagenUrl().isBlank() ? null : request.getImagenUrl().trim());
         modelo.setActivo(request.getActivo() != null ? request.getActivo() : true);
 
         return repository.guardar(modelo);
@@ -74,6 +75,9 @@ public class ModeloVehiculoService {
         modelo.setNombre(request.getNombre().trim());
         modelo.setMarca(marca);
         modelo.setTipoVehiculo(request.getTipoVehiculo());
+        if (request.getImagenUrl() != null) {
+            modelo.setImagenUrl(request.getImagenUrl().isBlank() ? null : request.getImagenUrl().trim());
+        }
         if (request.getActivo() != null) {
             modelo.setActivo(request.getActivo());
         }

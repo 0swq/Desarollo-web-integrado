@@ -1,0 +1,573 @@
+[
+  {
+    "marca": "Toyota",
+    "modelo": "Yaris Sedán",
+    "pagina": "https://e.toyotaperu.com.pe/inventory",
+    "fuente": "https://central-content.tdp.production.simplitec.io/assets/b47ce45f-d09f-423b-b0d0-b712fb5a202b?format=webp",
+    "descripcion": "vehicle_image",
+    "archivo": "originales/toyota-yaris-sedan.webp",
+    "contentType": "image/webp",
+    "size": 14582
+  },
+  {
+    "marca": "Toyota",
+    "modelo": "Corolla Sedán",
+    "pagina": "https://e.toyotaperu.com.pe/inventory",
+    "fuente": "https://central-content.tdp.production.simplitec.io/assets/6d0b3b7b-868f-4353-b13d-74f99a3a2e25?format=webp",
+    "descripcion": "vehicle_image",
+    "archivo": "originales/toyota-corolla-sedan.webp",
+    "contentType": "image/webp",
+    "size": 13052
+  },
+  {
+    "marca": "Toyota",
+    "modelo": "Corolla Cross",
+    "pagina": "https://e.toyotaperu.com.pe/inventory",
+    "fuente": "https://central-content.tdp.production.simplitec.io/assets/076f98ef-1431-4086-9cb0-85693f780719?format=webp",
+    "descripcion": "vehicle_image",
+    "archivo": "originales/toyota-corolla-cross.webp",
+    "contentType": "image/webp",
+    "size": 48406
+  },
+  {
+    "marca": "Toyota",
+    "modelo": "RAV4",
+    "pagina": "https://e.toyotaperu.com.pe/inventory",
+    "fuente": "https://central-content.tdp.production.simplitec.io/assets/b22bea8d-f475-42b4-a139-0cfbedc5f933?format=webp",
+    "descripcion": "vehicle_image",
+    "archivo": "originales/toyota-rav4.webp",
+    "contentType": "image/webp",
+    "size": 311982
+  },
+  {
+    "marca": "Toyota",
+    "modelo": "Hilux",
+    "pagina": "https://e.toyotaperu.com.pe/inventory",
+    "fuente": "https://central-content.tdp.production.simplitec.io/assets/7e06f925-236e-4bf4-8f43-ace18bfdcf40?format=webp",
+    "descripcion": "vehicle_image",
+    "archivo": "originales/toyota-hilux.webp",
+    "contentType": "image/webp",
+    "size": 9094
+  },
+  {
+    "marca": "Toyota",
+    "modelo": "Hiace",
+    "pagina": "https://e.toyotaperu.com.pe/inventory",
+    "fuente": "https://central-content.tdp.production.simplitec.io/assets/5caf9f91-5338-44d9-9baa-b0a44617aa3d?format=webp",
+    "descripcion": "vehicle_image",
+    "archivo": "originales/toyota-hiace.webp",
+    "contentType": "image/webp",
+    "size": 7944
+  },
+  {
+    "marca": "Nissan",
+    "modelo": "Versa",
+    "pagina": "https://www.nissan.pe/vehiculos/nuevos.html",
+    "fuente": "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/thumbs/versa-2027-v2.png.ximg.l_3_m.smart.png",
+    "descripcion": "nissan-versa",
+    "archivo": "originales/nissan-versa.png",
+    "contentType": "image/png",
+    "size": 45734
+  },
+  {
+    "marca": "Nissan",
+    "modelo": "Kicks",
+    "pagina": "https://www.nissan.pe/vehiculos/nuevos.html",
+    "fuente": "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/Kicks/my25/Kicks%20Bitono%201061X444-v3.jpg.ximg.l_3_m.smart.jpg",
+    "descripcion": " ",
+    "archivo": "originales/nissan-kicks.jpg",
+    "contentType": "image/jpeg",
+    "size": 7958
+  },
+  {
+    "marca": "Nissan",
+    "modelo": "X-Trail",
+    "pagina": "https://www.nissan.pe/vehiculos/nuevos.html",
+    "fuente": "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/nuevo-x-trail/NUEVA-XTRAIL.png.ximg.l_3_m.smart.png",
+    "descripcion": " ",
+    "archivo": "originales/nissan-x-trail.png",
+    "contentType": "image/png",
+    "size": 34001
+  },
+  {
+    "marca": "Nissan",
+    "modelo": "Pathfinder",
+    "pagina": "https://www.nissan.pe/vehiculos/nuevos.html",
+    "fuente": "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/thumbs/pathfinder.png.ximg.l_3_m.smart.png",
+    "descripcion": "pathfinder",
+    "archivo": "originales/nissan-pathfinder.png",
+    "contentType": "image/png",
+    "size": 69968
+  },
+  {
+    "marca": "Nissan",
+    "modelo": "Frontier",
+    "pagina": "https://www.nissan.pe/vehiculos/nuevos.html",
+    "fuente": "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/Frontier21/2-major-facelift/packshots/frontier-packshots-v3.png.ximg.l_3_m.smart.png",
+    "descripcion": " ",
+    "archivo": "originales/nissan-frontier.png",
+    "contentType": "image/png",
+    "size": 31947
+  },
+  {
+    "marca": "Nissan",
+    "modelo": "Urvan",
+    "pagina": "https://www.nissan.pe/vehiculos/nuevos.html",
+    "fuente": "https://www.nissan-cdn.net/content/dam/Nissan/pe/vehicles/assets/urvan/my23/vlp/packshots/packshot-urvan-2023-v6.png.ximg.l_3_m.smart.png",
+    "descripcion": " ",
+    "archivo": "originales/nissan-urvan.png",
+    "contentType": "image/png",
+    "size": 51507
+  },
+  {
+    "marca": "Hyundai",
+    "modelo": "Grand i10 Hatch",
+    "pagina": "https://hyundai.pe/modelos/",
+    "fuente": "https://hyundai.pe/wp-content/uploads/2023/08/i10Hatch-calada-468x260-1.png",
+    "descripcion": "Grand i10 Hatch",
+    "archivo": "originales/hyundai-grand-i10-hatch.webp",
+    "contentType": "image/webp",
+    "size": 21438
+  },
+  {
+    "marca": "Hyundai",
+    "modelo": "Grand i10 Sedán",
+    "pagina": "https://hyundai.pe/modelos/",
+    "fuente": "https://hyundai.pe/wp-content/uploads/2023/08/i10Sedan-calada-468x260-1.png",
+    "descripcion": "Grand i10 Sedan",
+    "archivo": "originales/hyundai-grand-i10-sedan.webp",
+    "contentType": "image/webp",
+    "size": 22016
+  },
+  {
+    "marca": "Hyundai",
+    "modelo": "Accent",
+    "pagina": "https://hyundai.pe/modelos/",
+    "fuente": "https://hyundai.pe/wp-content/uploads/2026/03/PrincpalAccent.png",
+    "descripcion": "ACCENT",
+    "archivo": "originales/hyundai-accent.webp",
+    "contentType": "image/webp",
+    "size": 20664
+  },
+  {
+    "marca": "Hyundai",
+    "modelo": "Creta",
+    "pagina": "https://hyundai.pe/modelos/",
+    "fuente": "https://hyundai.pe/wp-content/uploads/2024/09/creta_2.png",
+    "descripcion": "CRETA",
+    "archivo": "originales/hyundai-creta.webp",
+    "contentType": "image/webp",
+    "size": 19668
+  },
+  {
+    "marca": "Hyundai",
+    "modelo": "Tucson",
+    "pagina": "https://hyundai.pe/modelos/",
+    "fuente": "https://hyundai.pe/wp-content/uploads/2026/09/Tucson1.png",
+    "descripcion": "TUCSON",
+    "archivo": "originales/hyundai-tucson.webp",
+    "contentType": "image/webp",
+    "size": 17610
+  },
+  {
+    "marca": "Hyundai",
+    "modelo": "Santa Fe",
+    "pagina": "https://hyundai.pe/modelos/",
+    "fuente": "https://hyundai.pe/wp-content/uploads/2024/04/new-santa-fe-miniatura-cotizador-469x260-2.png",
+    "descripcion": "SANTA FE",
+    "archivo": "originales/hyundai-santa-fe.webp",
+    "contentType": "image/webp",
+    "size": 19112
+  },
+  {
+    "marca": "Kia",
+    "modelo": "Picanto",
+    "pagina": "https://www.kia.com/pe/showroom/autos-nuevos.html",
+    "fuente": "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/new-picanto-green.png",
+    "descripcion": "Picanto",
+    "archivo": "originales/kia-picanto.webp",
+    "contentType": "image/webp",
+    "size": 4720
+  },
+  {
+    "marca": "Kia",
+    "modelo": "Soluto",
+    "pagina": "https://www.kia.com/pe/showroom/autos-nuevos.html",
+    "fuente": "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/soluto.png",
+    "descripcion": "msg_vehicle_soluto",
+    "archivo": "originales/kia-soluto.webp",
+    "contentType": "image/webp",
+    "size": 5722
+  },
+  {
+    "marca": "Kia",
+    "modelo": "K3 Sedán",
+    "pagina": "https://www.kia.com/pe/showroom/autos-nuevos.html",
+    "fuente": "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/k3.png",
+    "descripcion": "msg_vehicle_k3",
+    "archivo": "originales/kia-k3-sedan.webp",
+    "contentType": "image/webp",
+    "size": 6008
+  },
+  {
+    "marca": "Kia",
+    "modelo": "Seltos",
+    "pagina": "https://www.kia.com/pe/showroom/autos-nuevos.html",
+    "fuente": "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/new-seltos.png",
+    "descripcion": "msg_vehicle_new-seltos",
+    "archivo": "originales/kia-seltos.webp",
+    "contentType": "image/webp",
+    "size": 5344
+  },
+  {
+    "marca": "Kia",
+    "modelo": "Sportage",
+    "pagina": "https://www.kia.com/pe/showroom/autos-nuevos.html",
+    "fuente": "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/sportage_2026.png",
+    "descripcion": "msg_vehicle_new-sportage",
+    "archivo": "originales/kia-sportage.webp",
+    "contentType": "image/webp",
+    "size": 5692
+  },
+  {
+    "marca": "Kia",
+    "modelo": "Sorento",
+    "pagina": "https://www.kia.com/pe/showroom/autos-nuevos.html",
+    "fuente": "https://www.kia.com/content/dam/kwcms/pe/es/images/common/thumbs/laterales/new-sorento.png",
+    "descripcion": "msg_vehicle_new-sorento",
+    "archivo": "originales/kia-sorento.webp",
+    "contentType": "image/webp",
+    "size": 7072
+  },
+  {
+    "marca": "Chevrolet",
+    "modelo": "Tracker",
+    "pagina": "https://www.chevrolet.com.pe/",
+    "fuente": "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2027/suvs/tracker/nueva-tracker-rs-jelly.jpg?imwidth=800",
+    "descripcion": "erica/peru/espanol/vdc-collections/2027/suvs/tracker/nueva-tracker-rs-jelly.jpg?imwidth=1200 1x, /content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2027/suvs/tracker/nueva-tracker-rs-jelly.jpg?imwidth=2400 2x\"/> ",
+    "archivo": "originales/chevrolet-tracker.webp",
+    "contentType": "image/webp",
+    "size": 41898
+  },
+  {
+    "marca": "Chevrolet",
+    "modelo": "Captiva",
+    "pagina": "https://www.chevrolet.com.pe/",
+    "fuente": "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/suvs/captiva/captiva-xl-jelly-pe.jpg?imwidth=800",
+    "descripcion": "uth-america/peru/espanol/vdc-collections/2026/suvs/captiva/captiva-xl-jelly-pe.jpg?imwidth=1200 1x, /content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/suvs/captiva/captiva-xl-jelly-pe.jpg?imwidth=2400 2x\"/> </gb-responsive-image",
+    "archivo": "originales/chevrolet-captiva.webp",
+    "contentType": "image/webp",
+    "size": 36864
+  },
+  {
+    "marca": "Chevrolet",
+    "modelo": "Traverse",
+    "pagina": "https://www.chevrolet.com.pe/",
+    "fuente": "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/suvs/traverse/new/traverse-z71-logo-jelly.jpg?imwidth=800",
+    "descripcion": "spanol/vdc-collections/2026/suvs/traverse/new/traverse-z71-logo-jelly.jpg?imwidth=1200 1x, /content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/suvs/traverse/new/traverse-z71-logo-jelly.jpg?imwidth=2400 2x\"/> </gb-",
+    "archivo": "originales/chevrolet-traverse.webp",
+    "contentType": "image/webp",
+    "size": 37130
+  },
+  {
+    "marca": "Chevrolet",
+    "modelo": "Colorado",
+    "pagina": "https://www.chevrolet.com.pe/",
+    "fuente": "https://www.chevrolet.com.pe/content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/pickups/colorado/colorado-z71-jelly.jpg?imwidth=800",
+    "descripcion": "erica/peru/espanol/vdc-collections/2026/pickups/colorado/colorado-z71-jelly.jpg?imwidth=1200 1x, /content/dam/chevrolet/south-america/peru/espanol/vdc-collections/2026/pickups/colorado/colorado-z71-jelly.jpg?imwidth=2400 2x\"/> ",
+    "archivo": "originales/chevrolet-colorado.webp",
+    "contentType": "image/webp",
+    "size": 39786
+  },
+  {
+    "marca": "Suzuki",
+    "modelo": "Swift",
+    "pagina": "https://www.suzuki.com.pe/",
+    "fuente": "https://www.suzuki.com.pe/media/4kjhn24c/model-header.webp",
+    "descripcion": "SWIFT SMART HYBRID",
+    "archivo": "originales/suzuki-swift.webp",
+    "contentType": "image/webp",
+    "size": 14692
+  },
+  {
+    "marca": "Suzuki",
+    "modelo": "Baleno",
+    "pagina": "https://www.suzuki.com.pe/",
+    "fuente": "https://www.suzuki.com.pe/media/gxkc5rkf/balenope.png",
+    "descripcion": "BALENO",
+    "archivo": "originales/suzuki-baleno.png",
+    "contentType": "image/png",
+    "size": 36201
+  },
+  {
+    "marca": "Suzuki",
+    "modelo": "Grand Vitara",
+    "pagina": "https://www.suzuki.com.pe/",
+    "fuente": "https://www.suzuki.com.pe/media/urufuxcn/vista-frontal-del-suv-suzuki-all-new-grand-vitara-smart-hybrid-girs-mostrando-su-diseño-elegante.webp",
+    "descripcion": "Camionetas SUV: All New Grand Vitara Smart Hybrid ",
+    "archivo": "originales/suzuki-grand-vitara.webp",
+    "contentType": "image/webp",
+    "size": 20918
+  },
+  {
+    "marca": "Suzuki",
+    "modelo": "Jimny",
+    "pagina": "https://www.suzuki.com.pe/",
+    "fuente": "https://www.suzuki.com.pe/media/xfdnmb4h/jimny-all-grip-peru.png",
+    "descripcion": "JIMNY",
+    "archivo": "originales/suzuki-jimny.png",
+    "contentType": "image/png",
+    "size": 21159
+  },
+  {
+    "marca": "Suzuki",
+    "modelo": "XL7",
+    "pagina": "https://www.suzuki.com.pe/",
+    "fuente": "https://www.suzuki.com.pe/media/fmkcoxgk/xl7pe.png",
+    "descripcion": "XL7 SMART HYBRID",
+    "archivo": "originales/suzuki-xl7.png",
+    "contentType": "image/png",
+    "size": 34376
+  },
+  {
+    "marca": "Mitsubishi",
+    "modelo": "L200",
+    "pagina": "https://www.mitsubishi-motors.com.pe/fichas-tecnicas",
+    "fuente": "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_l200-thumb-2025.webp",
+    "descripcion": "L200",
+    "archivo": "originales/mitsubishi-l200.webp",
+    "contentType": "image/webp",
+    "size": 33580
+  },
+  {
+    "marca": "Mitsubishi",
+    "modelo": "Montero Sport",
+    "pagina": "https://www.mitsubishi-motors.com.pe/fichas-tecnicas",
+    "fuente": "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_montero_sport_plata_thumb_2026-500x230.webp",
+    "descripcion": "Montero Sport",
+    "archivo": "originales/mitsubishi-montero-sport.webp",
+    "contentType": "image/webp",
+    "size": 55194
+  },
+  {
+    "marca": "Mitsubishi",
+    "modelo": "Outlander Sport",
+    "pagina": "https://www.mitsubishi-motors.com.pe/fichas-tecnicas",
+    "fuente": "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_outlander-sport-thumb-2025.webp",
+    "descripcion": "Outlander Sport",
+    "archivo": "originales/mitsubishi-outlander-sport.webp",
+    "contentType": "image/webp",
+    "size": 36764
+  },
+  {
+    "marca": "Mitsubishi",
+    "modelo": "Xpander",
+    "pagina": "https://www.mitsubishi-motors.com.pe/fichas-tecnicas",
+    "fuente": "https://mitsubucket.s3.us-west-2.amazonaws.com/web/images/modelos/mitsubishi_peru_2027_xpander_thmb.webp",
+    "descripcion": "Xpander",
+    "archivo": "originales/mitsubishi-xpander.webp",
+    "contentType": "image/webp",
+    "size": 15144
+  },
+  {
+    "marca": "Honda",
+    "modelo": "HR-V",
+    "pagina": "https://autos.honda.com.pe/",
+    "fuente": "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2023/08/HONDA-WEB-MINIATURASHRV-2026-copia.png",
+    "descripcion": "HRV 2026",
+    "archivo": "originales/honda-hr-v.webp",
+    "contentType": "image/webp",
+    "size": 18054
+  },
+  {
+    "marca": "Honda",
+    "modelo": "CR-V",
+    "pagina": "https://autos.honda.com.pe/",
+    "fuente": "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2026/03/crv-miniatura.webp",
+    "descripcion": "CRV 2026",
+    "archivo": "originales/honda-cr-v.webp",
+    "contentType": "image/webp",
+    "size": 40102
+  },
+  {
+    "marca": "Honda",
+    "modelo": "BR-V",
+    "pagina": "https://autos.honda.com.pe/",
+    "fuente": "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2026/01/HONDA-WEB-MINIATURASBRV.png",
+    "descripcion": "New BR-V SEVEN",
+    "archivo": "originales/honda-br-v.webp",
+    "contentType": "image/webp",
+    "size": 17414
+  },
+  {
+    "marca": "Honda",
+    "modelo": "Pilot",
+    "pagina": "https://autos.honda.com.pe/",
+    "fuente": "https://cdn-autos-honda.b-cdn.net/wp-content/uploads/2023/05/HONDA-WEB-MINIATURASPILOT.png",
+    "descripcion": "PILOT 2026",
+    "archivo": "originales/honda-pilot.webp",
+    "contentType": "image/webp",
+    "size": 17046
+  },
+  {
+    "marca": "Mazda",
+    "modelo": "Mazda3 Sedán",
+    "pagina": "https://www.mazda.pe/",
+    "fuente": "https://www.mazda.pe/media/qfqleszd/mazda-3-p.png",
+    "descripcion": "MAZDA 3 SEDÁN",
+    "archivo": "originales/mazda-mazda3-sedan.png",
+    "contentType": "image/png",
+    "size": 90205
+  },
+  {
+    "marca": "Mazda",
+    "modelo": "CX-30",
+    "pagina": "https://www.mazda.pe/",
+    "fuente": "https://www.mazda.pe/media/5ohjdy0r/mazda-cx30-caracteristicas-high-25-awd-6at-7g-rojo-cristal.png",
+    "descripcion": "MAZDA CX-30",
+    "archivo": "originales/mazda-cx-30.png",
+    "contentType": "image/png",
+    "size": 92105
+  },
+  {
+    "marca": "Mazda",
+    "modelo": "CX-5",
+    "pagina": "https://www.mazda.pe/",
+    "fuente": "https://www.mazda.pe/media/0pvho5ax/mazda-cx5-caracteristicas-signature-25t-awd-6at-rojo-cristal.png",
+    "descripcion": "MAZDA CX-5",
+    "archivo": "originales/mazda-cx-5.png",
+    "contentType": "image/png",
+    "size": 97791
+  },
+  {
+    "marca": "Mazda",
+    "modelo": "BT-50",
+    "pagina": "https://www.mazda.pe/",
+    "fuente": "https://www.mazda.pe/media/zd5pnadp/img-model.webp",
+    "descripcion": "ALL NEW BT-50",
+    "archivo": "originales/mazda-bt-50.webp",
+    "contentType": "image/webp",
+    "size": 15964
+  },
+  {
+    "marca": "Volkswagen",
+    "modelo": "Polo",
+    "pagina": "https://www.volkswagen-newsroom.com/en/images/albums/polo-3219",
+    "fuente": "https://uploads.vw-mms.de/system/production/images/vwn/037/292/images/8832a53ba69e41af4e45d0c481196bae7b307b68/DB2021AU00705_web_1600.jpg?1656497089",
+    "descripcion": "Polo",
+    "archivo": "originales/volkswagen-polo.jpg",
+    "contentType": "image/jpeg",
+    "size": 215463
+  },
+  {
+    "marca": "Volkswagen",
+    "modelo": "Virtus",
+    "pagina": "https://en.wikipedia.org/wiki/Volkswagen_Virtus",
+    "fuente": "https://upload.wikimedia.org/wikipedia/commons/9/9e/2022_Volkswagen_Virtus_1.5_GT_%28India%29_front_view_02.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "descripcion": "Virtus",
+    "archivo": "originales/volkswagen-virtus.png",
+    "contentType": "image/png",
+    "size": 2198852,
+    "licenciaFuente": "https://commons.wikimedia.org/wiki/File:2022_Volkswagen_Virtus_1.5_GT_(India)_front_view_02.png",
+    "licencia": {
+      "DateTime": {
+        "value": "2022-06-22 16:32:15",
+        "source": "mediawiki-metadata",
+        "hidden": ""
+      },
+      "ObjectName": {
+        "value": "2022 Volkswagen Virtus 1.5 GT (India) front view 02",
+        "source": "mediawiki-metadata"
+      },
+      "CommonsMetadataExtension": {
+        "value": 1.2,
+        "source": "extension",
+        "hidden": ""
+      },
+      "Categories": {
+        "value": "Media from YouTube|Volkswagen Virtus|Red Volkswagen sedans|Volkswagen automobiles in India|2022 Volkswagen automobiles",
+        "source": "commons-categories",
+        "hidden": ""
+      },
+      "Assessments": {
+        "value": "",
+        "source": "commons-categories",
+        "hidden": ""
+      },
+      "ImageDescription": {
+        "value": "2022 Volkswagen Virtus 1.5 GT (India) front view",
+        "source": "commons-desc-page"
+      },
+      "DateTimeOriginal": {
+        "value": "2022-05-06",
+        "source": "commons-desc-page"
+      },
+      "Credit": {
+        "value": "<bdi lang=\"en\" dir=\"ltr\"><a href=\"//commons.wikimedia.org/wiki/Commons:YouTube_files\" title=\"Commons:YouTube files\">YouTube</a>: <a rel=\"nofollow\" class=\"external text\" href=\"https://www.youtube.com/watch?v=RG0kq0IJYmc\"><bdi lang=\"\">https://www.youtube.com/watch?v=RG0kq0IJYmc</bdi></a> – View/save archived versions on <a rel=\"nofollow\" class=\"external text\" href=\"https://web.archive.org/web/*/https://www.youtube.com/watch?v=RG0kq0IJYmc\">archive.org</a></bdi>",
+        "source": "commons-desc-page"
+      },
+      "Artist": {
+        "value": "DriveSpark",
+        "source": "commons-desc-page"
+      },
+      "LicenseShortName": {
+        "value": "CC BY 3.0",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "UsageTerms": {
+        "value": "Creative Commons Attribution 3.0",
+        "source": "commons-desc-page"
+      },
+      "AttributionRequired": {
+        "value": "true",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "Attribution": {
+        "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.youtube.com/watch?v=RG0kq0IJYmc\">DriveSpark Malayalam</a>",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "LicenseUrl": {
+        "value": "https://creativecommons.org/licenses/by/3.0",
+        "source": "commons-desc-page"
+      },
+      "Copyrighted": {
+        "value": "True",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "Restrictions": {
+        "value": "",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "License": {
+        "value": "cc-by-3.0",
+        "source": "commons-templates",
+        "hidden": ""
+      }
+    }
+  },
+  {
+    "marca": "Volkswagen",
+    "modelo": "T-Cross",
+    "pagina": "https://www.volkswagen-newsroom.com/en/images/detail/volkswagen-t-cross-79468",
+    "fuente": "https://uploads.vw-mms.de/system/production/images/vwn/079/468/images/40f8c6ee5302e6a639dc1ec4d594c6529f157524/DB2023AU00634_web_1600.jpg?1717576164",
+    "descripcion": "T-Cross",
+    "archivo": "originales/volkswagen-t-cross.jpg",
+    "contentType": "image/jpeg",
+    "size": 137942
+  },
+  {
+    "marca": "Volkswagen",
+    "modelo": "Tiguan",
+    "pagina": "https://www.volkswagen-newsroom.com/en/images/albums/tiguan-6685",
+    "fuente": "https://uploads.vw-mms.de/system/production/images/vwn/083/726/images/1ca05214057dd9666b17cb0ae901ad31dac856fe/DB2025AU00268_web_1600.jpg?1739801794",
+    "descripcion": "Tiguan",
+    "archivo": "originales/volkswagen-tiguan.jpg",
+    "contentType": "image/jpeg",
+    "size": 258556
+  }
+]

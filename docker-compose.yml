@@ -1,0 +1,19 @@
+services:
+  autopartes-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: autopartes-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_USERNAME: postgres.ruvuaponemmepdwnqfce
+      SPRING_DATASOURCE_URL: jdbc:postgresql://aws-1-ca-central-1.pooler.supabase.com:5432/postgres
+      DB_USERNAME: postgres.ruvuaponemmepdwnqfce
+      DB_URL: jdbc:postgresql://aws-1-ca-central-1.pooler.supabase.com:5432/postgres
+    ports:
+      - "8082:8081"
+    volumes:
+      - ./uploads:/app/uploads

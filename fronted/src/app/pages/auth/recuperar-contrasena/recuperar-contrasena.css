@@ -1,0 +1,2 @@
+@import '../auth-shared.css';
+.recovery-panel{max-width:500px;margin:20px auto;background:white;padding:35px;border:1px solid #e1e8f1;border-radius:12px}.recovery-icon{width:65px;height:65px;display:grid;place-items:center;background:#fff0f2;color:#c73546;border-radius:50%;font-size:30px;margin:10px 0 25px}.recovery-panel .hint{margin:0 0 24px}@media(max-width:540px){.recovery-panel{padding:24px 18px}}

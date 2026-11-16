@@ -1,0 +1,7 @@
+<form class="product-search" role="search" (ngSubmit)="buscar()">
+  <input type="search" name="q" [(ngModel)]="termino" aria-label="Buscar productos por nombre, descripción o SKU"
+    placeholder="Buscar repuestos...">
+  <button type="submit" aria-label="Buscar productos" title="Buscar">
+    <i class="bi bi-search" aria-hidden="true"></i>
+  </button>
+</form>

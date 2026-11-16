@@ -1,0 +1,8 @@
+@import '../checkout-shared.css';
+
+.gateway-brand{display:flex;align-items:center;gap:13px;padding:20px;border:1px solid #e5eaf0;border-radius:9px;margin-bottom:25px;background:#fbfcfe}
+.gateway-icon{display:grid;place-items:center;background:#fff0f2;border-radius:9px;width:45px;height:45px;font-size:24px;color:#cb3545}
+.gateway-brand strong{display:block;font-size:14px;color:#455b78}
+.gateway-brand div>span{display:block;font-size:9px;letter-spacing:.4px;color:#9aa8ba;margin-top:5px}
+.accept{display:flex;flex-direction:row;align-items:flex-start;gap:11px;margin-top:8px;color:#64758a;font-size:11px;line-height:1.9;cursor:pointer}
+.accept input{width:16px;height:16px;margin-top:3px;accent-color:#d92332;flex-shrink:0}

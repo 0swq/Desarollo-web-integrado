@@ -31,7 +31,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        // No validar JWT en los endpoints públicos de autenticación
         String path = request.getServletPath();
         return path.startsWith("/auth/");
     }
@@ -42,8 +41,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader(AUTH_HEADER);
-
-        // Sin header o sin "Bearer ": continuar sin autenticar
         if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
@@ -68,8 +65,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Token expirado, malformado, firma inválida o usuario inexistente:
-            // no se autentica y Spring Security responderá 401/403 según tu configuración
             logger.warn("JWT inválido o usuario no encontrado: " + e.getMessage());
             SecurityContextHolder.clearContext();
         }

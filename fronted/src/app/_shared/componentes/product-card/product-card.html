@@ -1,0 +1,22 @@
+<a class="product-card" [routerLink]="['/catalogo/producto', producto.id]" [attr.aria-label]="'Ver producto: ' + producto.nombre">
+  <div class="product-visual">
+    <span *ngIf="enOferta" class="offer">OFERTA</span>
+    <img *ngIf="producto.imagenUrl && !imagenFallida; else placeholder" [src]="producto.imagenUrl" [alt]="producto.nombre" loading="lazy" (error)="imagenFallida = true">
+    <ng-template #placeholder><i class="bi bi-gear-wide-connected placeholder-icon" aria-hidden="true"></i></ng-template>
+    <span class="availability" [class.unavailable]="stock === 0">
+      <span class="dot"></span>{{ stock === null ? 'Stock por confirmar' : stock > 0 ? 'Disponible' : 'Agotado' }}
+    </span>
+  </div>
+  <div class="product-info">
+    <span class="category">{{ categoria || 'Repuestos y accesorios' }}</span>
+    <h3>{{ producto.nombre }}</h3>
+    <span class="sku">SKU · {{ producto.sku }}</span>
+    <p class="description">{{ producto.descripcion || 'Sin descripción disponible.' }}</p>
+    <p *ngIf="compatibilidad" class="fit"><i class="bi bi-car-front" aria-hidden="true"></i> {{ compatibilidad }}</p>
+    <div class="price-row">
+      <div><del *ngIf="enOferta">{{ producto.precio | currency:(producto.moneda || 'PEN'):'symbol':'1.2-2' }}</del>
+      <strong>{{ precio | currency:(producto.moneda || 'PEN'):'symbol':'1.2-2' }}</strong></div>
+      <span class="stock" *ngIf="stock !== null && stock > 0">{{ stock }} unidades</span>
+    </div>
+  </div>
+</a>

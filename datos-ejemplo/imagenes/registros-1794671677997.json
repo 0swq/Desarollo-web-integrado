@@ -1,0 +1,41 @@
+[ {
+  "sku" : "DEMO-ACE-5W30-1L",
+  "id" : "739f420f-ae2d-4dcb-b194-f0ed30fdb8b6",
+  "archivo" : "DEMO-ACE-5W30-1L.png",
+  "ruta" : "productos/72040284-9be6-4ced-bed7-a401f8e678b0.png",
+  "url" : "/api/storage/imagenes/productos/72040284-9be6-4ced-bed7-a401f8e678b0.png",
+  "urlAnterior" : null,
+  "size" : 1596233
+}, {
+  "sku" : "DEMO-REF-5050-1L",
+  "id" : "30d8ba7c-9158-42b0-bf9c-f69894cbeca5",
+  "archivo" : "DEMO-REF-5050-1L.png",
+  "ruta" : "productos/e1ef0fdc-f908-4e94-b6f8-36303bf39ada.png",
+  "url" : "/api/storage/imagenes/productos/e1ef0fdc-f908-4e94-b6f8-36303bf39ada.png",
+  "urlAnterior" : null,
+  "size" : 1448904
+}, {
+  "sku" : "DEMO-LUZ-H4-12V",
+  "id" : "b46cc8d4-c67c-4e44-8a5a-0aa38db63b2b",
+  "archivo" : "DEMO-LUZ-H4-12V.png",
+  "ruta" : "productos/203baebc-f5c8-4c07-b2a0-a7dcf98ef184.png",
+  "url" : "/api/storage/imagenes/productos/203baebc-f5c8-4c07-b2a0-a7dcf98ef184.png",
+  "urlAnterior" : null,
+  "size" : 1745251
+}, {
+  "sku" : "DEMO-PLU-20IN",
+  "id" : "b0b9c709-8189-47d9-913e-bfb3a19636b4",
+  "archivo" : "DEMO-PLU-20IN.png",
+  "ruta" : "productos/8d441c12-8365-4ef0-921f-cdf678bc3dc8.png",
+  "url" : "/api/storage/imagenes/productos/8d441c12-8365-4ef0-921f-cdf678bc3dc8.png",
+  "urlAnterior" : null,
+  "size" : 1269819
+}, {
+  "sku" : "DEMO-FIL-ACE-001",
+  "id" : "155aaf85-c012-4fd0-afdb-ee86cc4d8143",
+  "archivo" : "DEMO-FIL-ACE-001.png",
+  "ruta" : "productos/a71bc76c-0d06-4d11-b750-20db5509a74c.png",
+  "url" : "/api/storage/imagenes/productos/a71bc76c-0d06-4d11-b750-20db5509a74c.png",
+  "urlAnterior" : null,
+  "size" : 1920165
+} ]

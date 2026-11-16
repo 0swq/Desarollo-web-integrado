@@ -11,6 +11,10 @@ import java.util.UUID;
 
 @Repository
 public interface CarritoRepository extends JpaRepository<Carrito, UUID> {
+    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @org.springframework.data.jpa.repository.Query("select c from Carrito c where c.usuario.id = :id")
+    Optional<Carrito> bloquearPorUsuario(@org.springframework.data.repository.query.Param("id") UUID id);
+
 
     Optional<Carrito> findByUsuario_Id(UUID usuarioId);
 
