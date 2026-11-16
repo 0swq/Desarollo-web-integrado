@@ -1,1 +1,205 @@
-<section class="admin-simple-page"><span class="eyebrow">Operaciones</span><h1>Pedidos</h1><p>Gestiona los pedidos y sus estados.</p></section>
+<section class="catalog-page orders-page" aria-labelledby="titulo-pedidos">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">OPERACIONES</span>
+      <h1 id="titulo-pedidos">Pedidos<span aria-hidden="true">.</span></h1>
+      <p>Consulta las entregas y actualiza el estado de los pedidos.</p>
+    </div>
+    <div class="heading-actions">
+      <button type="button" class="refresh" (click)="cargar()" [disabled]="cargando()">
+        <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Actualizar
+      </button>
+      <a class="primary" routerLink="/carrito" title="Crear desde el carrito de tu cuenta">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i> Nuevo pedido
+      </a>
+    </div>
+  </header>
+
+  @if (!cargando() && !error()) {
+    <div class="stats">
+      <article>
+        <span class="stat-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
+        <div><span>Total de pedidos</span><strong>{{ pedidos().length }}</strong></div>
+      </article>
+      <article>
+        <span class="stat-icon blue"><i class="bi bi-hourglass-split" aria-hidden="true"></i></span>
+        <div><span>Pedidos pendientes</span><strong>{{ pendientes() }}</strong></div>
+      </article>
+    </div>
+  }
+
+  <div class="table-panel">
+    <div class="table-heading">
+      <h2>Listado de pedidos</h2>
+      <span class="access-label" aria-live="polite">
+        @if (!cargando() && !error()) {
+          <i class="bi bi-list-ul" aria-hidden="true"></i>
+          {{ visibles().length }} {{ visibles().length === 1 ? 'resultado' : 'resultados' }}
+        }
+      </span>
+    </div>
+
+    <div class="toolbar">
+      <label class="search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="search" [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)"
+          placeholder="Buscar por número de pedido, dirección o teléfono" aria-label="Buscar pedidos">
+      </label>
+      <label class="select-field">Estado
+        <select [ngModel]="filtroEstado()" (ngModelChange)="filtroEstado.set($event)">
+          <option value="">Todos los estados</option>
+          @for (estado of estados; track estado) { <option [value]="estado">{{ nombresEstado[estado] }}</option> }
+        </select>
+      </label>
+    </div>
+
+    @if (cargando()) {
+      <div class="state" role="status">
+        <i class="bi bi-receipt" aria-hidden="true"></i><h3>Cargando pedidos</h3>
+      </div>
+    } @else if (error()) {
+      <div class="state" role="alert">
+        <i class="bi bi-wifi-off" aria-hidden="true"></i><h3>No pudimos cargar los pedidos</h3>
+        <p>{{ error() }}</p>
+        <button type="button" class="primary" (click)="cargar()">Reintentar</button>
+      </div>
+    } @else if (!visibles().length) {
+      <div class="state" role="status">
+        <i class="bi" [class.bi-search]="pedidos().length > 0" [class.bi-receipt]="!pedidos().length" aria-hidden="true"></i>
+        @if (pedidos().length) {
+          <h3>No encontramos pedidos</h3><p>Cambia la búsqueda o el filtro de estado.</p>
+        } @else {
+          <h3>Aún no hay pedidos</h3>
+        }
+      </div>
+    } @else {
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla de pedidos">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Pedido</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Entrega</th>
+              <th scope="col">Total</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="actions-th">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (pedido of visibles(); track pedido.id) {
+              <tr>
+                <td>
+                  <div class="item-cell">
+                    <span class="category-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
+                    <strong>{{ pedido.numeroOrden }}</strong>
+                  </div>
+                </td>
+                <td class="dato-corto">{{ (pedido.fechaCreacion | date:'dd/MM/yyyy, HH:mm') || '—' }}</td>
+                <td class="description-cell">
+                  {{ pedido.direccionEntrega || 'Sin dirección registrada' }}
+                  @if (pedido.telefonoContacto) { <span class="telefono">{{ pedido.telefonoContacto }}</span> }
+                </td>
+                <td class="dato-corto"><strong>{{ (pedido.total | currency:(pedido.moneda || 'PEN'):'symbol':'1.2-2') || '—' }}</strong></td>
+                <td>
+                  <span class="status" [class.inactive]="pedido.estado === 'CANCELADO'" [attr.data-estado]="pedido.estado">
+                    <span aria-hidden="true"></span>{{ nombresEstado[pedido.estado] || pedido.estado }}
+                  </span>
+                </td>
+                <td>
+                  <div class="row-actions">
+                    <button type="button" title="Ver detalle" (click)="abrir('detalle', pedido)"
+                      [attr.aria-label]="'Ver detalle de ' + pedido.numeroOrden"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                    <button type="button" title="Editar estado" (click)="abrir('editar', pedido)"
+                      [disabled]="pedido.estado === 'CANCELADO'" [attr.aria-label]="'Editar estado de ' + pedido.numeroOrden">
+                      <i class="bi bi-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" title="Cancelar pedido" (click)="abrir('cancelar', pedido)"
+                      [disabled]="pedido.estado === 'CANCELADO'" [attr.aria-label]="'Cancelar ' + pedido.numeroOrden">
+                      <i class="bi bi-x-circle" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    @if (!cargando() && !error() && pedidos().length) {
+      <div class="pagination">
+        <span>Mostrando <b>{{ visibles().length }}</b> de <b>{{ pedidos().length }}</b> pedidos</span>
+      </div>
+    }
+  </div>
+
+  <dialog #dialogo class="catalog-dialog" aria-labelledby="titulo-dialogo-pedido" (cancel)="cerrar($event)">
+    @let modo = accion();
+    <div class="dialog-heading">
+      <h2 id="titulo-dialogo-pedido">
+        {{ modo === 'cancelar' ? 'Cancelar pedido' : modo === 'editar' ? 'Editar estado' : 'Detalle del pedido' }}
+      </h2>
+      <button type="button" class="close" (click)="cerrar()" [disabled]="procesando()" aria-label="Cerrar">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    @if (errorDetalle()) {
+      <p class="action-error" role="alert">{{ errorDetalle() }}</p>
+      <div class="dialog-actions">
+        <button type="button" class="refresh" (click)="cerrar()">Cerrar</button>
+        <button type="button" class="primary" (click)="cargarDetalle()">Reintentar</button>
+      </div>
+    } @else if (detalle(); as pedido) {
+      @let moneda = pedido.moneda || 'PEN';
+      <div class="order-heading">
+        <strong>{{ pedido.numeroOrden }}</strong>
+        <span class="status" [class.inactive]="pedido.estado === 'CANCELADO'" [attr.data-estado]="pedido.estado">
+          <span aria-hidden="true"></span>{{ nombresEstado[pedido.estado] || pedido.estado }}
+        </span>
+      </div>
+
+      @if (modo === 'detalle') {
+        <dl class="order-details">
+          <div><dt>Fecha</dt><dd>{{ (pedido.fechaCreacion | date:'dd/MM/yyyy, HH:mm') || '—' }}</dd></div>
+          <div><dt>Teléfono de contacto</dt><dd>{{ pedido.telefonoContacto || 'Sin teléfono registrado' }}</dd></div>
+          <div class="full-width"><dt>Dirección de entrega</dt><dd>{{ pedido.direccionEntrega || 'Sin dirección registrada' }}</dd></div>
+          @if (pedido.notas) { <div class="full-width"><dt>Notas</dt><dd>{{ pedido.notas }}</dd></div> }
+        </dl>
+        <dl class="order-totals">
+          @if (pedido.subtotal != null) { <div><dt>Subtotal</dt><dd>{{ pedido.subtotal | currency:moneda:'symbol':'1.2-2' }}</dd></div> }
+          @if (pedido.igv != null) { <div><dt>IGV</dt><dd>{{ pedido.igv | currency:moneda:'symbol':'1.2-2' }}</dd></div> }
+          <div><dt>Total</dt><dd><strong>{{ (pedido.total | currency:moneda:'symbol':'1.2-2') || '—' }}</strong></dd></div>
+        </dl>
+      } @else if (pedido.estado === 'CANCELADO') {
+        <p class="dialog-copy" role="status">Este pedido ya está cancelado.</p>
+      } @else if (modo === 'cancelar') {
+        <p class="dialog-copy">El pedido quedará cancelado en el historial y las unidades volverán al stock.</p>
+      } @else {
+        <label class="form-field">Nuevo estado
+          <select [ngModel]="estadoNuevo()" (ngModelChange)="estadoNuevo.set($event)" [disabled]="procesando()">
+            @for (estado of estadosEditables; track estado) { <option [value]="estado">{{ nombresEstado[estado] }}</option> }
+          </select>
+        </label>
+      }
+
+      @if (errorAccion()) { <p class="action-error" role="alert">{{ errorAccion() }}</p> }
+      <div class="dialog-actions">
+        <button type="button" class="refresh" (click)="cerrar()" [disabled]="procesando()">
+          {{ modo === 'detalle' || pedido.estado === 'CANCELADO' ? 'Cerrar' : 'Volver' }}
+        </button>
+        @if (modo === 'cancelar' && pedido.estado !== 'CANCELADO') {
+          <button type="button" class="primary" (click)="guardar()" [disabled]="procesando()">
+            {{ procesando() ? 'Cancelando…' : 'Confirmar cancelación' }}
+          </button>
+        } @else if (modo === 'editar' && pedido.estado !== 'CANCELADO') {
+          <button type="button" class="primary" (click)="guardar()" [disabled]="procesando() || estadoNuevo() === pedido.estado">
+            {{ procesando() ? 'Guardando…' : 'Guardar cambios' }}
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="state" role="status">Cargando pedido…</div>
+    }
+  </dialog>
+</section>

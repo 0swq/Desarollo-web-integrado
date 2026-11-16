@@ -1,33 +1,224 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, computed, DestroyRef, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { toast } from 'ngx-sonner';
+import { finalize } from 'rxjs';
 import { AdminCatalogoService } from '../../../_services/admin-catalogo.service';
 import { Proveedor } from '../../../models/proveedor.interface';
-@Component({selector:'app-proveedores-page',standalone:true,imports:[CommonModule,FormsModule],templateUrl:'./proveedores.html',styleUrl:'./proveedores.css'})
+
+type AccionProveedor = { tipo: 'crear' } | { tipo: 'editar' | 'eliminar'; proveedor: Proveedor };
+const CAMPOS_PROVEEDOR = ['ruc', 'razonSocial', 'contactoNombre', 'telefono', 'correo', 'direccion'] as const;
+type CampoProveedor = typeof CAMPOS_PROVEEDOR[number];
+
+@Component({
+  selector: 'app-proveedores-page',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule],
+  templateUrl: './proveedores.html',
+  styleUrl: './proveedores.css',
+})
 export class ProveedoresPage implements OnInit {
- readonly catalogo=inject(AdminCatalogoService);
- proveedores:Proveedor[]=[]; busqueda=''; cargando=true; error=''; guardando=false; errorFormulario=''; editando:Proveedor|null=null;
- formulario={ruc:'',razonSocial:'',contactoNombre:'',telefono:'',correo:'',direccion:'',activo:true};
- @ViewChild('form') form?: NgForm;
- @ViewChild('editor') dialog?:ElementRef<HTMLDialogElement>;
- ngOnInit(){this.cargar();}
- get visibles(){const q=this.busqueda.trim().toLocaleLowerCase();return this.proveedores.filter(p=>[p.razonSocial,p.ruc,p.contactoNombre,p.correo,p.telefono].join(' ').toLocaleLowerCase().includes(q));}
- get activos(){return this.proveedores.filter(p=>p.activo).length;}
- cargar(){this.cargando=true;this.error='';this.catalogo.listar<Proveedor>('proveedores').pipe(finalize(()=>this.cargando=false)).subscribe({next:p=>this.proveedores=p,error:e=>this.error=e.error?.message||'No pudimos cargar los proveedores.'});}
- nuevo(){this.editando=null;this.formulario={ruc:'',razonSocial:'',contactoNombre:'',telefono:'',correo:'',direccion:'',activo:true};this.errorFormulario='';this.form?.resetForm(this.formulario);this.dialog?.nativeElement.showModal();}
- editar(p:Proveedor){this.editando=p;this.formulario={ruc:p.ruc,razonSocial:p.razonSocial,contactoNombre:p.contactoNombre||'',telefono:p.telefono||'',correo:p.correo||'',direccion:p.direccion||'',activo:p.activo};this.errorFormulario='';this.form?.resetForm(this.formulario);this.dialog?.nativeElement.showModal();}
- validar(campo:string):string {
- const f=this.formulario; const v=(f[campo as keyof typeof f] as string).trim();
- if(campo==='razonSocial' && (v.length<3 || v.length>255)) return 'Ingresa una razón social de 3 a 255 caracteres.';
- if(campo==='ruc') {if(!/^\d{11}$/.test(v))return 'El RUC debe tener exactamente 11 dígitos.';if(this.proveedores.some(p=>p.ruc===v&&p.id!==this.editando?.id))return 'Este RUC ya está registrado.';}
- if(campo==='contactoNombre' && v && (v.length<3 || !/^[\p{L}\p{M} .'-]+$/u.test(v)))return 'Ingresa un nombre válido, sin números ni símbolos.';
- if(campo==='telefono' && v && (!/^[0-9+()\s-]+$/.test(v)||v.replace(/\D/g,'').length<7||v.replace(/\D/g,'').length>15||v.length>20))return 'Ingresa un teléfono con 7 a 15 dígitos.';
- if(campo==='correo' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))return 'Ingresa un correo válido, por ejemplo contacto@empresa.com.';
- if(campo==='direccion' && v && v.length<5)return 'La dirección debe tener al menos 5 caracteres.';
- if(v.length>255)return 'Máximo 255 caracteres.';
- return '';
- } guardar(){if(this.guardando)return;this.form?.form.markAllAsTouched();const campos=['razonSocial','ruc','contactoNombre','telefono','correo','direccion'];if(campos.some(c=>this.validar(c))){this.errorFormulario='Corrige los campos indicados.';this.dialog?.nativeElement.querySelector<HTMLElement>('.field-invalid')?.focus();return;}const f=this.formulario; if(!/^\d{11}$/.test(f.ruc.trim())||!f.razonSocial.trim()){this.errorFormulario='Ingresa un RUC de 11 dígitos y la razón social.';return;}if(this.proveedores.some(p=>p.ruc===f.ruc.trim()&&p.id!==this.editando?.id)){this.errorFormulario='Ya existe un proveedor con este RUC.';return;}this.guardando=true;this.errorFormulario='';const datos={...f,ruc:f.ruc.trim(),razonSocial:f.razonSocial.trim(),contactoNombre:f.contactoNombre.trim(),telefono:f.telefono.trim(),correo:f.correo.trim(),direccion:f.direccion.trim()};this.catalogo.guardar<Proveedor>('proveedores',datos,this.editando?.id).pipe(finalize(()=>this.guardando=false)).subscribe({next:p=>{this.proveedores=this.editando?this.proveedores.map(x=>x.id===p.id?p:x):[p,...this.proveedores];this.dialog?.nativeElement.close();toast.success('Proveedor guardado.');},error:e=>this.errorFormulario=e.error?.message||'No se pudo guardar el proveedor.'});}
- cambiarEstado(p:Proveedor){this.catalogo.cambiarEstado<Proveedor>('proveedores',p.id).subscribe({next:x=>{this.proveedores=this.proveedores.map(item=>item.id===x.id?x:item);toast.success(x.activo?'Proveedor activado.':'Proveedor desactivado.');},error:e=>toast.error(e.error?.message||'No se pudo cambiar el estado.')});}
+  private readonly catalogo = inject(AdminCatalogoService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly dialogo = viewChild.required<ElementRef<HTMLDialogElement>>('dialogo');
+
+  protected readonly proveedores = signal<Proveedor[]>([]);
+  protected readonly busqueda = signal('');
+  protected readonly cargando = signal(false);
+  protected readonly error = signal('');
+  protected readonly accion = signal<AccionProveedor>({ tipo: 'crear' });
+  protected readonly errorAccion = signal('');
+  protected readonly procesando = signal(false);
+  protected readonly formulario = inject(FormBuilder).nonNullable.group({
+    ruc: '',
+    razonSocial: '',
+    contactoNombre: '',
+    telefono: '',
+    correo: '',
+    direccion: '',
+    activo: true,
+  });
+
+  protected readonly activos = computed(() => this.proveedores().filter(proveedor => proveedor.activo).length);
+  protected readonly visibles = computed(() => {
+    const termino = normalizar(this.busqueda().trim());
+    const proveedores = this.proveedores();
+    return termino ? proveedores.filter(proveedor => normalizar([
+      proveedor.razonSocial, proveedor.ruc, proveedor.contactoNombre, proveedor.telefono, proveedor.correo,
+    ].join(' ')).includes(termino)) : proveedores;
+  });
+
+  ngOnInit(): void {
+    this.cargar();
+  }
+
+  protected cargar(): void {
+    if (this.cargando() || this.procesando()) return;
+
+    this.cargando.set(true);
+    this.error.set('');
+    this.catalogo.listar<Proveedor>('proveedores').pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.cargando.set(false)),
+    ).subscribe({
+      next: proveedores => this.proveedores.set(proveedores),
+      error: error => this.error.set(mensajeError(error, 'No se pudo consultar el directorio de proveedores.')),
+    });
+  }
+
+  protected abrirEditor(proveedor?: Proveedor): void {
+    this.accion.set(proveedor ? { tipo: 'editar', proveedor } : { tipo: 'crear' });
+    this.formulario.reset({
+      ruc: proveedor?.ruc ?? '',
+      razonSocial: proveedor?.razonSocial ?? '',
+      contactoNombre: proveedor?.contactoNombre ?? '',
+      telefono: proveedor?.telefono ?? '',
+      correo: proveedor?.correo ?? '',
+      direccion: proveedor?.direccion ?? '',
+      activo: proveedor?.activo ?? true,
+    });
+    this.abrirDialogo();
+  }
+
+  protected solicitarEliminar(proveedor: Proveedor): void {
+    this.accion.set({ tipo: 'eliminar', proveedor });
+    this.abrirDialogo();
+  }
+
+  protected cerrarDialogo(evento?: Event): void {
+    evento?.preventDefault();
+    if (!this.procesando()) this.dialogo().nativeElement.close();
+  }
+
+  protected errorCampo(campo: CampoProveedor): string {
+    const control = this.formulario.controls[campo];
+    if (!control.dirty && !control.touched) return '';
+
+    const valor = control.value.trim();
+    if (valor.length > 255) return 'Usa como máximo 255 caracteres.';
+    switch (campo) {
+      case 'ruc': {
+        if (!/^[0-9]{11}$/.test(valor)) return 'Ingresa un RUC de 11 dígitos.';
+        const accion = this.accion();
+        const id = accion.tipo === 'editar' ? accion.proveedor.id : undefined;
+        return this.proveedores().some(proveedor => proveedor.ruc === valor && proveedor.id !== id)
+          ? 'Este RUC ya está registrado.' : '';
+      }
+      case 'razonSocial':
+        return valor.length < 3 || valor.length > 255 ? 'Ingresa una razón social de 3 a 255 caracteres.' : '';
+      case 'contactoNombre':
+        return valor && (valor.length < 3 || !/^[\p{L}\p{M} .'-]+$/u.test(valor))
+          ? 'Ingresa un nombre válido, sin números ni símbolos.' : '';
+      case 'telefono': {
+        const digitos = valor.replace(/\D/g, '').length;
+        return valor && (!/^[0-9+()\s-]+$/.test(valor) || digitos < 7 || digitos > 15 || valor.length > 20)
+          ? 'Ingresa un teléfono con 7 a 15 dígitos.' : '';
+      }
+      case 'correo':
+        return valor && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
+          ? 'Ingresa un correo válido, por ejemplo contacto@empresa.com.' : '';
+      case 'direccion':
+        return valor && valor.length < 5 ? 'La dirección debe tener al menos 5 caracteres.' : '';
+    }
+  }
+
+  protected guardar(): void {
+    const accion = this.accion();
+    if (this.procesando() || accion.tipo === 'eliminar') return;
+
+    this.formulario.markAllAsTouched();
+    const invalido = CAMPOS_PROVEEDOR.find(campo => this.errorCampo(campo) || this.formulario.controls[campo].invalid);
+    if (invalido) {
+      this.errorAccion.set('Corrige los campos indicados antes de guardar.');
+      this.dialogo().nativeElement.querySelector<HTMLElement>(`[formcontrolname="${invalido}"]`)?.focus();
+      return;
+    }
+
+    const datos = this.formulario.getRawValue();
+    const id = accion.tipo === 'editar' ? accion.proveedor.id : undefined;
+    this.procesando.set(true);
+    this.errorAccion.set('');
+    this.catalogo.guardar<Proveedor>('proveedores', {
+      ruc: datos.ruc.trim(),
+      razonSocial: datos.razonSocial.trim(),
+      contactoNombre: datos.contactoNombre.trim() || null,
+      telefono: datos.telefono.trim() || null,
+      correo: datos.correo.trim() || null,
+      direccion: datos.direccion.trim() || null,
+      activo: datos.activo,
+    }, id).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.procesando.set(false)),
+    ).subscribe({
+      next: proveedor => {
+        this.proveedores.update(proveedores => id
+          ? proveedores.map(item => item.id === id ? proveedor : item)
+          : [proveedor, ...proveedores]);
+        this.dialogo().nativeElement.close();
+        toast.success(id ? 'Proveedor actualizado.' : 'Proveedor creado.');
+      },
+      error: error => this.errorAccion.set(mensajeError(error, 'No se pudo guardar el proveedor.')),
+    });
+  }
+
+  protected eliminar(): void {
+    const accion = this.accion();
+    if (this.procesando() || accion.tipo !== 'eliminar') return;
+
+    const { id } = accion.proveedor;
+    this.procesando.set(true);
+    this.errorAccion.set('');
+    this.catalogo.eliminar('proveedores', id).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.procesando.set(false)),
+    ).subscribe({
+      next: () => {
+        this.proveedores.update(proveedores => proveedores.map(proveedor =>
+          proveedor.id === id ? { ...proveedor, activo: false } : proveedor,
+        ));
+        this.dialogo().nativeElement.close();
+        toast.success('Proveedor desactivado.');
+      },
+      error: error => this.errorAccion.set(mensajeError(error, 'No se pudo eliminar el proveedor.')),
+    });
+  }
+
+  protected reactivar(proveedor: Proveedor): void {
+    if (proveedor.activo || this.procesando()) return;
+
+    this.procesando.set(true);
+    this.catalogo.cambiarEstado<Proveedor>('proveedores', proveedor.id).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.procesando.set(false)),
+    ).subscribe({
+      next: actualizado => {
+        this.proveedores.update(proveedores => proveedores.map(item => item.id === actualizado.id ? actualizado : item));
+        toast.success(actualizado.activo ? 'Proveedor activado.' : 'Proveedor desactivado.');
+      },
+      error: error => {
+        toast.error(mensajeError(error, 'No se pudo cambiar el estado del proveedor.'));
+        this.procesando.set(false);
+        this.cargar();
+      },
+    });
+  }
+
+  private abrirDialogo(): void {
+    this.errorAccion.set('');
+    this.dialogo().nativeElement.showModal();
+  }
+}
+
+function normalizar(texto: string): string {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
+}
+
+function mensajeError(error: unknown, mensaje: string): string {
+  if (error instanceof HttpErrorResponse) {
+    if (typeof error.error?.message === 'string') return error.error.message;
+    if (error.status === 403) return 'Tu cuenta no tiene permiso para realizar esta acción.';
+    return mensaje;
+  }
+  return error instanceof Error ? error.message : mensaje;
 }

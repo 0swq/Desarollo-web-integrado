@@ -1,1 +1,248 @@
-<section class="admin-simple-page"><span class="eyebrow">Catálogo</span><h1>Productos</h1><p>Administra los repuestos del catálogo.</p></section>
+<section class="catalog-page product-page" aria-labelledby="titulo-productos">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">CATÁLOGO · REPUESTOS</span>
+      <h1 id="titulo-productos">Productos<span aria-hidden="true">.</span></h1>
+      <p>Consulta los repuestos, sus precios y su estado en el catálogo.</p>
+    </div>
+    <div class="heading-actions">
+      <button type="button" class="refresh" (click)="cargar()" [disabled]="cargando()">
+        <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Actualizar
+      </button>
+      <button type="button" class="primary" (click)="abrirEditor()" [disabled]="cargando()">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i> Nuevo producto
+      </button>
+    </div>
+  </header>
+
+  @if (!cargando() && !error()) {
+    <div class="stats">
+      <article>
+        <span class="stat-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
+        <div><span>Total de productos</span><strong>{{ productos().length }}</strong></div>
+      </article>
+      <article>
+        <span class="stat-icon green"><i class="bi bi-check-circle" aria-hidden="true"></i></span>
+        <div><span>Productos activos</span><strong>{{ activos() }}</strong></div>
+      </article>
+    </div>
+  }
+
+  <div class="table-panel">
+    <div class="table-heading">
+      <h2>Productos del catálogo</h2>
+      <span class="access-label" aria-live="polite">
+        @if (!cargando() && !error()) {
+          <i class="bi bi-list-ul" aria-hidden="true"></i>
+          {{ visibles().length }} {{ visibles().length === 1 ? 'resultado' : 'resultados' }}
+        }
+      </span>
+    </div>
+
+    <div class="toolbar">
+      <label class="search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="search" [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)"
+          placeholder="Buscar por nombre, SKU o descripción" aria-label="Buscar productos">
+      </label>
+    </div>
+
+    @if (cargando()) {
+      <div class="state" role="status">
+        <i class="bi bi-box-seam" aria-hidden="true"></i>
+        <h3>Cargando productos</h3>
+      </div>
+    } @else if (error()) {
+      <div class="state" role="alert">
+        <i class="bi bi-wifi-off" aria-hidden="true"></i>
+        <h3>No pudimos cargar los productos</h3>
+        <p>{{ error() }}</p>
+        <button type="button" class="primary" (click)="cargar()">Reintentar</button>
+      </div>
+    } @else if (visibles().length === 0) {
+      <div class="state" role="status">
+        <i class="bi" [class.bi-search]="productos().length > 0" [class.bi-box-seam]="!productos().length"
+          aria-hidden="true"></i>
+        @if (productos().length) {
+          <h3>No encontramos productos</h3>
+          <p>Prueba con otro nombre, SKU o descripción.</p>
+        } @else {
+          <h3>Aún no hay productos</h3>
+        }
+      </div>
+    } @else {
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla de productos">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">SKU</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="actions-th">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (producto of visibles(); track producto.id) {
+              <tr>
+                <td>
+                  <div class="item-cell">
+                    <span class="row-image">
+                      @if (producto.imagenUrl && !fotosFallidas.has(producto.id)) {
+                        <img [src]="catalogo.imagenPublica(producto.imagenUrl)" alt="" loading="lazy"
+                          (error)="fotosFallidas.add(producto.id)">
+                      } @else {
+                        <i class="bi bi-box-seam" aria-hidden="true"></i>
+                      }
+                    </span>
+                    <strong>{{ producto.nombre }}</strong>
+                  </div>
+                </td>
+                <td>{{ producto.sku }}</td>
+                <td class="description-cell">{{ producto.descripcion || 'Sin descripción registrada' }}</td>
+                <td class="precio">
+                  @let moneda = producto.moneda || 'PEN';
+                  @if (producto.precioPromocional != null && producto.precioPromocional > 0 && producto.precioPromocional < producto.precio) {
+                    <strong>{{ producto.precioPromocional | currency:moneda:'symbol':'1.2-2' }}</strong>
+                    <del>{{ producto.precio | currency:moneda:'symbol':'1.2-2' }}</del>
+                  } @else {
+                    <strong>{{ producto.precio | currency:moneda:'symbol':'1.2-2' }}</strong>
+                  }
+                </td>
+                <td>
+                  <span class="status" [class.inactive]="!producto.activo">
+                    <span aria-hidden="true"></span>{{ producto.activo ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="row-actions">
+                    <button type="button" (click)="abrirEditor(producto)" title="Editar"
+                      [attr.aria-label]="'Editar ' + producto.nombre">
+                      <i class="bi bi-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" (click)="solicitarEliminar(producto)" [disabled]="!producto.activo"
+                      title="Eliminar" [attr.aria-label]="'Eliminar ' + producto.nombre">
+                      <i class="bi bi-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    @if (!cargando() && !error() && productos().length) {
+      <div class="pagination">
+        <span>Mostrando <b>{{ visibles().length }}</b> de <b>{{ productos().length }}</b> productos</span>
+      </div>
+    }
+  </div>
+
+  <dialog #editor class="catalog-dialog" aria-labelledby="titulo-editor-producto" (cancel)="cerrarEditor($event)">
+    <div class="dialog-heading">
+      <h2 id="titulo-editor-producto">{{ editandoId() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+      <button type="button" class="close" (click)="cerrarEditor()" [disabled]="procesando()" aria-label="Cerrar">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    @if (errorCargaEditor()) {
+      <p class="action-error" role="alert">{{ errorCargaEditor() }}</p>
+      <div class="dialog-actions">
+        <button type="button" class="refresh" (click)="cerrarEditor()">Cancelar</button>
+        <button type="button" class="primary" (click)="cargarEditor()">Reintentar</button>
+      </div>
+    } @else if (datosEditor(); as opciones) {
+      <form [formGroup]="formulario" (ngSubmit)="guardar()" class="product-form">
+        <fieldset class="product-fields" [disabled]="procesando()">
+          <label class="form-field">SKU
+            <input formControlName="sku" required maxlength="50">
+          </label>
+          <label class="form-field">Nombre del producto
+            <input formControlName="nombre" required maxlength="255">
+          </label>
+
+          <label class="form-field full-width">Descripción
+            <textarea formControlName="descripcion" maxlength="2000" rows="3"></textarea>
+          </label>
+
+          <label class="form-field">Precio regular
+            <input type="number" formControlName="precio" required min="0.01" max="9999999999.99" step="0.01">
+          </label>
+          <label class="form-field">Precio promocional (opcional)
+            <input type="number" formControlName="precioPromocional" max="9999999999.99" step="0.01">
+          </label>
+
+          <label class="form-field">Categoría
+            <select formControlName="categoriaId" required>
+              <option value="">Selecciona una categoría</option>
+              @for (categoria of opciones.categorias; track categoria.id) {
+                <option [value]="categoria.id">{{ categoria.nombre }}{{ categoria.activo ? '' : ' (inactiva)' }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-field">Proveedor (opcional)
+            <select formControlName="proveedorId">
+              <option value="">Sin proveedor</option>
+              @for (proveedor of opciones.proveedores; track proveedor.id) {
+                <option [value]="proveedor.id">{{ proveedor.razonSocial }}{{ proveedor.activo ? '' : ' (inactivo)' }}</option>
+              }
+            </select>
+          </label>
+          @if (opciones.relaciones.length > 1) {
+            <p class="action-error full-width" role="alert">
+              Este producto tiene {{ opciones.relaciones.length }} categorías. Al guardar, se conservará únicamente la categoría que selecciones.
+            </p>
+          } @else if (!opciones.categorias.length) {
+            <p class="action-error full-width" role="status">Crea una categoría para poder guardar un producto.</p>
+          }
+
+          <label class="form-field full-width">URL o ruta de la imagen (opcional)
+            <input formControlName="imagenUrl" maxlength="255">
+          </label>
+          @if (!editandoId()) {
+            <label class="form-field">Stock inicial
+              <input type="number" formControlName="stockInicial" min="0" max="2147483647" step="1">
+            </label>
+          }
+          <label class="check-field">
+            <input type="checkbox" formControlName="activo"> Producto activo
+          </label>
+        </fieldset>
+
+        @if (errorAccion()) {
+          <p class="action-error" role="alert">{{ errorAccion() }}</p>
+        }
+        <div class="dialog-actions">
+          <button type="button" class="refresh" (click)="cerrarEditor()" [disabled]="procesando()">Cancelar</button>
+          <button type="submit" class="primary" [disabled]="procesando() || !opciones.categorias.length">
+            {{ procesando() ? 'Guardando…' : editandoId() ? 'Guardar cambios' : 'Crear producto' }}
+          </button>
+        </div>
+      </form>
+    } @else {
+      <div class="state" role="status">Cargando datos del formulario…</div>
+    }
+  </dialog>
+
+  <dialog #confirmacion class="catalog-dialog" aria-labelledby="titulo-eliminar-producto"
+    (cancel)="cerrarConfirmacion($event)">
+    <div class="dialog-heading"><h2 id="titulo-eliminar-producto">Eliminar producto</h2></div>
+    <p class="confirmation-copy">
+      <strong>{{ productoParaEliminar()?.nombre }}</strong> quedará inactivo y dejará de aparecer en el catálogo de la tienda.
+      Podrás volver a activarlo desde Editar.
+    </p>
+    @if (errorAccion()) {
+      <p class="action-error" role="alert">{{ errorAccion() }}</p>
+    }
+    <div class="dialog-actions">
+      <button type="button" class="refresh" (click)="cerrarConfirmacion()" [disabled]="procesando()" autofocus>Cancelar</button>
+      <button type="button" class="primary" (click)="eliminar()" [disabled]="procesando()">
+        {{ procesando() ? 'Eliminando…' : 'Eliminar producto' }}
+      </button>
+    </div>
+  </dialog>
+</section>
