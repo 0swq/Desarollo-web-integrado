@@ -3,12 +3,18 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ApiResponse, LoginRequest, AuthResponse, RegisterRequest, UsuarioResponse } from '../models/auth.interface';
+import {
+  ApiResponse,
+  LoginRequest,
+  AuthResponse,
+  RegisterRequest,
+  UsuarioResponse,
+} from '../models/auth.interface';
 import { StorageService } from './storage.service';
 import { ROLES, ROLES_GESTION, ROLES_USUARIOS, Rol } from '../models/rol';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
@@ -16,13 +22,15 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
 
   login(credenciales: LoginRequest): Observable<ApiResponse<AuthResponse['data']>> {
-    return this.http.post<ApiResponse<AuthResponse['data']>>(`${this.apiUrl}/login`, credenciales).pipe(
-      tap(response => {
-        if (response.success && response.data?.token) {
-          this.storage.guardarSesion(response.data);
-        }
-      })
-    );
+    return this.http
+      .post<ApiResponse<AuthResponse['data']>>(`${this.apiUrl}/login`, credenciales)
+      .pipe(
+        tap((response) => {
+          if (response.success && response.data?.token) {
+            this.storage.guardarSesion(response.data);
+          }
+        }),
+      );
   }
 
   registrar(datos: RegisterRequest): Observable<ApiResponse<UsuarioResponse>> {
@@ -45,7 +53,7 @@ export class AuthService {
     return !!this.storage.obtenerToken();
   }
 
-  // Nuevos métodos para verificar roles fácilmente
+                                                   
   obtenerRol(): Rol | null {
     return this.storage.obtenerRol();
   }

@@ -1,0 +1,13 @@
+import { Component, ElementRef, Input, ViewChild, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
+import Chart from 'chart.js/auto';
+import type { ChartConfiguration, ChartType } from 'chart.js';
+@Component({selector:'app-report-chart',standalone:true,template:'<div class="chart-container"><canvas #canvas role="img" [attr.aria-label]="titulo">{{titulo}}</canvas></div>',styles:[':host{display:block;min-width:0}.chart-container{position:relative;height:300px;width:100%}']})
+export class ReportChart implements AfterViewInit,OnChanges,OnDestroy {
+ @Input() titulo='';@Input() tipo:ChartType='bar';@Input() etiquetas:string[]=[];@Input() valores:number[]=[];@Input() moneda=false;
+ @ViewChild('canvas') canvas?:ElementRef<HTMLCanvasElement>;private chart?:Chart; private ultimaConfiguracion="";
+ ngAfterViewInit(){this.dibujar();}ngOnChanges(){if(this.canvas)this.dibujar();}ngOnDestroy(){this.chart?.destroy();}
+ private dibujar(){if(!this.canvas)return;const firma=JSON.stringify([this.tipo,this.titulo,this.etiquetas,this.valores,this.moneda]);if(firma===this.ultimaConfiguracion)return;this.ultimaConfiguracion=firma;const color=['#d92332','#526984','#e6aa68','#70a895','#9b8abb','#77a9ce'];const dinero=(v:number)=>new Intl.NumberFormat('es-PE',{style:'currency',currency:'PEN'}).format(v);
+ const config:ChartConfiguration={type:this.tipo,data:{labels:this.etiquetas,datasets:[{label:this.titulo,data:this.valores,backgroundColor:this.tipo==='doughnut'?color:this.tipo==='line'?'rgba(217,35,50,.10)':'#d96373',borderColor:this.tipo==='line'?'#d92332':'#fff',borderWidth:this.tipo==='doughnut'?3:2,...(this.tipo==='line'?{fill:true,tension:.3,pointRadius:4,pointHoverRadius:7}:{})}]},options:{responsive:true,maintainAspectRatio:false,animation:window.matchMedia('(prefers-reduced-motion: reduce)').matches?false:{duration:500},interaction:{mode:'nearest',intersect:false},plugins:{legend:{display:true,position:'bottom',labels:{color:'#8293aa',boxWidth:12,padding:18,font:{size:11}}},tooltip:{backgroundColor:'#34455e',padding:12,callbacks:{label:ctx=>`${ctx.dataset.label}: ${this.moneda?dinero(Number(ctx.raw)):Number(ctx.raw).toLocaleString('es-PE')}`}}},...(this.tipo==='doughnut'?{cutout:'65%'}:{scales:{x:{grid:{display:false},ticks:{color:'#91a0b5',font:{size:10},maxRotation:25}},y:{beginAtZero:true,grid:{color:'#edf0f5'},ticks:{color:'#91a0b5',precision:this.moneda?2:0,callback:v=>this.moneda?dinero(Number(v)):v}}}})}};
+ if(this.chart){this.chart.data=config.data;this.chart.options=config.options!;this.chart.update();}else this.chart=new Chart(this.canvas.nativeElement,config);
+ }
+}

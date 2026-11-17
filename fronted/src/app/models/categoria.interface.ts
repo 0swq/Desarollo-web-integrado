@@ -1,4 +1,4 @@
-// Modelo Categoria.java. Las relaciones pueden omitirse en respuestas resumidas.
+                                                                                 
 export interface Categoria {
   id: string;
   nombre: string;

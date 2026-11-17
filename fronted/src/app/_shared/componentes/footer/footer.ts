@@ -1,3 +1,4 @@
+import { ConfirmarSalidaService } from '../../../_services/confirmar-salida.service';
 import { ParametrosService } from '../../../_services/parametros.service';
 import { PerfilModalService } from '../../../_services/perfil-modal.service';
 import { Component, inject, input } from '@angular/core';
@@ -11,6 +12,7 @@ import { ROLES_GESTION } from '../../../models/rol';
   templateUrl: './footer.html', styleUrl: './footer.css',
 })
 export class Footer {
+ private readonly confirmarSalida=inject(ConfirmarSalidaService);
   readonly compacto = input(false);
   readonly perfilModal = inject(PerfilModalService);
   private storage = inject(StorageService);
@@ -21,5 +23,5 @@ export class Footer {
   get autenticado() { return !!this.storage.obtenerToken(); }
   get nombre() { return this.storage.obtenerNombre() || 'Tu cuenta'; }
   get puedeGestionar() { const rol = this.storage.obtenerRol(); return this.autenticado && rol !== null && ROLES_GESTION.includes(rol); }
-  cerrarSesion(): void { this.storage.limpiarSesion(); void this.router.navigate(['/inicio']); }
+  cerrarSesion(): void { this.confirmarSalida.solicitar(()=>{this.storage.limpiarSesion();void this.router.navigate(['/inicio']);}); }
 }

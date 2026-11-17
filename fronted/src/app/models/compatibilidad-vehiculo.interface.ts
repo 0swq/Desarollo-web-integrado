@@ -1,7 +1,7 @@
 import type { ModeloVehiculo } from './modelo-vehiculo.interface';
 import type { Producto } from './producto.interface';
 
-// Modelo CompatibilidadVehiculo.java. Las relaciones pueden omitirse en respuestas resumidas.
+                                                                                              
 export interface CompatibilidadVehiculo {
   id: string;
   producto?: Producto;

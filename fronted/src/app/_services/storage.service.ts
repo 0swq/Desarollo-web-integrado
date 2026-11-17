@@ -52,7 +52,7 @@ export class StorageService {
   }
   obtenerNombre(): string { return this.obtenerUsuario()?.nombre || ''; }
 
-  // Compatibilidad con los nombres del proyecto de referencia.
+                                                               
   saveUser(user: AuthResponse['data']): void { this.guardarSesion(user); }
   getUser(): AuthResponse['data'] | null { return this.obtenerUsuario(); }
   getUsuario(): AuthResponse['data'] | null { return this.obtenerUsuario(); }

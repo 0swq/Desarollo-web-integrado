@@ -41,6 +41,7 @@ public class ProductoService {
     }
 
     public Producto crear(ProductoRequest request) {
+        if(request.getStockInicial()==null || request.getStockInicial()<1) throw new com.autopartes.exception.BusinessException("El stock inicial debe ser un número entero mayor que cero");
         if (productoRepository.existePorSku(request.getSku())) {
             throw new com.autopartes.exception.BusinessException("Ya existe un producto con el SKU: " + request.getSku());
         }

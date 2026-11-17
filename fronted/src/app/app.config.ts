@@ -1,3 +1,4 @@
+import { imagenesInterceptor } from './_helpers/imagenes.interceptor';
 import { inject, provideAppInitializer } from '@angular/core';
 import { firstValueFrom, catchError, of } from 'rxjs';
 import { ParametrosService } from './_services/parametros.service';
@@ -12,6 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => firstValueFrom(inject(ParametrosService).cargar().pipe(catchError(() => of(null))))),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })),
-    provideHttpClient(withInterceptors([authInterceptor]))
+    provideHttpClient(withInterceptors([authInterceptor, imagenesInterceptor]))
   ]
 };

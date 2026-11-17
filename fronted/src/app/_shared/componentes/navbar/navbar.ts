@@ -1,3 +1,4 @@
+import { ConfirmarSalidaService } from '../../../_services/confirmar-salida.service';
 import { ParametrosService } from '../../../_services/parametros.service';
 import { PerfilService } from '../../../_services/perfil.service';
 import { ROLES_GESTION } from '../../../models/rol';
@@ -21,6 +22,7 @@ import { ProductSearchComponent } from '../product-search/product-search';
   styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
+ private readonly confirmarSalida=inject(ConfirmarSalidaService);
   readonly parametros=inject(ParametrosService);
   authService = inject(AuthService);
   readonly perfilModal = inject(PerfilModalService);
@@ -66,7 +68,6 @@ export class NavbarComponent {
 
   cerrarSesion(): void {
     this.cerrarMenu();
-    this.authService.logout();
-    this.router.navigate(['/']);
+    this.confirmarSalida.solicitar(()=>{this.authService.logout();void this.router.navigate(['/']);});
   }
 }

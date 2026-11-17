@@ -26,8 +26,8 @@ export class ToastLayer implements AfterViewInit, OnDestroy {
       }
       this.colocar();
     });
-    // El diálogo nativo está por encima de cualquier z-index de la página.
-    // Mantener un solo toaster dentro del diálogo activo lo sitúa sobre su backdrop.
+                                                                           
+                                                                                     
     this.observer.observe(this.document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
     this.colocar();
   }

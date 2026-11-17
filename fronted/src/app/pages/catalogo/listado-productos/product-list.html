@@ -59,13 +59,7 @@
             <label class="check-label"><input type="checkbox" name="oferta" [(ngModel)]="filtros.oferta" (ngModelChange)="actualizarFiltros()"> Solo
               ofertas</label>
           </section>
-          <section class="filter-section"><h3>Proveedor</h3><label class="sr-label">Proveedor<select name="proveedor"
-                                                                                                     [(ngModel)]="filtros.proveedor" (ngModelChange)="actualizarFiltros()">
-            <option value="">Todos los proveedores</option>@for (p of data.proveedores; track p.id) {
-            @if (p.activo) {
-              <option [value]="p.id">{{ p.razonSocial }}</option>
-            }
-          }</select></label></section>
+          
         </fieldset>
       </form>
     </aside>

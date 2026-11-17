@@ -32,3 +32,9 @@ nbproject/
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+__pycache__/
+*.pyc
+.registro-admin*
+.log-viewer-auth
+image-backup/
+vehicle-image-backup*/

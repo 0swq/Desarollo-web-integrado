@@ -1,7 +1,7 @@
 import type { EstadoOrden } from './estado-orden';
 import type { Usuario } from './usuario.interface';
 
-// Modelo Orden.java. Las relaciones pueden omitirse en respuestas resumidas.
+                                                                             
 export interface Orden {
   id: string;
   numeroOrden: string;
@@ -19,7 +19,7 @@ export interface Orden {
   usuarioId?: string | null;
 }
 
-// Tipos de petición y respuesta usados actualmente por la pantalla de carrito.
+                                                                               
 export interface ItemCarritoResponse {
   id: string;
   productoId: string;

@@ -1,6 +1,6 @@
 import type { Proveedor } from './proveedor.interface';
 
-// Modelo Producto.java. Las relaciones pueden omitirse en respuestas resumidas.
+                                                                                
 export interface Producto {
   id: string;
   sku: string;

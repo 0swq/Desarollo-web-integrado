@@ -1,4 +1,4 @@
-// Valores definidos en el enum Rol del backend.
+                                                
 export const ROLES = {
   ADMIN: 'ADMIN',
   EMPLEADO: 'EMPLEADO',
@@ -7,7 +7,7 @@ export const ROLES = {
 
 export type Rol = (typeof ROLES)[keyof typeof ROLES];
 
-// Grupos de acceso según SecurityConfig.java.
+                                              
 export const ROLES_GESTION: readonly Rol[] = [ROLES.ADMIN, ROLES.EMPLEADO];
 export const ROLES_USUARIOS: readonly Rol[] = [ROLES.ADMIN];
 

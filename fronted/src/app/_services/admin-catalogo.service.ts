@@ -4,7 +4,8 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/auth.interface';
 
-type RecursoCatalogo = 'marcas-vehiculos' | 'modelos-vehiculos' | 'categorias' | 'productos' | 'proveedores';
+type RecursoCatalogo =
+  'marcas-vehiculos' | 'modelos-vehiculos' | 'categorias' | 'productos' | 'proveedores';
 
 @Injectable({ providedIn: 'root' })
 export class AdminCatalogoService {
@@ -29,7 +30,7 @@ export class AdminCatalogoService {
 
   private leerLista<T>(recurso: string): Observable<T[]> {
     return this.http.get<ApiResponse<T[]>>(`${environment.apiUrl}/${recurso}`).pipe(
-      map(respuesta => {
+      map((respuesta) => {
         if (!respuesta.success || !Array.isArray(respuesta.data)) {
           throw new Error(respuesta.message || 'No se pudo leer el catálogo.');
         }
@@ -40,12 +41,18 @@ export class AdminCatalogoService {
 
   guardar<T>(recurso: RecursoCatalogo, datos: object, id?: string): Observable<T> {
     const solicitud = id
-      ? this.http.put<ApiResponse<T>>(`${environment.apiUrl}/${recurso}/${encodeURIComponent(id)}`, datos)
+      ? this.http.put<ApiResponse<T>>(
+          `${environment.apiUrl}/${recurso}/${encodeURIComponent(id)}`,
+          datos,
+        )
       : this.http.post<ApiResponse<T>>(`${environment.apiUrl}/${recurso}`, datos);
-    return solicitud.pipe(map(respuesta => {
-      if (!respuesta.success || respuesta.data == null) throw new Error(respuesta.message || 'No se pudo guardar el registro.');
-      return respuesta.data;
-    }));
+    return solicitud.pipe(
+      map((respuesta) => {
+        if (!respuesta.success || respuesta.data == null)
+          throw new Error(respuesta.message || 'No se pudo guardar el registro.');
+        return respuesta.data;
+      }),
+    );
   }
 
   eliminar(recurso: 'productos' | 'proveedores', id: string): Observable<void> {
@@ -53,17 +60,37 @@ export class AdminCatalogoService {
   }
 
   cambiarEstado<T>(recurso: Exclude<RecursoCatalogo, 'productos'>, id: string): Observable<T> {
-    return this.http.patch<ApiResponse<T>>(`${environment.apiUrl}/${recurso}/${encodeURIComponent(id)}/toggle-activo`, {}).pipe(map(respuesta => {
-      if (!respuesta.success || respuesta.data == null) throw new Error(respuesta.message || 'No se pudo cambiar el estado.');
-      return respuesta.data;
-    }));
+    return this.http
+      .patch<ApiResponse<T>>(
+        `${environment.apiUrl}/${recurso}/${encodeURIComponent(id)}/toggle-activo`,
+        {},
+      )
+      .pipe(
+        map((respuesta) => {
+          if (!respuesta.success || respuesta.data == null)
+            throw new Error(respuesta.message || 'No se pudo cambiar el estado.');
+          return respuesta.data;
+        }),
+      );
   }
 
-  subirImagen(archivo: File, carpeta: 'productos' | 'marcas' | 'modelos' | 'categorias' | 'proveedores'): Observable<{ ruta: string; url: string }> {
-    const datos = new FormData(); datos.append('archivo', archivo);
-    return this.http.post<ApiResponse<{ ruta: string; url: string }>>(`${environment.apiUrl}/storage/imagenes?carpeta=${carpeta}`, datos).pipe(map(respuesta => {
-      if (!respuesta.success || !respuesta.data) throw new Error(respuesta.message || 'No se pudo subir la imagen.');
-      return respuesta.data;
-    }));
+  subirImagen(
+    archivo: File,
+    carpeta: 'productos' | 'marcas' | 'modelos' | 'categorias' | 'proveedores',
+  ): Observable<{ ruta: string; url: string }> {
+    const datos = new FormData();
+    datos.append('archivo', archivo);
+    return this.http
+      .post<ApiResponse<{ ruta: string; url: string }>>(
+        `${environment.apiUrl}/storage/imagenes?carpeta=${carpeta}`,
+        datos,
+      )
+      .pipe(
+        map((respuesta) => {
+          if (!respuesta.success || !respuesta.data)
+            throw new Error(respuesta.message || 'No se pudo subir la imagen.');
+          return respuesta.data;
+        }),
+      );
   }
 }

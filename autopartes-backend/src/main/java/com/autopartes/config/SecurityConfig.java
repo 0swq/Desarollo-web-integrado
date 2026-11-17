@@ -123,6 +123,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:4200",
+                "https://autopartes-web-integrado.vercel.app",
+                "https://autopartes-web-integrado-r8yj8kvvx-0swqs-projects.vercel.app",
                 "http://127.0.0.1:4200",
                 "http://192.168.1.10",
                 "http://192.168.1.10:4200"

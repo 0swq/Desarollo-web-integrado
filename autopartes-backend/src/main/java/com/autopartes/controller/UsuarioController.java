@@ -134,7 +134,7 @@ public class UsuarioController {
         r.setId(u.getId());
         r.setCorreo(u.getCorreo());
         r.setNombre(u.getNombre());
-        r.setApellido(u.getApellido());
+        r.setApelflido(u.getApellido());
         r.setTelefono(u.getTelefono());
         r.setDireccion(u.getDireccion());
         r.setFotoPerfilUrl(u.getFotoPerfilUrl());

@@ -169,8 +169,8 @@ export class ManageProducts implements OnInit {
       this.errorAccion.set('El precio promocional debe ser mayor que cero y menor que el precio regular.');
       return;
     }
-    if (!id && stockInicial != null && !Number.isInteger(stockInicial)) {
-      this.errorAccion.set('El stock inicial debe ser un número entero.');
+    if (!id && (stockInicial == null || !Number.isInteger(stockInicial) || stockInicial < 1 || stockInicial > 2147483647)) {
+      this.errorAccion.set('El stock inicial debe ser un número entero mayor que cero.');
       return;
     }
 

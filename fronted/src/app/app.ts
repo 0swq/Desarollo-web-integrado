@@ -1,3 +1,4 @@
+import { ConfirmarSalida } from './confirmar-salida';
 import { ParametrosService } from './_services/parametros.service';
 import { PerfilLayout } from './pages/perfil/perfil-layout';
 
@@ -10,7 +11,7 @@ import { ToastLayer } from './_shared/componentes/toast-layer/toast-layer';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, NavbarComponent, Footer, ToastLayer, PerfilLayout],
+  imports: [ConfirmarSalida, RouterLink, RouterOutlet, NavbarComponent, Footer, ToastLayer, PerfilLayout],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })

@@ -1,4 +1,4 @@
-// Modelo Proveedor.java. Las relaciones pueden omitirse en respuestas resumidas.
+                                                                                 
 export interface Proveedor {
   id: string;
   ruc: string;

@@ -1,6 +1,6 @@
 import type { MarcaVehiculo } from './marca-vehiculo.interface';
 
-// Modelo ModeloVehiculo.java. Las relaciones pueden omitirse en respuestas resumidas.
+                                                                                      
 export interface ModeloVehiculo {
   id: string;
   nombre: string;

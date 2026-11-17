@@ -10,7 +10,7 @@ import { ApiResponse } from '../models/auth.interface';
 })
 export class ProductoService {
   private http = inject(HttpClient);
-  // URL de la API de tu amigo para los productos
+                                                 
   private apiUrl = `${environment.apiUrl}/productos`;
 
   obtenerProductos(): Observable<Producto[]> {

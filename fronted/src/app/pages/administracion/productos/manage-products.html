@@ -6,9 +6,7 @@
       <p>Consulta los repuestos, sus precios y su estado en el catálogo.</p>
     </div>
     <div class="heading-actions">
-      <button type="button" class="refresh" (click)="cargar()" [disabled]="cargando()">
-        <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Actualizar
-      </button>
+      
       <button type="button" class="primary" (click)="abrirEditor()" [disabled]="cargando()">
         <i class="bi bi-plus-lg" aria-hidden="true"></i> Nuevo producto
       </button>
@@ -211,8 +209,8 @@
             </div>@if(errorImagen()){<p class="action-error" role="alert">{{errorImagen()}}</p>}
           </div>
           @if (!editandoId()) {
-            <label class="form-field">Stock inicial
-              <input type="number" formControlName="stockInicial" min="0" max="2147483647" step="1">
+            <label class="form-field">Stock inicial (mínimo 1)
+              <input type="number" formControlName="stockInicial" required min="1" max="2147483647" step="1">
             </label>
           }
           <label class="check-field">

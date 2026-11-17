@@ -1,3 +1,4 @@
+import { ConfirmarSalidaService } from '../../../_services/confirmar-salida.service';
 import { ParametrosService } from '../../../_services/parametros.service';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -10,6 +11,7 @@ import { PerfilModalService } from '../../../_services/perfil-modal.service';
 import { ROLES } from '../../../models/rol';
 @Component({selector:'app-sidebar-admin',standalone:true,imports:[RouterLink,RouterLinkActive],templateUrl:'./sidebar-admin.html',styleUrl:'./sidebar-admin.css'})
 export class SidebarAdmin {
+ private readonly confirmarSalida=inject(ConfirmarSalidaService);
   readonly parametros=inject(ParametrosService);
  readonly storage=inject(StorageService);readonly perfil=inject(PerfilModalService);private auth=inject(AuthService);private router=inject(Router);
  abierto=false;
@@ -18,5 +20,5 @@ export class SidebarAdmin {
  get esAdmin(){return this.storage.obtenerRol()===ROLES.ADMIN;}
  constructor(){inject(PerfilService).obtener().pipe(catchError(()=>of(null)),takeUntilDestroyed()).subscribe();}
  cerrar(){this.abierto=false;}
- salir(){this.cerrar();this.auth.logout();void this.router.navigate(['/iniciar-sesion']);}
+ salir(){this.cerrar();this.confirmarSalida.solicitar(()=>{this.auth.logout();void this.router.navigate(['/iniciar-sesion']);});}
 }

@@ -45,3 +45,6 @@ __screenshots__/
 Thumbs.db
 
 /.tmp-tests/
+.vercel
+
+/src/environments.zip

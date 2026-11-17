@@ -27,6 +27,7 @@ export class VehiclePicker implements OnDestroy {
   imagenesFallidas = new Set<string>();
   private espera?: ReturnType<typeof setTimeout>;
   private overflowAnterior = '';
+  identificar(_index: number, opcion: VehiclePickerOption): string { return opcion.id; }
   get seleccionada() { return this.opciones.find(o => o.id === this.valor); }
   private normalizar(value: string) { return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); }
   get filtradas() {
@@ -51,7 +52,7 @@ export class VehiclePicker implements OnDestroy {
   }
   limpiarBusqueda(): void { clearTimeout(this.espera); this.busqueda = ''; this.termino = ''; }
   confirmarBusqueda(event: Event): void { event.preventDefault(); clearTimeout(this.espera); this.termino = this.busqueda; }
-  elegir(id: string): void { this.cerrar(); this.valorChange.emit(id); }
+  elegir(id: string): void { this.valor=id; this.valorChange.emit(id); this.cerrar(); }
   fondo(event: MouseEvent): void { if (event.target === this.modal.nativeElement) this.cerrar(); }
   ngOnDestroy(): void { clearTimeout(this.espera); if (this.abierto) this.cerrado(); }
 }
